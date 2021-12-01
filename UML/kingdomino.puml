@@ -5,10 +5,10 @@ skinparam classFontStyle Bold
 hide enum methods
 
 class LauncherKingdomino{
-
+    + {static} main( args:String[] )
 }
 
-package model{
+package Model{
     class Graph {
 
     }
@@ -19,12 +19,18 @@ package model{
        -secondSuitColor:String
        -crownsFirstSuit:Integer
        -crownsSecondSuit:Integer
-       +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String, crownsFirstSuit:Integer, crownsSecondSuit:Integer)
+
+       +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String,
+       crownsFirstSuit:Integer, crownsSecondSuit:Integer)
        +getPosition():
        +setPosition()
     }
 
     class King{
+
+    }
+
+    class Castle {
 
     }
 
@@ -34,10 +40,12 @@ package model{
     }
 
     GameMode *-> "-_strategy\n1"GameModeStrategy : > select
+    interface GameModeStrategy<<interface>>{
+        gameModeStrategy()
+    }
 
 
-
-    package mode{
+    package Mode{
         class Dynasty implements GameModeStrategy{
 
         }
@@ -56,38 +64,55 @@ package model{
     }
 
     class SetUpGame{
-        setStrategyPlayer()
-        executeStrategy()
+        +setStrategyPlayer()
+        +executeStrategy()
     }
 
     interface SetUpGameStrategy<<interface>>{
-        strategyPlayer()
+        +strategyPlayer()
     }
 
     SetUpGame *-> "-_strategy\n1"SetUpGameStrategy : > launch
 
-    class SetUpDuo
+    class SetUpDuo implements SetUpGameStrategy
     {
 
     }
 
-    class SetUp
+    class SetUp implements SetUpGameStrategy
+    {
 
+    }
 
-
-}
-
-package view {
     class Player {
 
     }
+
+    enum KingColor {
+        +ROSE
+        +JAUNE
+        +VERT
+        +BLEU
+    }
+
 }
 
-package controller {
-    class Controller{
+package View {
+    class KingDominoGUI
+    {
 
     }
 }
 
+package Controller {
+    class ControllerFacade{
+        +doKingDomino()
+    }
+}
+
+LauncherKingdomino ..> ControllerFacade : <<create>> >
+ControllerFacade ..> SetUpGame : <<create>>
+King *-l-> "1\n- _color" KingColor : has >
+Castle *-l-> "1\n- _color" KingColor : has >
 
 @enduml
