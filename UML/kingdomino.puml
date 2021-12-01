@@ -9,91 +9,129 @@ class LauncherKingdomino{
 }
 
 package Model{
-    class Graph {
+
+    class GameFacade{
 
     }
 
-    class Dominoes {
-       -id:Integer
-       -firstSuitColor:String
-       -secondSuitColor:String
-       -crownsFirstSuit:Integer
-       -crownsSecondSuit:Integer
 
-       +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String,
-       crownsFirstSuit:Integer, crownsSecondSuit:Integer)
-       +getPosition():
-       +setPosition()
-    }
-
-    class King{
+    class SetFacade{
 
     }
 
-    class Castle {
+    class EntitiesFacade{
 
     }
 
-    class GameMode{
-        +setStrategy()
-        +executeStrategy()
+    package Entities{
+            Graph *-l-> Dominoes : <<composed of>> > "-_arrayDominoes 1"
+            class Graph {
+                +Graph()
+                +getDomino(x:Integer, y:Integer):Dominoes
+                +setDomino(domino:Dominoes)
+                +getKing():King
+                +setKing(king:King)
+
+            }
+            class King{
+
+            }
+
+
+        Deck *-d-> "-_listDominoes\n0..*"Dominoes : <<composed of>> >
+            class Deck{
+                +Deck()
+                +getStack()
+                +shuffle()
+                +giveADomino()
+            }
+
+            class Dominoes {
+               -id:Integer
+               -firstSuitColor:String
+               -secondSuitColor:String
+               -crownsFirstSuit:Integer
+               -crownsSecondSuit:Integer
+
+               +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String,
+               crownsFirstSuit:Integer, crownsSecondSuit:Integer)
+               +getPosition():
+            }
+
+            Player *-l-> Graph : > <<has>>
+            Player *--> King : > <<has>>
+            class Player {
+
+            }
+
+            enum KingColor {
+                +PINK
+                +YELLOW
+                +GREEN
+                +BLUE
+            }
+
     }
 
-    GameMode *-> "-_strategy\n1"GameModeStrategy : > select
-    interface GameModeStrategy<<interface>>{
-        gameModeStrategy()
-    }
 
+    package Set{
+        class SetNumberPlayer{
+                +setStrategyPlayer()
+                +executeStrategy()
+         }
 
-    package Mode{
-        class Dynasty implements GameModeStrategy{
+        SetNumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
 
+        package Number{
+                class Duo implements NumberPlayerStrategy
+                {
+
+                }
+
+                class AboveTwo implements NumberPlayerStrategy
+                {
+
+                }
         }
 
-        class MiddleKingdom implements GameModeStrategy{
 
-        }
+            class SetGameMode{
+                +setStrategy()
+                +executeStrategy()
+            }
 
-        class Harmony implements GameModeStrategy{
+            SetGameMode o--> "-_strategy\n1"GameModeStrategy : > <<select>>
+            interface GameModeStrategy<<interface>>{
+                gameModeStrategy()
+            }
 
-        }
 
-        class MightyDuel implements GameModeStrategy{
+            package Mode{
+                class Dynasty implements GameModeStrategy{
 
-        }
+                }
+
+                class MiddleKingdom implements GameModeStrategy{
+
+                }
+
+                class Harmony implements GameModeStrategy{
+
+                }
+
+                class MightyDuel implements GameModeStrategy{
+
+                }
+            }
+
     }
 
-    class SetUpGame{
-        +setStrategyPlayer()
-        +executeStrategy()
-    }
-
-    interface SetUpGameStrategy<<interface>>{
+    interface NumberPlayerStrategy<<interface>>{
         +strategyPlayer()
     }
 
-    SetUpGame *-> "-_strategy\n1"SetUpGameStrategy : > launch
 
-    class SetUpDuo implements SetUpGameStrategy
-    {
 
-    }
-
-    class SetUp implements SetUpGameStrategy
-    {
-
-    }
-
-    class Player {
-
-    }
-
-    enum KingColor {
-        +ROSE
-        +JAUNE
-        +VERT
-        +BLEU
-    }
 
 }
 
@@ -105,14 +143,22 @@ package View {
 }
 
 package Controller {
-    class ControllerFacade{
+
+    class Controller{
         +doKingDomino()
     }
+
 }
 
-LauncherKingdomino ..> ControllerFacade : <<create>> >
-ControllerFacade ..> SetUpGame : <<create>>
-King *-l-> "1\n- _color" KingColor : has >
-Castle *-l-> "1\n- _color" KingColor : has >
+LauncherKingdomino ..> KingDominoGUI : <<create>> >
+LauncherKingdomino ..> Controller : <<create>> >
+SetFacade ..> SetNumberPlayer : <<create>> >
+SetFacade ..> SetGameMode : <<create>> >
+GameFacade *--> SetFacade : <<use>> >
+GameFacade *-r-> EntitiesFacade : <<use>> >
+EntitiesFacade .> Deck : <<create>> >
+EntitiesFacade .> "-_listPlayers\n2..4"Player : <<create>> >
+Controller ..> GameFacade : <<use>> >
+King *-l-> "1\n- _color" KingColor : <<has>> >
 
 @enduml
