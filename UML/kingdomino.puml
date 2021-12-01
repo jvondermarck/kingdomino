@@ -4,9 +4,90 @@ skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+class LauncherKingdomino{
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+}
+
+package model{
+    class Graph {
+
+    }
+
+    class Dominoes {
+       -id:Integer
+       -firstSuitColor:String
+       -secondSuitColor:String
+       -crownsFirstSuit:Integer
+       -crownsSecondSuit:Integer
+       +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String, crownsFirstSuit:Integer, crownsSecondSuit:Integer)
+       +getPosition():
+       +setPosition(position:Node)
+    }
+
+    class King{
+
+    }
+
+    class GameMode{
+        +setStrategy()
+        +executeStrategy()
+    }
+
+    GameMode *-> "-_strategy\n1"GameModeStrategy : > select
+
+
+
+    package mode{
+        class Dynasty implements GameModeStrategy{
+
+        }
+
+        class MiddleKingdom implements GameModeStrategy{
+
+        }
+
+        class Harmony implements GameModeStrategy{
+
+        }
+
+        class MightyDuel implements GameModeStrategy{
+
+        }
+    }
+
+    class SetUpGame{
+        setStrategyPlayer()
+        executeStrategy()
+    }
+
+    interface SetUpGameStrategy<<interface>>{
+        strategyPlayer()
+    }
+
+    SetUpGame *-> "-_strategy\n1"SetUpGameStrategy : > launch
+
+    class SetUpDuo
+    {
+
+    }
+
+    class SetUp
+
+
+
+}
+
+package view {
+    class Player {
+
+    }
+}
+
+package controller {
+    class Controller{
+
+    }
+}
+
+
 @enduml
