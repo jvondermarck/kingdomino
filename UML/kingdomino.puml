@@ -21,7 +21,7 @@ package model{
        -crownsSecondSuit:Integer
        +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String, crownsFirstSuit:Integer, crownsSecondSuit:Integer)
        +getPosition():
-       +setPosition(position:Node)
+       +setPosition()
     }
 
     class King{
