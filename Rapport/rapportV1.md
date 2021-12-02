@@ -1,6 +1,6 @@
 # Projet A31 - Rapport Kingdomino”
 
-
+# Sommaire 
 1.  ### Introduction
 2.  ### Choix de conception
 
@@ -10,8 +10,6 @@
 L'objectif de ce projet est de concevoir une application permettant de jouer au jeu de société Kingdomino.
 
 ## 2. Choix de conception
-
-**Séance du 01/12/2021**
 
 La contrainte principale est de respecter une structure MVC. Donc nous avons un package model, controller, view.
 
@@ -48,3 +46,7 @@ Dans le package `entities` :
 - `KingDominoEnd` : l'interface graphique où sera affiché le gagnant et les scores
 
 Nous avons décidé d’utiliser le paterne Strategy concernant les différentes règles de jeux additionnelles qui sont : Dynastie, Empire du milieu, Harmonie et Le Grand Duel, le tout dans un package mode.
+
+
+    
+    
