@@ -56,7 +56,12 @@ package Model{
 
             Player "1\n-_graph" *--> Graph : > <<has>>
             Player *-l-> King : > <<has>>
+            Player "1\n-_castle" *-> Castle : > <<has>>
             class Player {
+
+            }
+
+            class Castle{
 
             }
 
