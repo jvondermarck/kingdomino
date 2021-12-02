@@ -10,24 +10,20 @@ class LauncherKingdomino{
 
 package Model{
 
-    class GameFacade{
-
+    class Game {
+        -Game()
+        +getInstance()
     }
 
-
-    class SetFacade{
-
-    }
-
-    class EntitiesFacade{
+    interface Observer<<interface>>{
 
     }
 
     package Entities{
-            Graph *-l-> Dominoes : <<composed of>> > "-_arrayDominoes 1"
+            Graph "0..*\n-_arrayDominoes" *-l-> Domino : <<composed of>> >
             class Graph {
                 +Graph()
-                +getDomino(x:Integer, y:Integer):Dominoes
+                +getDomino(x:Integer, y:Integer):Domino
                 +setDomino(domino:Dominoes)
                 +getKing():King
                 +setKing(king:King)
@@ -38,7 +34,7 @@ package Model{
             }
 
 
-        Deck *-d-> "-_listDominoes\n0..*"Dominoes : <<composed of>> >
+        Deck "-_listDominoes\n0..*" *--> Domino : <<composed of>> >
             class Deck{
                 +Deck()
                 +getStack()
@@ -46,25 +42,25 @@ package Model{
                 +giveADomino()
             }
 
-            class Dominoes {
+            class Domino {
                -id:Integer
                -firstSuitColor:String
                -secondSuitColor:String
                -crownsFirstSuit:Integer
                -crownsSecondSuit:Integer
 
-               +Dominoes(id:Integer, firstSuitColor:String, secondSuitColor:String,
+               +Domino(id:Integer, firstSuitColor:String, secondSuitColor:String,
                crownsFirstSuit:Integer, crownsSecondSuit:Integer)
                +getPosition():
             }
 
-            Player *-l-> Graph : > <<has>>
-            Player *--> King : > <<has>>
+            Player "1\n-_graph" *--> Graph : > <<has>>
+            Player *-l-> King : > <<has>>
             class Player {
 
             }
 
-            enum KingColor {
+            enum KINGCOLOR {
                 +PINK
                 +YELLOW
                 +GREEN
@@ -75,12 +71,12 @@ package Model{
 
 
     package Set{
-        class SetNumberPlayer{
+        class NumberPlayer{
                 +setStrategyPlayer()
                 +executeStrategy()
          }
 
-        SetNumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
+        NumberPlayer o-> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
 
         package Number{
                 class Duo implements NumberPlayerStrategy
@@ -95,12 +91,13 @@ package Model{
         }
 
 
-            class SetGameMode{
+            class GameMode{
                 +setStrategy()
                 +executeStrategy()
             }
 
-            SetGameMode o--> "-_strategy\n1"GameModeStrategy : > <<select>>
+            GameMode o-> "-_strategy\n1"GameModeStrategy : > <<select>>
+
             interface GameModeStrategy<<interface>>{
                 gameModeStrategy()
             }
@@ -136,7 +133,25 @@ package Model{
 }
 
 package View {
-    class KingDominoGUI
+    Window ..> KingDominoStart : <<use>> >
+    KingDominoStart ..> KingDominoGame : <<use>> >
+     KingDominoGame ..> KingDominoEnd: <<use>> >
+    class Window implements Observer
+    {
+
+    }
+
+    class KingDominoStart implements Observer
+    {
+
+    }
+
+    class KingDominoGame implements Observer
+    {
+
+    }
+
+    class KingDominoEnd implements Observer
     {
 
     }
@@ -145,20 +160,19 @@ package View {
 package Controller {
 
     class Controller{
-        +doKingDomino()
+        +launchGame()
     }
 
 }
 
-LauncherKingdomino ..> KingDominoGUI : <<create>> >
+LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
-SetFacade ..> SetNumberPlayer : <<create>> >
-SetFacade ..> SetGameMode : <<create>> >
-GameFacade *--> SetFacade : <<use>> >
-GameFacade *-r-> EntitiesFacade : <<use>> >
-EntitiesFacade .> Deck : <<create>> >
-EntitiesFacade .> "-_listPlayers\n2..4"Player : <<create>> >
-Controller ..> GameFacade : <<use>> >
-King *-l-> "1\n- _color" KingColor : <<has>> >
+Game "1\n-_gamemode"*--> GameMode : <<has>> >
+Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
+Game "1\n-_deck" *--> Deck : <<has>> >
+Game "2..*\n-_listPlayers" *-> Player : <<has>> >
+Controller ..> Game : <<use>> >
+Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
+King *-l-> "1\n- _color" KINGCOLOR : <<has>> >
 
 @enduml
