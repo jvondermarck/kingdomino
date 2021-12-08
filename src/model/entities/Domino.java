@@ -10,7 +10,7 @@ public class Domino {
         setTile(tile1, tile2);
     }
 
-    public void setTile(Tile tile1, Tile tile2){
+    private void setTile(Tile tile1, Tile tile2){
         //coordonnée arbitraire
         // O X
         // O X

@@ -65,7 +65,11 @@ package Model{
             class Domino {
                -id:Integer
                +Domino(id:Integer, tile1:Tile, tile2:Tile)
-               +setTile()
+               -setTile(tile1:Tile, tile2:Tile)
+               +isXX():Boolean
+               +isXY():Boolean
+               +getTile:Array[][] (Tile)
+               +rotate()
             }
 
             class Tile{
