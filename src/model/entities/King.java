@@ -6,10 +6,10 @@ import java.util.Random;
 
 public class King {
 
-    private static ArrayList<KINGCOLOR> COLOR_USED = new ArrayList<>(Arrays.asList(KINGCOLOR.values())); // les couleurs déjà prises
+    private static final ArrayList<KINGCOLOR> COLOR_USED = new ArrayList<>(Arrays.asList(KINGCOLOR.values())); // les couleurs déjà prises
     private static Random RAND = new Random();
     private static int SIZE = COLOR_USED.size();
-    private KINGCOLOR _kingColor;
+    private final KINGCOLOR _kingColor;
 
     public King()
     {

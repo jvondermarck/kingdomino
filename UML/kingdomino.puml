@@ -3,6 +3,9 @@ skinparam style strictuml
 skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
+skinparam roundcorner 20
+skinparam classBackgroundColor #wheat
+
 
 class LauncherKingdomino{
     + {static} main( args:String[] )
@@ -16,7 +19,7 @@ package utilities {
 
 }
 
-package Model{
+package Model #salmon;line:red{
 
     class Game {
         {static}-instance:Game
@@ -34,94 +37,103 @@ package Model{
        +update(game:Game)
     }
 
-    package Entities{
-            Graph "0..*\n-_arrayTiles" *---> Tile : <<composed of>> >
+    package Entities #indianred{
+        Graph "0..*\n-_arrayTiles" *---> Tile : <<composed of>> >
 
-            class Graph {
-                +Graph()
-                +setDomino(domino:Domino, x:Integer, y:Integer)
-                +getKing():King
-                +setKing(king:King)
+        class Graph {
+            +Graph()
+            +setDomino(domino:Domino, x:Integer, y:Integer)
+            +getKing():King
+            +setKing(king:King)
 
-            }
+        }
 
-            class King{
+        class King{
+            {static}-COLOR_USED: ArrayList<KINGCOLOR>
+            {static}-RAND: Random
+            {static}-SIZE: int
 
-            }
+            +King()
+            +randomChose(): KINGCOLOR
+        }
 
 
         Deck "-_listDominoes\n0..*" *--> Domino : <<composed of>> >
 
 
-            class Deck{
-                +Deck()
-                -generateDomino(i:Integer, dataCSV:ArrayList<ArrayList<String>>)
-                +getStack()
-                +shuffle()
-                +giveADomino()
-            }
+        class Deck{
+            +Deck()
+            -generateDomino(i:Integer, dataCSV:ArrayList<ArrayList<String>>)
+            +getStack()
+            +shuffle()
+            +giveADomino()
+        }
 
-            Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
-            class Domino {
-               -id:Integer
-               +Domino(id:Integer, tile1:Tile, tile2:Tile)
-               -setTile(tile1:Tile, tile2:Tile)
-               +isXX():Boolean
-               +isXY():Boolean
-               +getTile:Array[][] (Tile)
-               +rotate()
-            }
+        Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
+        class Domino {
+           -id:Integer
+           +Domino(id:Integer, tile1:Tile, tile2:Tile)
+           -setTile(tile1:Tile, tile2:Tile)
+           +isXX():Boolean
+           +isXY():Boolean
+           +getTile:Array[][] (Tile)
+           +rotate()
+        }
 
-            class Tile{
-               -suitColor:String
-               -crownsSuit:Integer
-               +Tile(suitColor, crownsSuit)
-            }
+        class Tile{
+           -suitColor:String
+           -crownsSuit:Integer
+           +Tile(suitColor, crownsSuit)
+        }
 
-            Player "1\n-_graph" *--> Graph : > <<has>>
-            Player *-> King : > <<has>>
-            Player "1\n-_castle" *-l-> Castle : > <<has>>
-            class Player {
+        Player "1\n-_graph" *--> Graph : > <<has>>
+        Player *-> King : > <<has>>
+        Player "1\n-_castle" *-l-> Castle : > <<has>>
+        class Player {
+            -_king: King[]
+            +Player()
+        }
 
-            }
+        class Castle{
 
-            class Castle{
+        }
 
-            }
-
-            enum KINGCOLOR {
-                +PINK
-                +YELLOW
-                +GREEN
-                +BLUE
-            }
+        enum KINGCOLOR {
+            +PINK
+            +YELLOW
+            +GREEN
+            +BLUE
+        }
 
     }
 
 
-    package Set{
+    package Set #indianred{
         class NumberPlayer{
-                +setStrategyPlayer()
-                +executeStrategy()
+            -_numberPlayers: int
+            +NumberPlayer()
+            +setStrategyPlayer(strategy: NumberPlayerStrategy)
+            +executeStrategy()
+            +setNumberPlayers(players: int)
          }
 
         NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
 
         package Number{
-                class Duo implements NumberPlayerStrategy
-                {
+            class Duo implements NumberPlayerStrategy
+            {
+                +setNumberPlayers(player: NumberPlayer)
+            }
 
-                }
+            class Trio implements NumberPlayerStrategy
+            {
+                +setNumberPlayers(player: NumberPlayer)
+            }
 
-                class Trio implements NumberPlayerStrategy
-                {
-
-                }
-
-                class Quatro implements NumberPlayerStrategy
-                {
-
-                }
+            class Quatro implements NumberPlayerStrategy
+            {
+                +setNumberPlayers(player: NumberPlayer)
+            }
         }
 
 
@@ -136,15 +148,18 @@ package Model{
 
             package Mode{
                 class MiddleKingdom extends GameMode{
-
+                    +numberBonus(): int
+                    +sizeGraph(): boolean
                 }
 
                 class Harmony extends GameMode{
-
+                    +numberBonus(): int
+                    +sizeGraph(): boolean
                 }
 
                 class MightyDuel extends GameMode{
-
+                    +numberBonus(): int
+                    +sizeGraph(): boolean
                 }
             }
 
@@ -159,7 +174,7 @@ package Model{
 
 }
 
-package View {
+package View #lightgreen;line:green{
     Window ..> KingDominoStart : <<use>> >
     KingDominoStart ..> KingDominoGame : <<use>> >
      KingDominoGame ..> KingDominoEnd: <<use>> >
@@ -185,7 +200,7 @@ package View {
     }
 }
 
-package Controller {
+package Controller #gold;line:goldenrod {
 
     class Controller{
         +launchGame()
@@ -201,7 +216,7 @@ Game "1\n-_deck" *--> Deck : <<has>> >
 Game "2..*\n-_listPlayers" *--> Player : <<has>> >
 Controller ..> Game : <<use>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
-King *-r-> "1\n- _color" KINGCOLOR : <<has>> >
+King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >
 Deck .d.> CSVReader : <<use>> >
 
 @enduml

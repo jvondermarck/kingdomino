@@ -17,5 +17,4 @@ public abstract class GameMode {
 
     public abstract int numberBonus();
     public abstract boolean sizeGraph();
-
 }
