@@ -1,7 +1,7 @@
 package model.set.number;
 import model.set.NumberPlayer;
 
-public class AboveTwo {
+public class Trio {
 
     public void setNumberPlayers(NumberPlayer player)
     {
