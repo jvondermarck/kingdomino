@@ -1,16 +1,10 @@
 package model.entities;
 
 public class Graph {
-    private Domino[][] _arrayDominoes;
     private Tile[][] _arrayTiles;
 
     public Graph(){
-        _arrayDominoes = new Domino[5][5];
         _arrayTiles = new Tile[5][5];
-    }
-
-    public Domino getDomino(int x, int y){
-        return _arrayDominoes[x][y];
     }
 
     public void setDomino(Domino domino, int x, int y){
@@ -28,10 +22,11 @@ public class Graph {
         else if(domino.isXY()){
             _arrayTiles[x][y + 1] = domino.getTile()[1][0];
         }
-
     }
 
+
+
     public boolean isPlaceAvailable(int x, int y){
-        return false;
+        return _arrayTiles[x][y] != null;
     }
 }

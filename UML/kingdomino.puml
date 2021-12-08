@@ -35,12 +35,11 @@ package Model{
     }
 
     package Entities{
-            Graph "0..*\n-_arrayDominoes" *---> Domino : <<composed of>> >
+            Graph "0..*\n-_arrayTiles" *---> Tile : <<composed of>> >
 
             class Graph {
                 +Graph()
-                +getDomino(x:Integer, y:Integer):Domino
-                +setDomino(domino:Dominoes)
+                +setDomino(domino:Domino, x:Integer, y:Integer)
                 +getKing():King
                 +setKing(king:King)
 
@@ -56,6 +55,7 @@ package Model{
 
             class Deck{
                 +Deck()
+                -generateDomino(i:Integer, dataCSV:ArrayList<ArrayList<String>>)
                 +getStack()
                 +shuffle()
                 +giveADomino()
