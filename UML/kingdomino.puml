@@ -14,10 +14,16 @@ package Model{
         {static}-instance:Game
         -Game()
         {static}+getInstance()
+        +setGameMode()
+        +setNumberPlayer()
+        +createPlayers()
+        +createDeck()
+
+        +notifyObservers()
     }
 
     interface Observer<<interface>>{
-
+       +update(game:Game)
     }
 
     package Entities{
@@ -46,18 +52,14 @@ package Model{
             Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
             class Domino {
                -id:Integer
-               -firstSuitColor:String
-               -secondSuitColor:String
-               -crownsFirstSuit:Integer
-               -crownsSecondSuit:Integer
-
-               +Domino(id:Integer, firstSuitColor:String, secondSuitColor:String,
-               crownsFirstSuit:Integer, crownsSecondSuit:Integer)
-               +getPosition():
+               +Domino(id:Integer, tile1:Tile, tile2:Tile)
+               +setTile()
             }
 
             class Tile{
-
+               -suitColor:String
+               -crownsSuit:Integer
+               +Tile(suitColor, crownsSuit)
             }
 
             Player "1\n-_graph" *--> Graph : > <<has>>
@@ -87,7 +89,7 @@ package Model{
                 +executeStrategy()
          }
 
-        NumberPlayer o-> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
+        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
 
         package Number{
                 class Duo implements NumberPlayerStrategy
@@ -115,11 +117,7 @@ package Model{
 
 
             package Mode{
-                class Dynasty implements GameModeStrategy{
-
-                }
-
-                class MiddleKingdom implements GameModeStrategy{
+                class MiddleKingdom extends GameMode{
 
                 }
 
@@ -149,12 +147,13 @@ package View {
      KingDominoGame ..> KingDominoEnd: <<use>> >
     class Window implements Observer
     {
-
+        +Window(game:Game, controller:Controller)
+        +update(observer:Observer)
     }
 
     class KingDominoStart implements Observer
     {
-
+        +KingDominoStart()
     }
 
     class KingDominoGame implements Observer

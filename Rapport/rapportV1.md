@@ -13,7 +13,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 La contrainte principale est de respecter une structure MVC. Donc nous avons un package model, controller, view.
 
-###Nous avons différentes classe et package dans le package `model` :
+### Nous avons différentes classe et package dans le package `model` :
 - `Game` : representation de la partie courante, qui suit le pattern Singleton. Ce qui vas permettre d'avoir une unique instance pour une partie.
 
 Dans le package `entities` : 
