@@ -1,5 +1,7 @@
 package model.entities;
 
+import utilities.CSVReader;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,7 +17,7 @@ public class Deck {
 
     public Deck(){
         _listdominoes = new ArrayList<>();
-        List<List<String>> dataCSV = readCSV();
+        List<List<String>> dataCSV = CSVReader.readCSV("docs/kingdomino.csv");
         MAXSIZE = dataCSV.size();
         for(int i = 0; i < MAXSIZE; i++){
             int id = Integer.parseInt(dataCSV.get(i).get(0)); // 0 == ID
@@ -46,17 +48,4 @@ public class Deck {
         return null;
     }
 
-    public List<List<String>> readCSV(){
-        List<List<String>> records = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("docs/kingdomino.csv"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                records.add(Arrays.asList(values));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return  records;
-    }
 }

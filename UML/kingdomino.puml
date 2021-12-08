@@ -8,6 +8,14 @@ class LauncherKingdomino{
     + {static} main( args:String[] )
 }
 
+package utilities {
+    class CSVReader{
+        +CSVReader()
+        {static}+readCSV(path:String):ArrayList<ArrayList<String>>
+    }
+
+}
+
 package Model{
 
     class Game {
@@ -27,7 +35,8 @@ package Model{
     }
 
     package Entities{
-            Graph "0..*\n-_arrayDominoes" *-l-> Domino : <<composed of>> >
+            Graph "0..*\n-_arrayDominoes" *---> Domino : <<composed of>> >
+
             class Graph {
                 +Graph()
                 +getDomino(x:Integer, y:Integer):Domino
@@ -36,12 +45,15 @@ package Model{
                 +setKing(king:King)
 
             }
+
             class King{
 
             }
 
 
         Deck "-_listDominoes\n0..*" *--> Domino : <<composed of>> >
+
+
             class Deck{
                 +Deck()
                 +getStack()
@@ -63,8 +75,8 @@ package Model{
             }
 
             Player "1\n-_graph" *--> Graph : > <<has>>
-            Player *-l-> King : > <<has>>
-            Player "1\n-_castle" *-> Castle : > <<has>>
+            Player *-> King : > <<has>>
+            Player "1\n-_castle" *-l-> Castle : > <<has>>
             class Player {
 
             }
@@ -179,12 +191,13 @@ package Controller {
 
 LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
-Game "1\n-_gamemode"*--> GameMode : <<has>> >
+Game "1\n-_gamemode"*-u-> GameMode : <<has>> >
 Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *--> Deck : <<has>> >
-Game "2..*\n-_listPlayers" *-> Player : <<has>> >
+Game "2..*\n-_listPlayers" *--> Player : <<has>> >
 Controller ..> Game : <<use>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
-King *-l-> "1\n- _color" KINGCOLOR : <<has>> >
+King *-r-> "1\n- _color" KINGCOLOR : <<has>> >
+Deck .d.> CSVReader : <<use>> >
 
 @enduml
