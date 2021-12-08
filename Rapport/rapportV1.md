@@ -11,7 +11,10 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ## 2. Choix de conception
 
-La contrainte principale est de respecter une structure MVC. Donc nous avons un package model, controller, view.
+- La contrainte principale est de respecter une structure MVC. Donc nous avons un package model, controller, view.
+- Dans le package `Set`, concernant la classe `GameMode` nous avons choisis de faire un Template Mode au lieu d'une stratégie
+  car nous pouvons choisir entre 1 et 3 modes, donc une stratégie ne semble pas efficace pour ce type de choix.
+- La stratégie concernant NumberPlayer permet de choisir le nombre de joueurs donc soit 2, 3 ou 4. 
 
 ### Nous avons différentes classe et package dans le package `model` :
 - `Game` : representation de la partie courante, qui suit le pattern Singleton. Ce qui vas permettre d'avoir une unique instance pour une partie.
@@ -24,9 +27,9 @@ Dans le package `entities` :
 -   `King` : représente la case de départ du joueur.
 -   `Player` : (plus explicite je peux pas faire)
 
-###Dans le package `set` :
--   `GameMode` : vas permettre d'executer une stratégie (en suivant le patterne Strategy)
--   `GameModeStrategy` : interface qui vas permettre de choisir une stratégie concernant le mode de jeu 
+### Dans le package `set` :
+#### Explication de nos choix
+ 
 -   Le package `Mode` comprend différent classes qui vont toutes implémenter la classe `GameModeStrategy` :
     -   ̀`Dynasty`
     -   `MiddleGame`

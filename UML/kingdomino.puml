@@ -97,23 +97,25 @@ package Model{
 
                 }
 
-                class AboveTwo implements NumberPlayerStrategy
+                class Trio implements NumberPlayerStrategy
+                {
+
+                }
+
+                class Quatro implements NumberPlayerStrategy
                 {
 
                 }
         }
 
 
-            class GameMode{
-                +setStrategy()
-                +executeStrategy()
-            }
-
-            GameMode o-> "-_strategy\n1"GameModeStrategy : > <<select>>
-
-            interface GameModeStrategy<<interface>>{
-                gameModeStrategy()
-            }
+        abstract GameMode<<abstract>>{
+            -_isSevenSize: boolean
+            -_numberBonus: int
+            +executeGameMode()
+            {abstract}+numberBonus(): int
+            {abstract}+sizeGraph(): boolean
+        }
 
 
             package Mode{
@@ -121,11 +123,11 @@ package Model{
 
                 }
 
-                class Harmony implements GameModeStrategy{
+                class Harmony extends GameMode{
 
                 }
 
-                class MightyDuel implements GameModeStrategy{
+                class MightyDuel extends GameMode{
 
                 }
             }
