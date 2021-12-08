@@ -15,6 +15,8 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 - Dans le package `Set`, concernant la classe `GameMode` nous avons choisis de faire un Template Mode au lieu d'une stratégie
   car nous pouvons choisir entre 1 et 3 modes, donc une stratégie ne semble pas efficace pour ce type de choix.
 - La stratégie concernant NumberPlayer permet de choisir le nombre de joueurs donc soit 2, 3 ou 4. 
+- Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader`, elle permet de diminuer la cohésion et couplage
+- On utilise le Singleton sur la classe `Graph` afin de pouvoir l'instancier qu'une seule fois
 
 ### Nous avons différentes classe et package dans le package `model` :
 - `Game` : representation de la partie courante, qui suit le pattern Singleton. Ce qui vas permettre d'avoir une unique instance pour une partie.
@@ -48,7 +50,6 @@ Dans le package `entities` :
 - `KingDominoGame` : l'interface graphique qui va permettre aux joueurs de jouer au jeu 
 - `KingDominoEnd` : l'interface graphique où sera affiché le gagnant et les scores
 
-Nous avons décidé d’utiliser le paterne Strategy concernant les différentes règles de jeux additionnelles qui sont : Dynastie, Empire du milieu, Harmonie et Le Grand Duel, le tout dans un package mode.
 
 
     
