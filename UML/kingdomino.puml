@@ -11,8 +11,9 @@ class LauncherKingdomino{
 package Model{
 
     class Game {
+        {static}-instance:Game
         -Game()
-        +getInstance()
+        {static}+getInstance()
     }
 
     interface Observer<<interface>>{
@@ -42,6 +43,7 @@ package Model{
                 +giveADomino()
             }
 
+            Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
             class Domino {
                -id:Integer
                -firstSuitColor:String
@@ -52,6 +54,10 @@ package Model{
                +Domino(id:Integer, firstSuitColor:String, secondSuitColor:String,
                crownsFirstSuit:Integer, crownsSecondSuit:Integer)
                +getPosition():
+            }
+
+            class Tile{
+
             }
 
             Player "1\n-_graph" *--> Graph : > <<has>>
