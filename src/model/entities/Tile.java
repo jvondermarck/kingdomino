@@ -9,4 +9,9 @@ public class Tile {
         this.color = color;
     }
 
+    public Tile(){
+        crowns = 0;
+        color = "white";
+    }
+
 }

@@ -28,4 +28,8 @@ public class Graph {
         return _arrayTiles[x][y] != null;
     }
 
+    public void setCastle(int x, int y, Castle castle){
+        this._arrayTiles[x][y] = castle;
+    }
+
 }

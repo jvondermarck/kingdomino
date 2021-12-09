@@ -1,4 +1,7 @@
 package model.entities;
 
-public class Castle {
+public class Castle extends Tile{
+    public Castle() {
+        super();
+    }
 }

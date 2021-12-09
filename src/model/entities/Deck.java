@@ -38,13 +38,19 @@ public class Deck {
         return this._listdominoes;
     }
 
+    public Integer sizeOfDeck(){
+        return this._listdominoes.size();
+    }
+
     public void shuffle(){
         Collections.shuffle(this._listdominoes, new Random());
     }
 
     public Domino giveADomino(){
         int random = rand.nextInt(maxsize);
-        return this._listdominoes.get(random);
+        Domino domino = this._listdominoes.get(random);
+        this._listdominoes.remove(domino);
+        return domino;
     }
 
 
