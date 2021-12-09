@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class King {
+public class King{
 
     private static final ArrayList<KINGCOLOR> COLOR_USED = new ArrayList<>(Arrays.asList(KINGCOLOR.values())); // les couleurs déjà prises
     private static Random RAND = new Random();

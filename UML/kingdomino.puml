@@ -14,7 +14,7 @@ class LauncherKingdomino{
 package utilities {
     class CSVReader{
         +CSVReader()
-        {static}+readCSV(path:String):ArrayList<ArrayList<String>>
+        {static}+readCSV(path:String):String[][]
     }
 
 }
@@ -62,8 +62,10 @@ package Model #salmon;line:red{
 
 
         class Deck{
+            {static}-rand:Integer{readOnly}
+            -maxsize:Integer
             +Deck()
-            -generateDomino(i:Integer, dataCSV:ArrayList<ArrayList<String>>)
+            -generateDomino(i:Integer, dataCSV:String[][])
             +getStack()
             +shuffle()
             +giveADomino()
@@ -76,7 +78,7 @@ package Model #salmon;line:red{
            -setTile(tile1:Tile, tile2:Tile)
            +isXX():Boolean
            +isXY():Boolean
-           +getTile:Array[][] (Tile)
+           +getTile():Tile[][]
            +rotate()
         }
 
@@ -108,7 +110,8 @@ package Model #salmon;line:red{
     }
 
 
-    package Set #indianred{
+    package Set #indianred {
+
         class NumberPlayer{
             -_numberPlayers: int
             +NumberPlayer()
@@ -208,8 +211,10 @@ package Controller #gold;line:goldenrod {
 
 }
 
-LauncherKingdomino ..> Window : <<create>> >
-LauncherKingdomino ..> Controller : <<create>> >
+    Window ..> Controller :<<use>> >
+LauncherKingdomino ...> Window : <<create>> >
+LauncherKingdomino .> Controller : <<create>> >
+
 Game "1\n-_gamemode"*-u-> GameMode : <<has>> >
 Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *--> Deck : <<has>> >

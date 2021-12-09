@@ -18,10 +18,13 @@ public class Game {
 
     private Game()
     {
+        this._observer = new ArrayList<>();
+        /*
         setGameMode();
         setNumberPlayer();
         createPlayers();
         createDeck();
+         */
     }
 
     public static Game getInstance()

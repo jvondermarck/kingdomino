@@ -10,13 +10,13 @@ public class Graph {
     public void setDomino(Domino domino, int x, int y){
         _arrayTiles[x][y] = domino.getTile()[0][0];
 
-        //Si le domino est comme ça :
+        //If the domino is like that :
         // O O
         // X X
-        if(domino.isXX()){// pas videvide
+        if(domino.isXX()){// not e
             _arrayTiles[x+1][y] = domino.getTile()[0][1];
         }
-        //Si le domino est comme ça :
+        //If the domino is like that :
         // O X
         // O X
         else if(domino.isXY()){
@@ -24,9 +24,8 @@ public class Graph {
         }
     }
 
-
-
     public boolean isPlaceAvailable(int x, int y){
         return _arrayTiles[x][y] != null;
     }
+
 }

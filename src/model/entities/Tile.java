@@ -8,4 +8,5 @@ public class Tile {
         this.crowns = crowns;
         this.color = color;
     }
+
 }
