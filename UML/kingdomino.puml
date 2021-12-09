@@ -197,17 +197,17 @@ package View #lightgreen;line:green{
         +update(observer:Observer)
     }
 
-    class KingDominoStart implements Observer
+    class KingDominoStart extends Window implements Observer
     {
         +KingDominoStart()
     }
 
-    class KingDominoGame implements Observer
+    class KingDominoGame extends Window implements Observer
     {
 
     }
 
-    class KingDominoEnd implements Observer
+    class KingDominoEnd extends Window implements Observer
     {
 
     }
@@ -221,7 +221,7 @@ package Controller #gold;line:goldenrod {
 
 }
 
-    Window ..> Controller :<<use>> >
+Window ..> Controller :<<use>> >
 LauncherKingdomino .> Window : <<create>> >
 LauncherKingdomino .> Controller : <<create>> >
 
