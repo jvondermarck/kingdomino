@@ -25,4 +25,8 @@ public class NumberPlayer {
         this._numberPlayers = players;
     }
 
+    public int getNumberPlayers()
+    {
+        return _numberPlayers;
+    }
 }

@@ -1,4 +1,5 @@
 package model.set;
+import model.set.mode.*;
 
 public abstract class GameMode {
     private boolean _isSevenSize;

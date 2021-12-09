@@ -49,9 +49,9 @@ package Model #salmon;line:red{
         }
 
         class King{
-            {static}-COLOR_USED: ArrayList<KINGCOLOR>
-            {static}-RAND: Random
-            {static}-SIZE: int
+            {static}-COLOR_USED: Collection<KINGCOLOR>
+            {static}-RAND: Integer
+            {static}-SIZE: Integer
 
             +King()
             +randomChose(): KINGCOLOR
@@ -89,10 +89,9 @@ package Model #salmon;line:red{
         }
 
         Player "1\n-_graph" *--> Graph : > <<has>>
-        Player *-> King : > <<has>>
+        Player "1..*\n-_king"*-> King : > <<has>>
         Player "1\n-_castle" *-l-> Castle : > <<has>>
         class Player {
-            -_king: King[]
             +Player()
         }
 
@@ -113,11 +112,11 @@ package Model #salmon;line:red{
     package Set #indianred {
 
         class NumberPlayer{
-            -_numberPlayers: int
+            -_numberPlayers: Integer
             +NumberPlayer()
             +setStrategyPlayer(strategy: NumberPlayerStrategy)
             +executeStrategy()
-            +setNumberPlayers(players: int)
+            +setNumberPlayers(players: Integer)
          }
 
         NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
@@ -139,31 +138,44 @@ package Model #salmon;line:red{
             }
         }
 
+        Game ..> GameModeFactory : <<use>> >
+        GameModeFactory ..> GameMode : <<use>> >
+
+        class GameModeFactory{
+            +GameModeFactory()
+            +createMiddleKingdom(): GameMode
+            +createHarmony(): GameMode
+            +createMightyDuel(): GameMode
+        }
 
         abstract GameMode<<abstract>>{
-            -_isSevenSize: boolean
-            -_numberBonus: int
+            -_isSevenSize: Boolean
+            -_numberBonus: Integer
             +executeGameMode()
-            {abstract}+numberBonus(): int
-            {abstract}+sizeGraph(): boolean
+            {abstract}+numberBonus(): Integer
+            {abstract}+sizeGraph(): Boolean
         }
 
 
-            package Mode{
+            package mode{
                 class MiddleKingdom extends GameMode{
-                    +numberBonus(): int
-                    +sizeGraph(): boolean
+                    +numberBonus(): Integer
+                    +sizeGraph(): Boolean
                 }
 
                 class Harmony extends GameMode{
-                    +numberBonus(): int
-                    +sizeGraph(): boolean
+                    +numberBonus(): Integer
+                    +sizeGraph(): Boolean
                 }
 
                 class MightyDuel extends GameMode{
-                    +numberBonus(): int
-                    +sizeGraph(): boolean
+                    +numberBonus(): Integer
+                    +sizeGraph(): Boolean
                 }
+
+                GameModeFactory ..> MiddleKingdom: <<use>> >
+                GameModeFactory ..> Harmony: <<use>> >
+                GameModeFactory ..> MightyDuel: <<use>> >
             }
 
     }
@@ -171,16 +183,13 @@ package Model #salmon;line:red{
     interface NumberPlayerStrategy<<interface>>{
         +strategyPlayer()
     }
-
-
-
-
 }
 
 package View #lightgreen;line:green{
     Window ..> KingDominoStart : <<use>> >
     KingDominoStart ..> KingDominoGame : <<use>> >
-     KingDominoGame ..> KingDominoEnd: <<use>> >
+    KingDominoGame ..> KingDominoEnd: <<use>> >
+
     class Window implements Observer
     {
         +Window(game:Game, controller:Controller)
@@ -219,6 +228,8 @@ Game "1\n-_gamemode"*-u-> GameMode : <<has>> >
 Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *--> Deck : <<has>> >
 Game "2..*\n-_listPlayers" *--> Player : <<has>> >
+
+
 Controller ..> Game : <<use>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
 King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >

@@ -13,7 +13,7 @@ public class Game {
     private List<Observer> _observer;
     private Deck _deck;
     private List<Player> _listPlayers;
-    private GameMode _gamemode;
+    private GameMode _gameMode;
     private NumberPlayer _numberplayer;
 
     private Game()
@@ -35,14 +35,12 @@ public class Game {
         return instance;
     }
 
-    public GameMode setGameMode(){
-        //GameMode res = new GameMode();
-        return null;
+    public void setGameMode(){
+        //this._gameMode = new GameMode();
     }
 
-    public NumberPlayer setNumberPlayer(){
-        NumberPlayer res = new NumberPlayer();
-        return null;
+    public void setNumberPlayer(){
+        this._numberplayer= new NumberPlayer();
     }
 
     public void createPlayers(){
@@ -55,7 +53,9 @@ public class Game {
 
     }
 
-
+    public void addObservers(Observer observer){
+        this._observer.add(observer);
+    }
 
     public void notifyObservers(){
         for(Observer observer : _observer){

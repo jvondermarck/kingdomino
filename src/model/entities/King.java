@@ -20,15 +20,15 @@ public class King{
     {
         int index = 0;
         if(SIZE>1)
-            index = RAND.nextInt(SIZE-1); // on choisis aleatoirement entre 0 et SIZE
+            index = RAND.nextInt(SIZE-1); // we chose randomly a number between 0 and SIZE
 
-        KINGCOLOR color = COLOR_USED.get(index); // On choisis dans la liste la couleur
+        KINGCOLOR color = COLOR_USED.get(index); //We chose in the list the color
 
-        COLOR_USED.remove(index); // On enleve la couleur de la liste
-        SIZE -= 1; // On réduit de -1 la taille de la liste vu qu'on enleve une couleur
+        COLOR_USED.remove(index); // We remove the color in the list
+        SIZE -= 1; // We decrease -1 the size because we removed a color in the list
 
         return color;
-    }
+     }
 
     public String color()
     {
