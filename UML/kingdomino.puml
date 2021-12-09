@@ -26,10 +26,13 @@ package Model #salmon;line:red{
         -Game()
         {static}+getInstance()
         +setGameMode()
-        +setNumberPlayer()
+        +setNumberPlayer(strategy: NumberPlayerStrategy)
+        +setTwoPlayers()
+        +setThreePlayers()
+        +setQuatroPlayers()
         +createPlayers()
         +createDeck()
-
+        +addObservers(observer: Observer)
         +notifyObservers()
     }
 
@@ -118,6 +121,10 @@ package Model #salmon;line:red{
             +setStrategyPlayer(strategy: NumberPlayerStrategy)
             +executeStrategy()
             +setNumberPlayers(players: Integer)
+            +getNumberPlayers(): Integer
+            +getTwoPlayers(): Duo
+            +getThreePlayers(): Trio
+            +getQuatroPlayers(): Quatro
          }
 
         NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
@@ -193,21 +200,22 @@ package View #lightgreen;line:green{
 
     class Window implements Observer
     {
+        {static}frame: Jframe{protected}
         +Window(game:Game, controller:Controller)
         +update(observer:Observer)
     }
 
-    class KingDominoStart extends Window implements Observer
+    class KingDominoStart implements Observer
     {
         +KingDominoStart()
     }
 
-    class KingDominoGame extends Window implements Observer
+    class KingDominoGame implements Observer
     {
 
     }
 
-    class KingDominoEnd extends Window implements Observer
+    class KingDominoEnd implements Observer
     {
 
     }
@@ -216,12 +224,19 @@ package View #lightgreen;line:green{
 package Controller #gold;line:goldenrod {
 
     class Controller{
-        +launchGame()
+        +Controller(game: Game)
+        +setGameMode()
+        +instanciateDeck()
+        +switchToDuo()
+        +switchToTrio()
+        +switchToQuatro()
     }
 
 }
 
-Window ..> Controller :<<use>> >
+Window "1\n{protected}{static}_controller".> Controller :<<use>> >
+Window "1\n{protected}{static}_game".> Game : <<use>> >
+
 LauncherKingdomino .> Window : <<create>> >
 LauncherKingdomino .> Controller : <<create>> >
 
@@ -229,9 +244,14 @@ Game "1\n-_gamemode"*-u-> GameMode : <<has>> >
 Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *-> Deck : <<has>> >
 Game "2..*\n-_listPlayers" *--> Player : <<has>> >
+Game ..> NumberPlayerStrategy : <<use>> >
+
+NumberPlayer ..> Duo : <<use>> >
+NumberPlayer ..> Trio : <<use>> >
+NumberPlayer ..> Quatro : <<use>> >
 
 
-Controller ..> Game : <<use>> >
+Controller "1\n-_game"..> Game : <<use>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
 King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >
 Deck .d.> CSVReader : <<use>> >

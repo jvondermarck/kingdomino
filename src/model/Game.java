@@ -5,7 +5,6 @@ import model.entities.Player;
 import model.set.GameMode;
 import model.set.NumberPlayer;
 import model.set.NumberPlayerStrategy;
-import model.set.number.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,17 +48,17 @@ public class Game {
 
     public void setTwoPlayers()
     {
-        setNumberPlayer(new Duo());
+        setNumberPlayer( this._numberplayer.getTwoPlayers());
     }
 
     public void setThreePlayers()
     {
-        setNumberPlayer(new Trio());
+        setNumberPlayer(this._numberplayer.getThreePlayers());
     }
 
     public void setQuatroPlayers()
     {
-        setNumberPlayer(new Quatro());
+        setNumberPlayer(this._numberplayer.getQuatroPlayers());
     }
 
     public void createPlayers(){
