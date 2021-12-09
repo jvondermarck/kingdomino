@@ -1,10 +1,11 @@
 package model.set.number;
 import model.set.NumberPlayer;
+import model.set.NumberPlayerStrategy;
 
-public class Trio {
-
+public class Trio implements NumberPlayerStrategy {
+    @Override
     public void setNumberPlayers(NumberPlayer player)
     {
-        player.setNumberPlayers(3);
+        player.setNumber(3);
     }
 }

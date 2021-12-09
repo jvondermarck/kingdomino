@@ -4,6 +4,8 @@ import model.entities.Deck;
 import model.entities.Player;
 import model.set.GameMode;
 import model.set.NumberPlayer;
+import model.set.NumberPlayerStrategy;
+import model.set.number.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +41,30 @@ public class Game {
         //this._gameMode = new GameMode();
     }
 
-    public void setNumberPlayer(){
-        this._numberplayer= new NumberPlayer();
+    public void setNumberPlayer(NumberPlayerStrategy strategy){
+        this._numberplayer = new NumberPlayer();
+        this._numberplayer.setStrategy(strategy);
+        createPlayers();
+    }
+
+    public void setTwoPlayers()
+    {
+        setNumberPlayer(new Duo());
+    }
+
+    public void setThreePlayers()
+    {
+        setNumberPlayer(new Trio());
+    }
+
+    public void setQuatroPlayers()
+    {
+        setNumberPlayer(new Quatro());
     }
 
     public void createPlayers(){
         _listPlayers = new ArrayList<>();
-
+        System.out.println("nombre de joueurs : " + this._numberplayer.getNumberPlayers());
     }
 
     public void createDeck(){
@@ -62,4 +81,5 @@ public class Game {
             observer.update(this);
         }
     }
+
 }

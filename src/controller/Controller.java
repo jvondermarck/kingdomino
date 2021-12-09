@@ -1,6 +1,7 @@
 package controller;
 
 import model.Game;
+import model.set.number.Duo;
 
 public class Controller {
     private Game _game;
@@ -16,6 +17,10 @@ public class Controller {
     public void instanciateDeck(){
         this._game.createDeck();
     }
+
+    public void switchToDuo(){ _game.setTwoPlayers();}
+    public void switchToTrio(){ _game.setThreePlayers();}
+    public void switchToQuatro(){ _game.setQuatroPlayers();}
 
 
 }

@@ -13,14 +13,10 @@ public class NumberPlayer {
     public void setStrategy(NumberPlayerStrategy strategy)
     {
         this._strategy = strategy;
-    }
-
-    public void executeNumberPlayers()
-    {
         this._strategy.setNumberPlayers(this);
     }
 
-    public void setNumberPlayers(int players)
+    public void setNumber(int players)
     {
         this._numberPlayers = players;
     }
@@ -29,4 +25,5 @@ public class NumberPlayer {
     {
         return _numberPlayers;
     }
+
 }

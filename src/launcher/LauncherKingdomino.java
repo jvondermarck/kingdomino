@@ -2,6 +2,7 @@ package launcher;
 
 import controller.Controller;
 import model.Game;
+import view.KingDominoStart;
 import view.Window;
 
 public class LauncherKingdomino {
