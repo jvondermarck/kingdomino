@@ -18,9 +18,13 @@ public class KingDominoStart implements Observer{
     private JPanel _panelTitle;
     private JPanel _panelSet;
     private static KingDominoStart instance;
+    private Window _window;
 
     private KingDominoStart()
     {
+        _window = Window.instance; // we get our main window to access to its variables
+        _window.frame.setTitle("Initialisation of the KingDomino");
+
         // MAIN PANEL : Panel where we'll find all panels and elements
         _panelMain = new JPanel();
         _panelMain.setLayout( new BoxLayout(_panelMain, BoxLayout.Y_AXIS) );
@@ -43,19 +47,19 @@ public class KingDominoStart implements Observer{
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelTitle);
         _panelMain.add(_panelSet);
-        frame.setContentPane( _panelMain);
-        frame.setVisible( true );
+        _window.frame.setContentPane( _panelMain);
+        _window.frame.setVisible( true );
 
         // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
         _cboStrategys.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed( ActionEvent actionEvent ) {
                 if(_cboStrategys.getSelectedIndex() == 0)
-                    _controller.switchToDuo();
+                    _window._controller.switchToDuo();
                 else if(_cboStrategys.getSelectedIndex() == 1)
-                    _controller.switchToTrio();
+                    _window._controller.switchToTrio();
                 else
-                    _controller.switchToQuatro();
+                    _window._controller.switchToQuatro();
             }
         });
     }

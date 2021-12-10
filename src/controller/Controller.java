@@ -2,6 +2,8 @@ package controller;
 
 import model.Game;
 import model.set.number.Duo;
+import view.KingDominoStart;
+import view.Window;
 
 public class Controller {
     private Game _game;

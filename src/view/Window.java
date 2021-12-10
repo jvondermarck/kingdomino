@@ -8,22 +8,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame implements Observer {
-    protected static Game _game;
-    protected static Controller _controller;
-    protected static JFrame frame;
+    protected Game _game;
+    protected Controller _controller;
+    protected JFrame frame;
+    protected static Window instance;
 
-    public Window(Game game, Controller controller){
+    private Window(Game game, Controller controller){
         _game = game;
         _controller = controller;
-        setWindow();
-        game.addObservers(KingDominoStart.getInstance());
+        this.setWindow();
     }
 
     protected void setWindow(){
         frame = new JFrame("Kingdomino");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
-        setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+    }
+
+    public static Window getInstance(Game game, Controller controller)
+    {
+        if(instance == null){
+            instance = new Window(game, controller);
+        }
+        return instance;
     }
 
     @Override

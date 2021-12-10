@@ -9,6 +9,7 @@ public class LauncherKingdomino {
     public static void main(String[] args) {
         Game game = Game.getInstance();
         Controller controller = new Controller(game);
-        game.addObservers(new Window(game, controller));
+        game.addObservers(Window.getInstance(game, controller));
+        game.addObservers(KingDominoStart.getInstance());
     }
 }
