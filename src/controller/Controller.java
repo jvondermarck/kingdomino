@@ -24,5 +24,8 @@ public class Controller {
     public void switchToTrio(){ _game.setThreePlayers();}
     public void switchToQuatro(){ _game.setQuatroPlayers();}
 
+    public void callHarmony(){ _game.factorHarmonyMode();  }
+    public void callMiddleKingdom(){ _game.factorMiddleKingdom(); }
+
 
 }

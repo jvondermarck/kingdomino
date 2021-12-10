@@ -12,4 +12,10 @@ public class MightyDuel extends GameMode {
     public boolean sizeGraph() {
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Migthy Duel";
+    }
 }

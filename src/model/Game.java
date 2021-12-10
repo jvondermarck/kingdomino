@@ -3,6 +3,7 @@ package model;
 import model.entities.Deck;
 import model.entities.Player;
 import model.set.GameMode;
+import model.set.GameModeFactory;
 import model.set.NumberPlayer;
 import model.set.NumberPlayerStrategy;
 
@@ -12,21 +13,20 @@ import java.util.List;
 public class Game {
     private static Game instance;
     private List<Observer> _observer;
+
     private Deck _deck;
     private List<Player> _listPlayers;
-    private GameMode _gameMode;
     private NumberPlayer _numberplayer;
+
+    private GameModeFactory _factoryGameMode;
+    private List<GameMode> _listGameMode;
 
     private Game()
     {
         this._observer = new ArrayList<>();
         this._numberplayer = new NumberPlayer();
-        /*
-        setGameMode();
-        setNumberPlayer();
-        createPlayers();
-        createDeck();
-         */
+        this._listGameMode = new ArrayList<>();
+        this._factoryGameMode = new GameModeFactory();
     }
 
     public static Game getInstance()
@@ -37,9 +37,13 @@ public class Game {
         return instance;
     }
 
-    public void setGameMode(){
-        //this._gameMode = new GameMode();
+    public void addGameMode(GameMode gameMode){
+        this._listGameMode.add(gameMode); // We add all game mode in a list
+        System.out.println("Game Mode : " + gameMode.toString());
     }
+
+    public void factorHarmonyMode(){ addGameMode(this._factoryGameMode.createHarmony()); } // we create the Harmony mode, and we add it in our list of GameMode
+    public void factorMiddleKingdom(){ addGameMode(this._factoryGameMode.createMiddleKingdom()); }
 
     public void setNumberPlayer(NumberPlayerStrategy strategy){
         this._numberplayer.setStrategy(strategy);
@@ -60,6 +64,7 @@ public class Game {
     {
         setNumberPlayer(this._numberplayer.getQuatroPlayers());
     }
+
 
     public void createPlayers(){
         _listPlayers = new ArrayList<>();

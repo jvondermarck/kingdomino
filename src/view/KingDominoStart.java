@@ -12,13 +12,11 @@ import static view.Window.*;
 public class KingDominoStart implements Observer{
 
     private final String[] strategyPlayers;
-    private final String[] gameMode;
     private final JComboBox _cboStrategys;
-    private final JComboBox _cboGameMode;
+    private final JRadioButton _rdbGameModeHarmony;
+    private final JRadioButton _rdbGameModeMiddle;
     private JLabel _labelTitle;
     private JPanel _panelMain;
-    private JPanel _panelComboBox;
-    private JPanel _panelSet;
     private JButton _btnValidate;
     private static KingDominoStart instance;
     private Window _window;
@@ -38,9 +36,9 @@ public class KingDominoStart implements Observer{
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        constraints.weightx = 2;
-        constraints.weighty = 2;
+        constraints.gridwidth = 3;
+        constraints.weightx = 3;
+        constraints.weighty = 3;
         constraints.insets = new Insets(0,0,0,0); //top padding
         _labelTitle =  new JLabel("Bienvenue sur KingDomino", SwingConstants.CENTER);
         _labelTitle.setFont(new Font("Century Gothic", Font.PLAIN, 25));
@@ -49,23 +47,30 @@ public class KingDominoStart implements Observer{
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.gridwidth = 1;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(0,0,0,200); //top padding
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
         _cboStrategys = new JComboBox(strategyPlayers);
         _cboStrategys.setMaximumSize(new Dimension(10,10));
         _panelMain.add(_cboStrategys, constraints);
 
-        constraints.gridx = 1;
-        gameMode = new String[]{"Harmony", "The middle Kingdom"};
-        _cboGameMode = new JComboBox(gameMode);
-        _panelMain.add(_cboGameMode, constraints);
+        constraints.insets = new Insets(0,50,0,50); //top padding
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        _rdbGameModeHarmony = new JRadioButton("Harmony");
+        _panelMain.add(_rdbGameModeHarmony, constraints);
 
         constraints.gridx = 1;
-        constraints.gridy = 2;
+        _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
+        _panelMain.add(_rdbGameModeMiddle, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 3;
         constraints.gridwidth = 2;
-        constraints.insets = new Insets(100,0,10,0); //top padding
+        constraints.insets = new Insets(100,0,10,10);
         _btnValidate = new JButton("Validate your choices");
         _panelMain.add(_btnValidate, constraints);
 
@@ -85,6 +90,18 @@ public class KingDominoStart implements Observer{
                     _window._controller.switchToQuatro();
             }
         });
+
+        // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
+        _btnValidate.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed( ActionEvent actionEvent ) {
+                if(_rdbGameModeHarmony.isSelected())
+                    _window._controller.callHarmony();
+                if(_rdbGameModeMiddle.isSelected())
+                    _window._controller.callMiddleKingdom();
+            }
+        });
+
     }
 
     public static KingDominoStart getInstance()

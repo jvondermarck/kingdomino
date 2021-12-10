@@ -11,4 +11,10 @@ public class MiddleKingdom extends GameMode {
     public boolean sizeGraph() {
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Middle Kingdom";
+    }
 }
