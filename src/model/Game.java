@@ -20,6 +20,7 @@ public class Game {
     private Game()
     {
         this._observer = new ArrayList<>();
+        this._numberplayer = new NumberPlayer();
         /*
         setGameMode();
         setNumberPlayer();
@@ -41,7 +42,6 @@ public class Game {
     }
 
     public void setNumberPlayer(NumberPlayerStrategy strategy){
-        this._numberplayer = new NumberPlayer();
         this._numberplayer.setStrategy(strategy);
         createPlayers();
     }
