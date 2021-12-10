@@ -79,19 +79,6 @@ public class KingDominoStart implements Observer{
         _window.frame.setVisible( true );
 
         // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
-        _cboStrategys.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed( ActionEvent actionEvent ) {
-                if(_cboStrategys.getSelectedIndex() == 0)
-                    _window._controller.switchToDuo();
-                else if(_cboStrategys.getSelectedIndex() == 1)
-                    _window._controller.switchToTrio();
-                else
-                    _window._controller.switchToQuatro();
-            }
-        });
-
-        // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
         _btnValidate.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed( ActionEvent actionEvent ) {
@@ -99,6 +86,15 @@ public class KingDominoStart implements Observer{
                     _window._controller.callHarmony();
                 if(_rdbGameModeMiddle.isSelected())
                     _window._controller.callMiddleKingdom();
+
+                if(_cboStrategys.getSelectedIndex() == 0)
+                    _window._controller.switchToDuo();
+                else if(_cboStrategys.getSelectedIndex() == 1)
+                    _window._controller.switchToTrio();
+                else
+                    _window._controller.switchToQuatro();
+
+                _window._game.addObservers(new KingDominoGame());
             }
         });
 

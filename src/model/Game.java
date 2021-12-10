@@ -73,7 +73,6 @@ public class Game {
 
     public void createDeck(){
         _deck = new Deck();
-
     }
 
     public void addObservers(Observer observer){
@@ -86,4 +85,8 @@ public class Game {
         }
     }
 
+    public void resetElement()
+    {
+
+    }
 }
