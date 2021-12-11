@@ -16,6 +16,10 @@ public class Player {
     }
 
     public void initialiseCastle(){
-        this._castle = new Castle();
+        this._castle = new Castle(this._king.color());
+    }
+
+    public void setCastle(int x, int y){
+        this._graph.setCastle(x, y, this._castle);
     }
 }

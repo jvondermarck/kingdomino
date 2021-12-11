@@ -1,7 +1,8 @@
 package model.entities;
 
 public class Castle extends Tile{
-    public Castle() {
+    public Castle(String color) {
         super();
+        this.setColorTile(color);
     }
 }
