@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static view.Window.*;
-
 public class KingDominoStart implements Observer{
 
     private final String[] strategyPlayers;
@@ -21,26 +19,37 @@ public class KingDominoStart implements Observer{
     private static KingDominoStart instance;
     private Window _window;
 
-    private KingDominoStart()
-    {
+    private KingDominoStart() {
         _window = Window.instance; // we get our main window to access to its variables
         _window.frame.setTitle("Initialisation of the KingDomino");
+        _window.frame.setResizable(false);
+        final ImageIcon icon = new ImageIcon("img/kingdomino1.png");
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
         // MAIN PANEL : Panel where we'll find all panels and elements
-        _panelMain = new JPanel();
+        _panelMain = new JPanel() // display in this panel a background image to get a beautiful game
+        {
+            Image img = icon.getImage();
+            // instance initializer
+            {setOpaque(false);}
+            public void paintComponent(Graphics graphics)
+            {
+                graphics.drawImage(img, 0, 0, this);
+                super.paintComponent(graphics);
+            }
+        };
         _panelMain.setLayout( new GridBagLayout() );
 
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
         constraints.weighty = 2;
-        constraints.insets = new Insets(0,0,0,0); //top padding
-        _labelTitle =  new JLabel("Bienvenue sur KingDomino", SwingConstants.CENTER);
-        _labelTitle.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+        constraints.insets = new Insets(0,0,0,30); //top padding
+        _labelTitle =  new JLabel("Welcome to KingDomino", SwingConstants.CENTER);
+        _labelTitle.setFont(new Font("Germania", Font.PLAIN, 40));
         _labelTitle.setVisible(true);
         _panelMain.add(_labelTitle, constraints);
 

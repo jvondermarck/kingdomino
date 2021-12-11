@@ -12,6 +12,7 @@ public class Window extends JFrame implements Observer {
     protected Controller _controller;
     protected JFrame frame;
     protected static Window instance;
+    protected ImageIcon img = new ImageIcon("img/ico.png");
 
     private Window(Game game, Controller controller){
         _game = game;
@@ -24,6 +25,7 @@ public class Window extends JFrame implements Observer {
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        frame.setIconImage(img.getImage());
     }
 
     public static Window getInstance(Game game, Controller controller)
