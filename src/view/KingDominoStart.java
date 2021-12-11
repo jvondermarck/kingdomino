@@ -2,10 +2,15 @@ package view;
 
 import model.Game;
 import model.Observer;
+import utilities.FontUtilities;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 public class KingDominoStart implements Observer{
 
@@ -18,12 +23,17 @@ public class KingDominoStart implements Observer{
     private JButton _btnValidate;
     private static KingDominoStart instance;
     private Window _window;
+    private Font _fontGermania;
+    private Font _fontTimeless;
 
     private KingDominoStart() {
+        // SET UP THE WINDOW
         _window = Window.instance; // we get our main window to access to its variables
         _window.frame.setTitle("Initialisation of the KingDomino");
         _window.frame.setResizable(false);
         final ImageIcon icon = new ImageIcon("img/kingdomino1.png");
+        _fontGermania = FontUtilities.setFont("font/Germania.otf");
+        _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -49,7 +59,7 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 2;
         constraints.insets = new Insets(0,0,0,30); //top padding
         _labelTitle =  new JLabel("Welcome to KingDomino", SwingConstants.CENTER);
-        _labelTitle.setFont(new Font("Germania", Font.PLAIN, 40));
+        _labelTitle.setFont(_fontGermania.deriveFont(Font.PLAIN, 40));
         _labelTitle.setVisible(true);
         _panelMain.add(_labelTitle, constraints);
 
@@ -60,6 +70,7 @@ public class KingDominoStart implements Observer{
         constraints.insets = new Insets(0,50,0,200);
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
         _cboStrategys = new JComboBox(strategyPlayers);
+        _cboStrategys.setFont(_fontTimeless.deriveFont(Font.PLAIN, 15));
         _cboStrategys.setMaximumSize(new Dimension(10,10));
         _panelMain.add(_cboStrategys, constraints);
 
