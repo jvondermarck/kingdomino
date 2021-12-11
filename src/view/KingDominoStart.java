@@ -37,8 +37,7 @@ public class KingDominoStart implements Observer{
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
-        constraints.weightx = 3;
-        constraints.weighty = 3;
+        constraints.weighty = 2;
         constraints.insets = new Insets(0,0,0,0); //top padding
         _labelTitle =  new JLabel("Bienvenue sur KingDomino", SwingConstants.CENTER);
         _labelTitle.setFont(new Font("Century Gothic", Font.PLAIN, 25));
@@ -47,16 +46,15 @@ public class KingDominoStart implements Observer{
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        constraints.gridwidth = 2;
-        constraints.insets = new Insets(0,0,0,200); //top padding
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(0,50,0,200);
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
         _cboStrategys = new JComboBox(strategyPlayers);
         _cboStrategys.setMaximumSize(new Dimension(10,10));
         _panelMain.add(_cboStrategys, constraints);
 
-        constraints.insets = new Insets(0,50,0,50); //top padding
+        constraints.insets = new Insets(0,100,0,0);
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
@@ -64,13 +62,14 @@ public class KingDominoStart implements Observer{
         _panelMain.add(_rdbGameModeHarmony, constraints);
 
         constraints.gridx = 1;
+        constraints.insets = new Insets(0,0,0,100);
         _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
         _panelMain.add(_rdbGameModeMiddle, constraints);
 
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 3;
         constraints.gridwidth = 2;
-        constraints.insets = new Insets(100,0,10,10);
+        constraints.insets = new Insets(100,150,10,150);
         _btnValidate = new JButton("Validate your choices");
         _panelMain.add(_btnValidate, constraints);
 

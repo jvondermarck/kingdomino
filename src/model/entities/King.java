@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class King{
 
-    private static final ArrayList<KINGCOLOR> COLOR_USED = new ArrayList<>(Arrays.asList(KINGCOLOR.values())); // les couleurs déjà prises
-    private static Random RAND = new Random();
-    private static int SIZE = COLOR_USED.size();
+    private static final ArrayList<KINGCOLOR> _colorUsed = new ArrayList<>(Arrays.asList(KINGCOLOR.values())); // les couleurs déjà prises
+    private static Random _rand = new Random();
+    private static int _size = _colorUsed.size();
     private final KINGCOLOR _kingColor;
 
     public King()
@@ -19,13 +19,13 @@ public class King{
     public KINGCOLOR randomChose()
     {
         int index = 0;
-        if(SIZE>1)
-            index = RAND.nextInt(SIZE-1); // we chose randomly a number between 0 and SIZE
+        if(_size>1)
+            index = _rand.nextInt(_size-1); // we chose randomly a number between 0 and SIZE
 
-        KINGCOLOR color = COLOR_USED.get(index); //We chose in the list the color
+        KINGCOLOR color = _colorUsed.get(index); //We chose in the list the color
 
-        COLOR_USED.remove(index); // We remove the color in the list
-        SIZE -= 1; // We decrease -1 the size because we removed a color in the list
+        _colorUsed.remove(index); // We remove the color in the list
+        _size -= 1; // We decrease -1 the size because we removed a color in the list
 
         return color;
      }

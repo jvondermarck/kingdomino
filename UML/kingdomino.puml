@@ -11,7 +11,7 @@ class LauncherKingdomino{
     +{static} main( args:String[] )
 }
 
-package utilities {
+package Utilities {
     class CSVReader{
         +CSVReader()
         {static}+readCSV(path:String):String[][]
@@ -52,9 +52,9 @@ package Model #salmon;line:red{
         }
 
         class King{
-            {static}-COLOR_USED: Collection<KINGCOLOR>
-            {static}-RAND: Integer
-            {static}-SIZE: Integer
+            {static}-_colorUsed: Collection<KINGCOLOR>
+            {static}-_rand: Integer
+            {static}-_size: Integer
 
             +King()
             +randomChose(): KINGCOLOR
@@ -93,10 +93,12 @@ package Model #salmon;line:red{
         }
 
         Player "1\n-_graph" *--> Graph : > <<has>>
-        Player "1..*\n-_king"*-> King : > <<has>>
+        Player "1\n-_king"*-> King : > <<has>>
         Player "1\n-_castle" *-l-> Castle : > <<has>>
         class Player {
             +Player()
+            +initialiseGraph()
+            +initialiseCastle()
         }
 
         class Castle extends Tile{
@@ -109,6 +111,8 @@ package Model #salmon;line:red{
             +GREEN
             +BLUE
         }
+        Player "1\n{static}_colorUsed" *--> KINGCOLOR: > <<has>>
+
 
     }
 
@@ -200,24 +204,26 @@ package View #lightgreen;line:green{
 
     class Window implements Observer
     {
-        {static}frame: Jframe{protected}
         +Window(game:Game, controller:Controller)
-        +update(observer:Observer)
+        {override}+update(observer:Observer)
     }
 
     class KingDominoStart implements Observer
     {
         +KingDominoStart()
+        {override}+update(game:Game)
     }
 
     class KingDominoGame implements Observer
     {
-
+        +KingDominoGame()
+        {override}+update(game:Game)
     }
 
     class KingDominoEnd implements Observer
     {
-
+        +KingDominoEnd()
+        {override}+update(game:Game)
     }
 }
 
@@ -225,25 +231,32 @@ package Controller #gold;line:goldenrod {
 
     class Controller{
         +Controller(game: Game)
-        +setGameMode()
         +instanciateDeck()
         +switchToDuo()
         +switchToTrio()
         +switchToQuatro()
+        +callHarmony()
+        +callMiddleKingdom()
     }
 
 }
 
-Window "1\n{protected}{static}_controller".> Controller :<<use>> >
-Window "1\n{protected}{static}_game".> Game : <<use>> >
+Window "1\n{static}#instance"-> Window
+Window "1\n #_controller".> Controller :<<use>> >
+Window "1\n #_game".> Game : <<use>> >
 
-LauncherKingdomino .> Window : <<create>> >
-LauncherKingdomino .> Controller : <<create>> >
+KingDominoStart "1\n-_window"*--> Window
+KingDominoGame "1\n-_window"*-> Window
 
-Game "1\n-_gamemode"*-u-> GameMode : <<has>> >
+LauncherKingdomino ..> Window : <<create>> >
+LauncherKingdomino ..> Controller : <<create>> >
+LauncherKingdomino .> Game : <<create>> >
+
+Game "1\n{static}instance" --> Game
+Game "1\n-_listGameMode"*-u-> GameMode : <<has>> >
 Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *-> Deck : <<has>> >
-Game "2..*\n-_listPlayers" *--> Player : <<has>> >
+Game "2..4\n-_listPlayers" *--> Player : <<has>> >
 Game ..> NumberPlayerStrategy : <<use>> >
 
 NumberPlayer ..> Duo : <<use>> >

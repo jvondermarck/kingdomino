@@ -2,21 +2,13 @@ package model.entities;
 
 public class Player {
 
-    private King[] _king;
+    private King _king;
     private Graph _graph;
     private Castle _castle;
 
-    public Player(int numberKing)
+    public Player()
     {
-        if(numberKing==2)
-            _king = new King[2];
-        else
-            _king = new King[1];
-
-        for(int i=0; i<numberKing; i++)
-        {
-            _king[i] = new King();
-        }
+        this._king = new King();
     }
 
     public void initialiseGraph(){
