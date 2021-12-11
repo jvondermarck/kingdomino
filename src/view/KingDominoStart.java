@@ -8,9 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 
 public class KingDominoStart implements Observer{
 
@@ -33,7 +30,7 @@ public class KingDominoStart implements Observer{
     private KingDominoStart() {
         // SET UP THE WINDOW
         _window = Window.instance; // we get our main window to access to its variables
-        _window.frame.setTitle("Initialisation of the KingDomino");
+        _window.frame.setTitle("Kingdomino");
         _window.frame.setResizable(false);
         final ImageIcon icon = new ImageIcon("img/LaunchScreen.png");
         _fontGermania = FontUtilities.setFont("font/Germania.otf");
