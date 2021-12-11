@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 import model.Game;
 import model.Observer;
+import utilities.FontUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,8 @@ public class Window extends JFrame implements Observer {
     protected JFrame frame;
     protected static Window instance;
     protected ImageIcon img = new ImageIcon("img/ico.png");
+    protected Font _fontGermania;
+    protected Font _fontTimeless;
 
     private Window(Game game, Controller controller){
         _game = game;
@@ -26,6 +29,8 @@ public class Window extends JFrame implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setIconImage(img.getImage());
+        _fontGermania = FontUtilities.setFont("font/Germania.otf");
+        _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
     }
 
     public static Window getInstance(Game game, Controller controller)
