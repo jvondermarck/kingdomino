@@ -17,6 +17,11 @@ package Utilities {
         {static}+readCSV(path:String):String[][]
     }
 
+    class FontUtilities {
+        +FontUtilities()
+        {static}+setFont(path:String): Font
+    }
+
 }
 
 package Model #salmon;line:red{
@@ -244,6 +249,8 @@ package Controller #gold;line:goldenrod {
 Window "1\n{static}#instance"-> Window
 Window "1\n #_controller".> Controller :<<use>> >
 Window "1\n #_game".> Game : <<use>> >
+Window "1\n #_fontGermania" .> FontUtilities : <<use>>
+Window "1\n #_fontTimeless" .> FontUtilities : <<use>>
 
 KingDominoStart "1\n-_window"*--> Window
 KingDominoGame "1\n-_window"*-> Window

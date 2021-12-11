@@ -23,8 +23,6 @@ public class KingDominoStart implements Observer{
     private JButton _btnValidate;
     private static KingDominoStart instance;
     private Window _window;
-    private Font _fontGermania;
-    private Font _fontTimeless;
     private DefaultListCellRenderer listRenderer;
 
     private KingDominoStart() {
@@ -33,8 +31,6 @@ public class KingDominoStart implements Observer{
         _window.frame.setTitle("Kingdomino");
         _window.frame.setResizable(false);
         final ImageIcon icon = new ImageIcon("img/LaunchScreen.png");
-        _fontGermania = FontUtilities.setFont("font/Germania.otf");
-        _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -61,7 +57,7 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 3;
         constraints.insets = new Insets(0,0,10,0); //top padding
         _labelTitle =  new JLabel("Welcome to Kingdomino", SwingConstants.CENTER);
-        _labelTitle.setFont(_fontGermania.deriveFont(Font.PLAIN, 40));
+        _labelTitle.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 40));
         _labelTitle.setVisible(true);
         _panelMain.add(_labelTitle, constraints);
 
@@ -72,7 +68,7 @@ public class KingDominoStart implements Observer{
         constraints.gridwidth = 3;
         constraints.insets = new Insets(0,100,10,50);
         _labelTitlePlayer = new JLabel("Choose the amount of players");
-        _labelTitlePlayer.setFont(_fontGermania.deriveFont(Font.PLAIN, 27));
+        _labelTitlePlayer.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 27));
         _panelMain.add(_labelTitlePlayer, constraints);
 
         // COMBOBOX NUMBER OF PLAYERS
@@ -83,7 +79,7 @@ public class KingDominoStart implements Observer{
         constraints.insets = new Insets(0,200,30,200);
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
         _cboStrategys = new JComboBox(strategyPlayers);
-        _cboStrategys.setFont(_fontTimeless.deriveFont(Font.PLAIN, 15));
+        _cboStrategys.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 15));
         listRenderer = new DefaultListCellRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
         _cboStrategys.setRenderer(listRenderer);
@@ -96,7 +92,7 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 0.1;
         constraints.gridwidth = 3;
         _labelTitleMode = new JLabel("Choose game mode");
-        _labelTitleMode.setFont(_fontGermania.deriveFont(Font.PLAIN, 27));
+        _labelTitleMode.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 27));
         _panelMain.add(_labelTitleMode, constraints);
 
         // RADIO BUTTON NOTHING
@@ -105,7 +101,7 @@ public class KingDominoStart implements Observer{
         constraints.gridy = 4;
         constraints.gridwidth = 1;
         _rdbGameNothing = new JRadioButton("Nothing");
-        _rdbGameNothing.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
+        _rdbGameNothing.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameNothing.setOpaque(false);
         _rdbGameNothing.setSelected(true);
         _panelMain.add(_rdbGameNothing, constraints);
@@ -113,14 +109,14 @@ public class KingDominoStart implements Observer{
         constraints.insets = new Insets(0,10,60,0);
         constraints.gridx = 1;
         _rdbGameModeHarmony = new JRadioButton("Harmony");
-        _rdbGameModeHarmony.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
+        _rdbGameModeHarmony.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeHarmony.setOpaque(false);
         _panelMain.add(_rdbGameModeHarmony, constraints);
 
         constraints.gridx = 2;
         constraints.insets = new Insets(0,10,60,0);
         _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
-        _rdbGameModeMiddle.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
+        _rdbGameModeMiddle.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeMiddle.setOpaque(false);
         _panelMain.add(_rdbGameModeMiddle, constraints);
 
@@ -129,7 +125,7 @@ public class KingDominoStart implements Observer{
         constraints.gridwidth = 3;
         constraints.insets = new Insets(0,165,10,150);
         _btnValidate = new JButton("Start");
-        _btnValidate.setFont(_fontGermania.deriveFont(Font.PLAIN, 30));
+        _btnValidate.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
         _btnValidate.setOpaque(false);
         _btnValidate.setContentAreaFilled(false);
         _btnValidate.setBorderPainted(false);
