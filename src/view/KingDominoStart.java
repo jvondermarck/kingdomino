@@ -62,7 +62,7 @@ public class KingDominoStart implements Observer{
         constraints.gridy = 0;
         constraints.gridwidth = 3;
         constraints.weighty = 3;
-        constraints.insets = new Insets(0,0,10,30); //top padding
+        constraints.insets = new Insets(0,0,10,0); //top padding
         _labelTitle =  new JLabel("Welcome to Kingdomino", SwingConstants.CENTER);
         _labelTitle.setFont(_fontGermania.deriveFont(Font.PLAIN, 40));
         _labelTitle.setVisible(true);
@@ -102,26 +102,28 @@ public class KingDominoStart implements Observer{
         _labelTitleMode.setFont(_fontGermania.deriveFont(Font.PLAIN, 27));
         _panelMain.add(_labelTitleMode, constraints);
 
-        constraints.insets = new Insets(0,70,60,0);
+        // RADIO BUTTON NOTHING
+        constraints.insets = new Insets(0,62,60,0);
         constraints.gridx = 0;
         constraints.gridy = 4;
         constraints.gridwidth = 1;
         _rdbGameNothing = new JRadioButton("Nothing");
-        _rdbGameNothing.setFont(_fontTimeless.deriveFont(Font.PLAIN, 15));
+        _rdbGameNothing.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameNothing.setOpaque(false);
+        _rdbGameNothing.setSelected(true);
         _panelMain.add(_rdbGameNothing, constraints);
 
-        constraints.insets = new Insets(0,15,60,0);
+        constraints.insets = new Insets(0,10,60,0);
         constraints.gridx = 1;
         _rdbGameModeHarmony = new JRadioButton("Harmony");
-        _rdbGameModeHarmony.setFont(_fontTimeless.deriveFont(Font.PLAIN, 15));
+        _rdbGameModeHarmony.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeHarmony.setOpaque(false);
         _panelMain.add(_rdbGameModeHarmony, constraints);
 
         constraints.gridx = 2;
-        constraints.insets = new Insets(0,15,60,0);
+        constraints.insets = new Insets(0,10,60,0);
         _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
-        _rdbGameModeMiddle.setFont(_fontTimeless.deriveFont(Font.PLAIN, 15));
+        _rdbGameModeMiddle.setFont(_fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeMiddle.setOpaque(false);
         _panelMain.add(_rdbGameModeMiddle, constraints);
 
@@ -148,6 +150,8 @@ public class KingDominoStart implements Observer{
                     _window._controller.callHarmony();
                 if(_rdbGameModeMiddle.isSelected())
                     _window._controller.callMiddleKingdom();
+                if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
+                    System.out.println("No game mode");
 
                 if(_cboStrategys.getSelectedIndex() == 0)
                     _window._controller.switchToDuo();
@@ -171,6 +175,20 @@ public class KingDominoStart implements Observer{
                     _rdbGameModeHarmony.setEnabled(true);
                     _rdbGameModeMiddle.setEnabled(true);
                 }
+            }
+        });
+
+        _rdbGameModeMiddle.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed( ActionEvent actionEvent ) {
+                _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
+            }
+        });
+
+        _rdbGameModeHarmony.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed( ActionEvent actionEvent ) {
+                _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
             }
         });
 
