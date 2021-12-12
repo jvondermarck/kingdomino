@@ -56,8 +56,9 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 3;
         constraints.insets = new Insets(0,0,10,0); //top padding
         _labelTitle =  new JLabel("Welcome to Kingdomino", SwingConstants.CENTER);
-        _labelTitle.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 40));
+        _labelTitle.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 45));
         _labelTitle.setVisible(true);
+        _labelTitle.setForeground(Color.decode("#FEBB13"));
         _panelMain.add(_labelTitle, constraints);
 
         // LABEL TITLE CHOOSE PLAYERS
@@ -122,8 +123,9 @@ public class KingDominoStart implements Observer{
         constraints.gridx = 0;
         constraints.gridy = 5;
         constraints.gridwidth = 3;
-        constraints.insets = new Insets(0,165,10,150);
+        constraints.insets = new Insets(0,165,8,150);
         _btnValidate = new JButton("Start");
+        _btnValidate.setFocusable(false);
         _btnValidate.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
         _btnValidate.setOpaque(false);
         _btnValidate.setContentAreaFilled(false);

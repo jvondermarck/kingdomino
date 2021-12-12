@@ -18,10 +18,11 @@ public class KingDominoGame implements Observer {
     private JLabel _labelRound;
     private JPanel[] _panelCardDominoes;
     private JPanel[] _panelHideDominoes;
-    private JButton[] _btnUnhideDominoes;
+    private JButton[] _btnHideDominoes;
     private JPanel[] _panelUnhideDominoes;
-    CardLayout card[] = new CardLayout[4];
-    Container c[] = new Container[4];
+    private CardLayout[] cardLayout;
+    private Container[] _container;
+    private JButton _btnTiles[][];
 
     public KingDominoGame()
     {
@@ -59,7 +60,7 @@ public class KingDominoGame implements Observer {
         // LABEL TITLE WELCOME
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(0,0,0,0);
+        constraints.insets = new Insets(0,0,20,0);
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setVisible(true);
@@ -69,6 +70,7 @@ public class KingDominoGame implements Observer {
         createDominoes();
         constraints.gridx = 0;
         constraints.gridy = 1;
+        constraints.insets = new Insets(10,0,0,0);
         _panelMainInfo.add(_panelGridDominoes, constraints);
 
 
@@ -91,45 +93,71 @@ public class KingDominoGame implements Observer {
 
     public void createDominoes()
     {
-        JButton _btnTiles[][] = new JButton[2][2];
+        int _numberDomino = 4; // we will have 4 dominoes
+        _panelCardDominoes = new JPanel[4]; // the array of panels which will have the Card Layout (to be like a stack)
+        cardLayout = new CardLayout[4]; // our card layout
+        _container = new Container[4]; // our container
+
+        // We create an instance of grid layout just to put a margin between each domino (vgap =  the vertical gap)
         GridLayout gridLayout = new GridLayout(4, 1, 0, 10);
-        _panelHideDominoes = new JPanel[4];
-        _btnUnhideDominoes = new JButton[4];
-        _panelGridDominoes = new JPanel(gridLayout);
+        _panelGridDominoes = new JPanel(gridLayout); // we add the layout in our main panel which will contain our CardLayout panel
         _panelGridDominoes.setOpaque(false);
 
-        for(int i=0; i<_panelHideDominoes.length; i++)
+        _panelHideDominoes = new JPanel[4]; // array of panels which will contain one button for each domino (hidden domino)
+        _btnHideDominoes = new JButton[4]; // array of button which wil contain one button for each hidden domino
+
+        _btnTiles = new JButton[2][2]; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles)
+        _panelUnhideDominoes = new JPanel[4]; // array of panel to show the two tiles for each domino (unhidden domino)
+
+        // LOOP which will create an array of panels, to put one single button inside (to show a hidden domino)
+        for(int i=0; i<_numberDomino; i++)
         {
+            // We create a panel and a button that we put in an array
             _panelHideDominoes[i] = new JPanel( new GridLayout(1,2));
-            _btnUnhideDominoes[i] = new JButton(Integer.toString(i));
-            _btnUnhideDominoes[i].setPreferredSize(new Dimension(170, 85));
-            _btnUnhideDominoes[i].setBackground(Color.decode("#3C3C3C"));
-            _btnUnhideDominoes[i].setForeground(Color.WHITE);
-            _btnUnhideDominoes[i].setFocusable(false);
+            _btnHideDominoes[i] = new JButton(Integer.toString(i));
+
+            _btnHideDominoes[i].setPreferredSize(new Dimension(170, 85));
+            _btnHideDominoes[i].setBackground(Color.decode("#3C3C3C"));
+            _btnHideDominoes[i].setForeground(Color.WHITE);
+            _btnHideDominoes[i].setFocusable(false);
+
+            // We add a listenner which will show the unhide domino with the 2 tiles
             int finalI = i;
-            _btnUnhideDominoes[i].addActionListener(new ActionListener() {
+            _btnHideDominoes[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent clickevent) {
-                    card[finalI].next(c[finalI]);
-                    System.out.println(Integer.toString(finalI));
+                    cardLayout[finalI].next(_container[finalI]); // when we click of one of the four domino, it will call the next card layout
+                    System.out.println(finalI);
                 }
             });
-            _panelHideDominoes[i].add(_btnUnhideDominoes[i]);
+
+            // We add the button[i] on the array of the hidden dominoes[i]
+            _panelHideDominoes[i].add(_btnHideDominoes[i]);
         }
 
-        _panelUnhideDominoes = new JPanel[4];
-        for(int i=0; i<_panelUnhideDominoes.length; i++)
+        // LOOP : which will create an array o panels, the unhidden domino with its 2 tiles
+        for(int i=0; i<_numberDomino; i++)
         {
+            // We create the panel for each domino (cols = 2 because we have two tiles)
             _panelUnhideDominoes[i] = new JPanel( new GridLayout(1,2));
+
+            // We add two buttons in our panel[i]
             _btnTiles[0][0] = new JButton(0 + "" + i);
             _btnTiles[0][1] = new JButton(1 + "" + i);
+
+            _btnTiles[0][0].setFocusable(false);
+            _btnTiles[0][1].setFocusable(false);
+
             _panelUnhideDominoes[i].add( _btnTiles[0][0]);
             _panelUnhideDominoes[i].add( _btnTiles[0][1]);
+
+            // When we click of the left tile :
             int finalI = i;
             _btnTiles[0][0].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent clickevent) {
                     System.out.println("0" + finalI);
                 }
             });
+            // When we click of the right tile :
             _btnTiles[0][1].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent clickevent) {
                     System.out.println("1" + finalI);
@@ -137,16 +165,19 @@ public class KingDominoGame implements Observer {
             });
         }
 
-        _panelCardDominoes = new JPanel[4];
-        for(int i=0; i<_panelCardDominoes.length; i++)
+        for(int i=0; i<_numberDomino; i++)
         {
             _panelCardDominoes[i] = new JPanel( new CardLayout());
-            card[i] = new CardLayout();
-            c[i] = new Container();
-            c[i].setLayout(card[i]);
-            c[i].add(_panelHideDominoes[i]);
-            c[i].add(_panelUnhideDominoes[i]);
-            _panelGridDominoes.add(c[i]);
+            cardLayout[i] = new CardLayout();
+            _container[i] = new Container();
+            _container[i].setLayout(cardLayout[i]);
+
+            // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
+            _container[i].add(_panelHideDominoes[i]);
+            _container[i].add(_panelUnhideDominoes[i]);
+
+            // We add in our main panel the container
+            _panelGridDominoes.add(_container[i]);
         }
     }
 }
