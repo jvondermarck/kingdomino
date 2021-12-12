@@ -2,28 +2,25 @@ package view;
 
 import model.Game;
 import model.Observer;
-import utilities.FontUtilities;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class KingDominoStart implements Observer{
 
     private final String[] strategyPlayers;
-    private final JComboBox _cboStrategys;
+    private final JComboBox<String> _cboStrategys;
     private final JRadioButton _rdbGameModeHarmony;
     private final JRadioButton _rdbGameModeMiddle;
     private final JRadioButton _rdbGameNothing;
-    private JLabel _labelTitle;
-    private JLabel _labelTitlePlayer;
-    private JLabel _labelTitleMode;
-    private JPanel _panelMain;
-    private JButton _btnValidate;
+    private final JLabel _labelTitle;
+    private final JLabel _labelTitlePlayer;
+    private final JLabel _labelTitleMode;
+    private final JPanel _panelMain;
+    private final JButton _btnValidate;
     private static KingDominoStart instance;
-    private Window _window;
-    private DefaultListCellRenderer listRenderer;
+    private final Window _window;
+    private final DefaultListCellRenderer listRenderer;
 
     private KingDominoStart() {
         // SET UP THE WINDOW
@@ -38,7 +35,7 @@ public class KingDominoStart implements Observer{
         // MAIN PANEL : Panel where we'll find all panels and elements
         _panelMain = new JPanel() // display in this panel a background image to get a beautiful game
         {
-            Image img = icon.getImage();
+            final Image img = icon.getImage();
             // instance initializer
             {setOpaque(false);}
             public void paintComponent(Graphics graphics)
@@ -78,7 +75,7 @@ public class KingDominoStart implements Observer{
         constraints.gridwidth = 3;
         constraints.insets = new Insets(0,200,30,200);
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
-        _cboStrategys = new JComboBox(strategyPlayers);
+        _cboStrategys = new JComboBox<>(strategyPlayers);
         _cboStrategys.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 15));
         listRenderer = new DefaultListCellRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
@@ -137,55 +134,43 @@ public class KingDominoStart implements Observer{
         _window.frame.setVisible( true );
 
         // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
-        _btnValidate.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed( ActionEvent actionEvent ) {
-                if(_rdbGameModeHarmony.isSelected())
-                    _window._controller.callHarmony();
-                if(_rdbGameModeMiddle.isSelected())
-                    _window._controller.callMiddleKingdom();
-                if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
-                    System.out.println("No game mode");
+        _btnValidate.addActionListener(actionEvent -> {
+            if(_rdbGameModeHarmony.isSelected())
+                _window._controller.callHarmony();
+            if(_rdbGameModeMiddle.isSelected())
+                _window._controller.callMiddleKingdom();
+            if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
+                System.out.println("No game mode");
 
-                if(_cboStrategys.getSelectedIndex() == 0)
-                    _window._controller.switchToDuo();
-                else if(_cboStrategys.getSelectedIndex() == 1)
-                    _window._controller.switchToTrio();
-                else
-                    _window._controller.switchToQuatro();
+            if(_cboStrategys.getSelectedIndex() == 0)
+                _window._controller.switchToDuo();
+            else if(_cboStrategys.getSelectedIndex() == 1)
+                _window._controller.switchToTrio();
+            else
+                _window._controller.switchToQuatro();
 
-                _window._game.addObservers(new KingDominoGame());
+            _window._game.addObservers(new KingDominoGame());
+        });
+
+        _rdbGameNothing.addActionListener(actionEvent -> {
+            if(_rdbGameNothing.isSelected())
+            {
+                _rdbGameModeHarmony.setEnabled(false);
+                _rdbGameModeMiddle.setEnabled(false);
+            } else {
+                _rdbGameModeHarmony.setEnabled(true);
+                _rdbGameModeMiddle.setEnabled(true);
             }
         });
 
-        _rdbGameNothing.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed( ActionEvent actionEvent ) {
-                if(_rdbGameNothing.isSelected())
-                {
-                    _rdbGameModeHarmony.setEnabled(false);
-                    _rdbGameModeMiddle.setEnabled(false);
-                } else {
-                    _rdbGameModeHarmony.setEnabled(true);
-                    _rdbGameModeMiddle.setEnabled(true);
-                }
-            }
+        _rdbGameModeMiddle.addActionListener(actionEvent -> {
+            _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
+            _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
         });
 
-        _rdbGameModeMiddle.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed( ActionEvent actionEvent ) {
-                _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
-                _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
-            }
-        });
-
-        _rdbGameModeHarmony.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed( ActionEvent actionEvent ) {
-                _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
-                _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
-            }
+        _rdbGameModeHarmony.addActionListener(actionEvent -> {
+            _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
+            _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
         });
 
     }

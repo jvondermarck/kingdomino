@@ -4,7 +4,6 @@ import controller.Controller;
 import model.Game;
 import model.Observer;
 import utilities.FontUtilities;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,7 +28,7 @@ public class Window extends JFrame implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // put window in the center of the screen
         frame.setIconImage(img.getImage()); // icon of the application
-        frame.setResizable(false); // make impossible to resize the window to avoid error or idk
+        frame.setResizable(false); // make impossible to resize the window to avoid error or whatever
         _fontGermania = FontUtilities.setFont("font/Germania.otf");
         _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
     }

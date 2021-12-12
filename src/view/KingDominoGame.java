@@ -2,27 +2,24 @@ package view;
 
 import model.Game;
 import model.Observer;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class KingDominoGame implements Observer {
 
-    private Window _window;
-    private JPanel _panelMain;
-    private JPanel _panelMainInfo;
-    private JPanel _panelMainGraph;
+    private final Window _window;
+    private final JPanel _panelMain;
+    private final JPanel _panelMainInfo;
+    private final JPanel _panelMainGraph;
     private JPanel _panelGridDominoes;
-    private JLabel _labelRound;
-    private JPanel[] _panelCardDominoes;
+    private final JLabel _labelRound;
     private JPanel[] _panelHideDominoes;
     private JButton[] _btnHideDominoes;
     private JPanel[] _panelUnhideDominoes;
     private CardLayout[] cardLayout;
     private Container[] _container;
-    private JButton _btnTiles[][];
+    private JButton[][] _btnTiles;
 
     public KingDominoGame()
     {
@@ -45,7 +42,7 @@ public class KingDominoGame implements Observer {
         // INFORMATION PANEL : panel which will show the dominoes, how many round, display the dominoes, etc
         _panelMainInfo = new JPanel() // display in this panel a background image to get a beautiful game
         {
-            Image img = icon.getImage();
+            final Image img = icon.getImage();
             // instance initializer
             {setOpaque(false);}
             public void paintComponent(Graphics graphics)
@@ -94,7 +91,6 @@ public class KingDominoGame implements Observer {
     public void createDominoes()
     {
         int _numberDomino = 4; // we will have 4 dominoes
-        _panelCardDominoes = new JPanel[4]; // the array of panels which will have the Card Layout (to be like a stack)
         cardLayout = new CardLayout[4]; // our card layout
         _container = new Container[4]; // our container
 
@@ -123,11 +119,9 @@ public class KingDominoGame implements Observer {
 
             // We add a listenner which will show the unhide domino with the 2 tiles
             int finalI = i;
-            _btnHideDominoes[i].addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent clickevent) {
-                    cardLayout[finalI].next(_container[finalI]); // when we click of one of the four domino, it will call the next card layout
-                    System.out.println(finalI);
-                }
+            _btnHideDominoes[i].addActionListener(clickevent -> {
+                cardLayout[finalI].next(_container[finalI]); // when we click of one of the four domino, it will call the next card layout
+                System.out.println(finalI);
             });
 
             // We add the button[i] on the array of the hidden dominoes[i]
@@ -152,22 +146,13 @@ public class KingDominoGame implements Observer {
 
             // When we click of the left tile :
             int finalI = i;
-            _btnTiles[0][0].addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent clickevent) {
-                    System.out.println("0" + finalI);
-                }
-            });
+            _btnTiles[0][0].addActionListener(clickevent -> System.out.println("0" + finalI));
             // When we click of the right tile :
-            _btnTiles[0][1].addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent clickevent) {
-                    System.out.println("1" + finalI);
-                }
-            });
+            _btnTiles[0][1].addActionListener(clickevent -> System.out.println("1" + finalI));
         }
 
         for(int i=0; i<_numberDomino; i++)
         {
-            _panelCardDominoes[i] = new JPanel( new CardLayout());
             cardLayout[i] = new CardLayout();
             _container[i] = new Container();
             _container[i].setLayout(cardLayout[i]);
