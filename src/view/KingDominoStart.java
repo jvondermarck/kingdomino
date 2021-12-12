@@ -29,7 +29,6 @@ public class KingDominoStart implements Observer{
         // SET UP THE WINDOW
         _window = Window.instance; // we get our main window to access to its variables
         _window.frame.setTitle("Kingdomino");
-        _window.frame.setResizable(false);
         final ImageIcon icon = new ImageIcon("img/LaunchScreen.png");
 
         // Constraints
@@ -175,6 +174,7 @@ public class KingDominoStart implements Observer{
             @Override
             public void actionPerformed( ActionEvent actionEvent ) {
                 _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
+                _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
             }
         });
 
@@ -182,6 +182,7 @@ public class KingDominoStart implements Observer{
             @Override
             public void actionPerformed( ActionEvent actionEvent ) {
                 _rdbGameNothing.setEnabled(!_rdbGameModeHarmony.isSelected() && !_rdbGameModeMiddle.isSelected());
+                _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
             }
         });
 

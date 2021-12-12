@@ -29,6 +29,7 @@ public class Window extends JFrame implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setIconImage(img.getImage());
+        frame.setResizable(false);
         _fontGermania = FontUtilities.setFont("font/Germania.otf");
         _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
     }

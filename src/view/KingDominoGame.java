@@ -10,6 +10,12 @@ public class KingDominoGame implements Observer {
 
     private Window _window;
     private JPanel _panelMain;
+    private JPanel _panelMainInfo;
+    private JPanel _panelMainGraph;
+    private JLabel _labelRound;
+    private JPanel[] _panelCardDominoes;
+    private JPanel[] _panelHideDominoes;
+    private JPanel[] _panelUnhideDominoes;
 
     public KingDominoGame()
     {
@@ -26,23 +32,46 @@ public class KingDominoGame implements Observer {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        // MAIN PANEL : Panel where we'll find all panels and elements
-        _panelMain = new JPanel() // display in this panel a background image to get a beautiful game
+        // MAIN PANEL : Panel where we'll find the two main panels which is the information about the game, and a panel which contains the graphs
+        _panelMain = new JPanel( new BorderLayout());
+
+        // INFORMATION PANEL : panel which will show the dominoes, how many round, display the dominoes, etc
+        _panelMainInfo = new JPanel() // display in this panel a background image to get a beautiful game
         {
             Image img = icon.getImage();
             // instance initializer
             {setOpaque(false);}
             public void paintComponent(Graphics graphics)
             {
-                graphics.drawImage(img, 0, -35, this);
+                graphics.drawImage(img, 0, 0, this);
                 super.paintComponent(graphics);
             }
         };
-        _panelMain.setLayout( new GridBagLayout() );
+        _panelMainInfo.setLayout( new GridBagLayout() );
+        _panelMainInfo.setPreferredSize(new Dimension(434, 557));
+
+        // LABEL TITLE WELCOME
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+        constraints.weighty = 2;
+        constraints.insets = new Insets(0,0,0,0);
+        _labelRound = new JLabel("ROUND");
+        _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
+        _labelRound.setVisible(true);
+        _panelMainInfo.add(_labelRound, constraints);
 
 
+
+
+        // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
+        _panelMainGraph = new JPanel();
+        _panelMainGraph.setPreferredSize(new Dimension(618, 557));
 
         // MAIN PANEL : We put element in the main Panel
+        _panelMain.add(_panelMainInfo, BorderLayout.WEST);
+        _panelMain.add(_panelMainGraph, BorderLayout.EAST);
+
         _window.frame.setContentPane( _panelMain);
         _window.frame.setVisible( true );
     }
@@ -50,5 +79,24 @@ public class KingDominoGame implements Observer {
     @Override
     public void update(Game game) {
 
+    }
+
+    public void createDominoes()
+    {
+        _panelCardDominoes = new JPanel[4];
+        for(int i=0; i<_panelCardDominoes.length; i++)
+            _panelCardDominoes[i] = new JPanel( new CardLayout());
+
+        _panelHideDominoes = new JPanel[4];
+        for(int i=0; i<_panelHideDominoes.length; i++)
+        {
+            _panelHideDominoes[i] = new JPanel( new GridLayout(1,1));
+
+        }
+
+
+        _panelUnhideDominoes = new JPanel[4];
+        for(int i=0; i<_panelUnhideDominoes.length; i++)
+            _panelUnhideDominoes[i] = new JPanel( new GridLayout(1,2));
     }
 }
