@@ -21,10 +21,10 @@ public class Graph {
             // O O
             // X X
             if(domino.isXX()){
-                if(_arrayTiles[x+1][y] instanceof Castle && isPlaceAvailable(x+1, y)){
+                if(_arrayTiles[x+1][y] instanceof Castle && isPlaceAvailable(x-1, y)){
                     _arrayTiles[x-1][y] = domino.getTile()[0][1];
                 }
-                else if(_arrayTiles[x-1][y] instanceof Castle && isPlaceAvailable(x-1, y)){
+                else if(_arrayTiles[x-1][y] instanceof Castle && isPlaceAvailable(x+1, y)){
                     _arrayTiles[x+1][y] = domino.getTile()[0][1];
                 }
             }
@@ -43,7 +43,7 @@ public class Graph {
         }
 
         //Check if a compatible Tile is avaiable near pos x y
-        else if(_arrayTiles[x+1][y].getColor().equals(domino.getTile()[0][0].getColor()) || _arrayTiles[x-1][y].getColor().equals(domino.getTile()[0][0].getColor()) ||
+        else if(isSameTile(_arrayTiles[x+1][y], domino.getTile()[0][0]) || isSameTile(_arrayTiles[x-1][y], domino.getTile()[0][0]) ||
                 _arrayTiles[x][y+1].getColor().equals(domino.getTile()[0][0].getColor()) || _arrayTiles[x][y-1].getColor().equals(domino.getTile()[0][0].getColor())){
 
             _arrayTiles[x][y] = domino.getTile()[0][0];
@@ -55,8 +55,10 @@ public class Graph {
                 _arrayTiles[x][y+1] = domino.getTile()[1][0];
             }
         }
+    }
 
-
+    private boolean isSameTile(Tile tile1, Tile tile2){
+        return tile1.getColor().equals(tile2.getColor());
     }
 
     public boolean isPlaceAvailable(int x, int y){
