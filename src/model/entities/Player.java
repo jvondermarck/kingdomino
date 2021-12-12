@@ -22,4 +22,9 @@ public class Player {
     public void setCastle(int x, int y){
         this._graph.setCastle(x, y, this._castle);
     }
+
+    public Graph getGraph(){
+        return this._graph;
+    }
+
 }

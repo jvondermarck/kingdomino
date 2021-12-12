@@ -5,15 +5,13 @@ import utilities.CSVReader;
 import java.util.*;
 
 public class Deck {
-    private List<Domino> _listdominoes;
-    private  Integer maxsize;
+    private final List<Domino> _listdominoes;
     private static final Random rand = new Random();
 
     public Deck(){
         _listdominoes = new ArrayList<>();
         List<List<String>> dataCSV = CSVReader.readCSV("docs/kingdomino.csv");
-        maxsize = dataCSV.size();
-        for(int i = 1; i < maxsize; i++){
+        for(int i = 1; i < dataCSV.size(); i++){
             Domino domino = generateDomino(i, dataCSV);
             _listdominoes.add(domino);
         }
@@ -47,7 +45,7 @@ public class Deck {
     }
 
     public Domino giveADomino(){
-        int random = rand.nextInt(maxsize);
+        int random = rand.nextInt(_listdominoes.size());
         Domino domino = this._listdominoes.get(random);
         this._listdominoes.remove(domino);
         return domino;
