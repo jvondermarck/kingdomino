@@ -14,6 +14,7 @@ public class KingDominoGame implements Observer {
     private JPanel _panelMain;
     private JPanel _panelMainInfo;
     private JPanel _panelMainGraph;
+    private JPanel _panelGridDominoes;
     private JLabel _labelRound;
     private JPanel[] _panelCardDominoes;
     private JPanel[] _panelHideDominoes;
@@ -58,15 +59,18 @@ public class KingDominoGame implements Observer {
         // LABEL TITLE WELCOME
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        constraints.weighty = 2;
         constraints.insets = new Insets(0,0,0,0);
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setVisible(true);
         _panelMainInfo.add(_labelRound, constraints);
 
+        // We create the four dominoes
         createDominoes();
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        _panelMainInfo.add(_panelGridDominoes, constraints);
+
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel();
@@ -88,14 +92,20 @@ public class KingDominoGame implements Observer {
     public void createDominoes()
     {
         JButton _btnTiles[][] = new JButton[2][2];
+        GridLayout gridLayout = new GridLayout(4, 1, 0, 10);
         _panelHideDominoes = new JPanel[4];
         _btnUnhideDominoes = new JButton[4];
+        _panelGridDominoes = new JPanel(gridLayout);
+        _panelGridDominoes.setOpaque(false);
+
         for(int i=0; i<_panelHideDominoes.length; i++)
         {
-            _panelHideDominoes[i] = new JPanel( new GridLayout(1,1));
+            _panelHideDominoes[i] = new JPanel( new GridLayout(1,2));
             _btnUnhideDominoes[i] = new JButton(Integer.toString(i));
-            _btnUnhideDominoes[i].setBackground(Color.BLACK);
+            _btnUnhideDominoes[i].setPreferredSize(new Dimension(170, 85));
+            _btnUnhideDominoes[i].setBackground(Color.decode("#3C3C3C"));
             _btnUnhideDominoes[i].setForeground(Color.WHITE);
+            _btnUnhideDominoes[i].setFocusable(false);
             int finalI = i;
             _btnUnhideDominoes[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent clickevent) {
@@ -136,9 +146,7 @@ public class KingDominoGame implements Observer {
             c[i].setLayout(card[i]);
             c[i].add(_panelHideDominoes[i]);
             c[i].add(_panelUnhideDominoes[i]);
-            _panelMainInfo.add(c[i]);
+            _panelGridDominoes.add(c[i]);
         }
-
-
     }
 }

@@ -27,9 +27,9 @@ public class Window extends JFrame implements Observer {
         frame = new JFrame("Kingdomino");
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setIconImage(img.getImage());
-        frame.setResizable(false);
+        frame.setLocationRelativeTo(null); // put window in the center of the screen
+        frame.setIconImage(img.getImage()); // icon of the application
+        frame.setResizable(false); // make impossible to resize the window to avoid error or idk
         _fontGermania = FontUtilities.setFont("font/Germania.otf");
         _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
     }
