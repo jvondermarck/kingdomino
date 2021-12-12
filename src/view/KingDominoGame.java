@@ -20,6 +20,7 @@ public class KingDominoGame implements Observer {
     private CardLayout[] cardLayout;
     private Container[] _container;
     private JButton[][] _btnTiles;
+    private final JButton _btnShowDomino;
 
     public KingDominoGame()
     {
@@ -57,7 +58,7 @@ public class KingDominoGame implements Observer {
         // LABEL TITLE WELCOME
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(0,0,20,0);
+        constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setVisible(true);
@@ -65,11 +66,19 @@ public class KingDominoGame implements Observer {
 
         // We create the four dominoes
         createDominoes();
-        constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
         _panelMainInfo.add(_panelGridDominoes, constraints);
 
+        // We create the button to show all the dominoes
+        constraints.gridy = 2;
+        constraints.insets = new Insets(10,0,0,0);
+        _btnShowDomino = new JButton("Show dominoes");
+        _btnShowDomino.setFocusable(false);
+        _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _btnShowDomino.setForeground(Color.WHITE);
+        _btnShowDomino.setBackground(Color.decode("#DDAB40"));
+        _panelMainInfo.add(_btnShowDomino, constraints);
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel();
@@ -81,6 +90,15 @@ public class KingDominoGame implements Observer {
 
         _window.frame.setContentPane( _panelMain);
         _window.frame.setVisible( true );
+
+        // SHOW DOMONOES BUTTON LISTENER : we unhidde the four buttons
+        _btnShowDomino.addActionListener(actionEvent -> {
+            for(int i=0; i<cardLayout.length; i++)
+            {
+                cardLayout[i].next(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
+                System.out.println(i);
+            }
+        });
     }
 
     @Override
