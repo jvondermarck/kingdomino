@@ -5,6 +5,8 @@ import model.Observer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class KingDominoGame implements Observer {
 
@@ -15,7 +17,10 @@ public class KingDominoGame implements Observer {
     private JLabel _labelRound;
     private JPanel[] _panelCardDominoes;
     private JPanel[] _panelHideDominoes;
+    private JButton[] _btnUnhideDominoes;
     private JPanel[] _panelUnhideDominoes;
+    CardLayout card[] = new CardLayout[4];
+    Container c[] = new Container[4];
 
     public KingDominoGame()
     {
@@ -61,8 +66,7 @@ public class KingDominoGame implements Observer {
         _labelRound.setVisible(true);
         _panelMainInfo.add(_labelRound, constraints);
 
-
-
+        createDominoes();
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel();
@@ -83,20 +87,58 @@ public class KingDominoGame implements Observer {
 
     public void createDominoes()
     {
-        _panelCardDominoes = new JPanel[4];
-        for(int i=0; i<_panelCardDominoes.length; i++)
-            _panelCardDominoes[i] = new JPanel( new CardLayout());
-
+        JButton _btnTiles[][] = new JButton[2][2];
         _panelHideDominoes = new JPanel[4];
+        _btnUnhideDominoes = new JButton[4];
         for(int i=0; i<_panelHideDominoes.length; i++)
         {
             _panelHideDominoes[i] = new JPanel( new GridLayout(1,1));
-
+            _btnUnhideDominoes[i] = new JButton(Integer.toString(i));
+            _btnUnhideDominoes[i].setBackground(Color.BLACK);
+            _btnUnhideDominoes[i].setForeground(Color.WHITE);
+            int finalI = i;
+            _btnUnhideDominoes[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent clickevent) {
+                    card[finalI].next(c[finalI]);
+                    System.out.println(Integer.toString(finalI));
+                }
+            });
+            _panelHideDominoes[i].add(_btnUnhideDominoes[i]);
         }
-
 
         _panelUnhideDominoes = new JPanel[4];
         for(int i=0; i<_panelUnhideDominoes.length; i++)
+        {
             _panelUnhideDominoes[i] = new JPanel( new GridLayout(1,2));
+            _btnTiles[0][0] = new JButton(0 + "" + i);
+            _btnTiles[0][1] = new JButton(1 + "" + i);
+            _panelUnhideDominoes[i].add( _btnTiles[0][0]);
+            _panelUnhideDominoes[i].add( _btnTiles[0][1]);
+            int finalI = i;
+            _btnTiles[0][0].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent clickevent) {
+                    System.out.println("0" + finalI);
+                }
+            });
+            _btnTiles[0][1].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent clickevent) {
+                    System.out.println("1" + finalI);
+                }
+            });
+        }
+
+        _panelCardDominoes = new JPanel[4];
+        for(int i=0; i<_panelCardDominoes.length; i++)
+        {
+            _panelCardDominoes[i] = new JPanel( new CardLayout());
+            card[i] = new CardLayout();
+            c[i] = new Container();
+            c[i].setLayout(card[i]);
+            c[i].add(_panelHideDominoes[i]);
+            c[i].add(_panelUnhideDominoes[i]);
+            _panelMainInfo.add(c[i]);
+        }
+
+
     }
 }
