@@ -148,11 +148,19 @@ public class KingDominoStart implements Observer{
                 System.out.println("No game mode");
 
             if(_cboStrategys.getSelectedIndex() == 0)
+            {
                 _window._controller.switchToDuo();
-            else if(_cboStrategys.getSelectedIndex() == 1)
+                _window.numberPlayer = 2;
+            }
+            else if(_cboStrategys.getSelectedIndex() == 1) {
                 _window._controller.switchToTrio();
-            else
+                _window.numberPlayer = 3;
+            }
+            else {
                 _window._controller.switchToQuatro();
+                _window.numberPlayer = 4;
+            }
+
 
             _window._game.addObservers(new KingDominoGame());
         });

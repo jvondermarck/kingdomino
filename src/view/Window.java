@@ -15,6 +15,7 @@ public class Window extends JFrame implements Observer {
     protected ImageIcon img = new ImageIcon("img/ico.png");
     protected Font _fontGermania;
     protected Font _fontTimeless;
+    protected int numberPlayer = 0;
 
     private Window(Game game, Controller controller){
         _game = game;

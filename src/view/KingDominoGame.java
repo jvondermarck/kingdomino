@@ -21,6 +21,10 @@ public class KingDominoGame implements Observer {
     private Container[] _container;
     private JButton[][] _btnTiles;
     private final JButton _btnShowDomino;
+    private JPanel[] _panelGraph;
+    private JButton[][] _btnOnGraph;
+    private JPanel[] _panelAllGraphText;
+    private JLabel[] _labelNameOnGraph;
 
     public KingDominoGame()
     {
@@ -28,7 +32,7 @@ public class KingDominoGame implements Observer {
         _window.frame.setTitle("Game Kingdomino");
         _window.frame.getContentPane().removeAll();
         _window.frame.repaint();
-        _window.frame.setSize(1051,557);
+        _window.frame.setSize(1100,600);
         _window.frame.setLocationRelativeTo(null);
 
         final ImageIcon icon = new ImageIcon("img/MainScreen.png");
@@ -53,7 +57,7 @@ public class KingDominoGame implements Observer {
             }
         };
         _panelMainInfo.setLayout( new GridBagLayout() );
-        _panelMainInfo.setPreferredSize(new Dimension(434, 557));
+        _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
         // LABEL TITLE WELCOME
         constraints.gridx = 0;
@@ -82,8 +86,9 @@ public class KingDominoGame implements Observer {
         _panelMainInfo.add(_btnShowDomino, constraints);
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
-        _panelMainGraph = new JPanel();
-        _panelMainGraph.setPreferredSize(new Dimension(618, 557));
+        _panelMainGraph = new JPanel( new GridLayout(2,2));
+        _panelMainGraph.setPreferredSize(new Dimension(670, 600));
+        createGraph();
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
@@ -121,7 +126,7 @@ public class KingDominoGame implements Observer {
         _panelHideDominoes = new JPanel[4]; // array of panels which will contain one button for each domino (hidden domino)
         _btnHideDominoes = new JButton[4]; // array of button which wil contain one button for each hidden domino
 
-        _btnTiles = new JButton[2][2]; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles)
+        _btnTiles = new JButton[4][2]; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles)
         _panelUnhideDominoes = new JPanel[4]; // array of panel to show the two tiles for each domino (unhidden domino)
 
         // LOOP which will create an array of panels, to put one single button inside (to show a hidden domino)
@@ -154,20 +159,20 @@ public class KingDominoGame implements Observer {
             _panelUnhideDominoes[i] = new JPanel( new GridLayout(1,2));
 
             // We add two buttons in our panel[i]
-            _btnTiles[0][0] = new JButton(0 + "" + i);
-            _btnTiles[0][1] = new JButton(1 + "" + i);
+            _btnTiles[i][0] = new JButton(0 + "" + i);
+            _btnTiles[i][1] = new JButton(1 + "" + i);
 
-            _btnTiles[0][0].setFocusable(false);
-            _btnTiles[0][1].setFocusable(false);
+            _btnTiles[i][0].setFocusable(false);
+            _btnTiles[i][1].setFocusable(false);
 
-            _panelUnhideDominoes[i].add( _btnTiles[0][0]);
-            _panelUnhideDominoes[i].add( _btnTiles[0][1]);
+            _panelUnhideDominoes[i].add( _btnTiles[i][0]);
+            _panelUnhideDominoes[i].add( _btnTiles[i][1]);
 
             // When we click of the left tile :
             int finalI = i;
-            _btnTiles[0][0].addActionListener(clickevent -> System.out.println("0" + finalI));
+            _btnTiles[i][0].addActionListener(clickevent -> System.out.println("0" + finalI));
             // When we click of the right tile :
-            _btnTiles[0][1].addActionListener(clickevent -> System.out.println("1" + finalI));
+            _btnTiles[i][1].addActionListener(clickevent -> System.out.println("1" + finalI));
         }
 
         for(int i=0; i<_numberDomino; i++)
@@ -182,6 +187,70 @@ public class KingDominoGame implements Observer {
 
             // We add in our main panel the container
             _panelGridDominoes.add(_container[i]);
+        }
+    }
+
+    public void createGraph()
+    {
+        _panelAllGraphText = new JPanel[4];
+        _panelGraph = new JPanel[4];
+        _btnOnGraph = new JButton[4][25];
+        _labelNameOnGraph = new JLabel[4];
+
+        // Constraints
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        int width = 335;
+        int height = 300;
+        int numGraph = 0;
+        for(int i=0; i<4; i++)
+        {
+            _panelAllGraphText[i] = new JPanel( new GridBagLayout());
+
+            _labelNameOnGraph[i] = new JLabel("Player :" + i+1);
+
+            _panelGraph[i] = new JPanel(new GridLayout(5, 5));
+            _panelAllGraphText[i].setPreferredSize(new Dimension(207, 207));
+
+            numGraph++;
+            for(int j=0; j<25; j++)
+            {
+                _btnOnGraph[i][j] = new JButton(Integer.toString(j));
+                _btnOnGraph[i][j].setFont(new Font("Serif", Font.PLAIN, 8));
+                _btnOnGraph[i][j].setPreferredSize(new Dimension(42, 42));
+                _panelGraph[i].add(_btnOnGraph[i][j]);
+
+                int finalNumGraph = numGraph;
+                int finalJ = j;
+                _btnOnGraph[i][j].addActionListener(actionEvent -> {
+                        System.out.println(finalNumGraph + " " + finalJ);
+                });
+            }
+
+            if(i==1){
+                _panelAllGraphText[i].setPreferredSize(new Dimension(width*2, height));
+            } else if(i==2) {
+                _panelAllGraphText[i].setPreferredSize(new Dimension(width, height*2));
+            } else if(i==3){
+                _panelAllGraphText[i].setPreferredSize(new Dimension(width*2, height*2));
+            } else {
+                _panelAllGraphText[i].setPreferredSize(new Dimension(width, height));
+            }
+
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.gridwidth = 2;
+            constraints.insets = new Insets(10,0,0,0);
+            _panelAllGraphText[i].add(_labelNameOnGraph[i], constraints);
+
+            constraints.gridy = 1;
+            constraints.gridwidth = 1;
+            constraints.weighty = 1;
+            constraints.insets = new Insets(10,20,10,20);
+            _panelAllGraphText[i].add(_panelGraph[i], constraints);
+
+            _panelMainGraph.add(_panelAllGraphText[i]);
         }
     }
 }
