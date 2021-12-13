@@ -78,6 +78,7 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
         _btnShowDomino.setForeground(Color.WHITE);
         _btnShowDomino.setBackground(Color.decode("#DDAB40"));
+        _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMainInfo.add(_btnShowDomino, constraints);
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play

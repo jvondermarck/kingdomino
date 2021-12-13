@@ -77,6 +77,7 @@ public class KingDominoStart implements Observer{
         strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
         _cboStrategys = new JComboBox<>(strategyPlayers);
         _cboStrategys.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 15));
+        _cboStrategys.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         listRenderer = new DefaultListCellRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
         _cboStrategys.setRenderer(listRenderer);
@@ -101,6 +102,7 @@ public class KingDominoStart implements Observer{
         _rdbGameNothing.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameNothing.setOpaque(false);
         _rdbGameNothing.setSelected(true);
+        _rdbGameNothing.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameNothing, constraints);
 
         constraints.insets = new Insets(0,10,60,0);
@@ -108,6 +110,7 @@ public class KingDominoStart implements Observer{
         _rdbGameModeHarmony = new JRadioButton("Harmony");
         _rdbGameModeHarmony.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeHarmony.setOpaque(false);
+        _rdbGameModeHarmony.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameModeHarmony, constraints);
 
         constraints.gridx = 2;
@@ -115,6 +118,7 @@ public class KingDominoStart implements Observer{
         _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
         _rdbGameModeMiddle.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 17));
         _rdbGameModeMiddle.setOpaque(false);
+        _rdbGameModeMiddle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameModeMiddle, constraints);
 
         constraints.gridx = 0;
@@ -127,6 +131,7 @@ public class KingDominoStart implements Observer{
         _btnValidate.setOpaque(false);
         _btnValidate.setContentAreaFilled(false);
         _btnValidate.setBorderPainted(false);
+        _btnValidate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_btnValidate, constraints);
 
         // MAIN PANEL : We put element in the main Panel
