@@ -16,6 +16,9 @@ public class KingDominoGame implements Observer {
     private final Window _window;
     private final JPanel _panelMain;
     private final JPanel _panelMainInfo;
+    private JPanel _subPanelTitle;
+    private JPanel _subPanelDominoes;
+    private JPanel _subPanelRotation;
     private final JPanel _panelMainGraph;
     private JPanel _panelGridDominoes;
     private final JLabel _labelRound;
@@ -217,8 +220,9 @@ public class KingDominoGame implements Observer {
         {
             // NAME OF EACH PLAYER
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
+            _panelAllGraphText[i].setBackground(Color.WHITE);
 
-            _textNamePlayer[i] = new JTextField("Player : " + (i+1));
+            _textNamePlayer[i] = new JTextField("Kingdom of : " + (i+1));
             _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
             _textNamePlayer[i].setOpaque(false);
             _textNamePlayer[i].setBorder(null);
@@ -237,7 +241,7 @@ public class KingDominoGame implements Observer {
                 public void mouseExited(MouseEvent e){
                     if(Objects.equals(_textNamePlayer[finalI].getText(), ""))
                     {
-                        _textNamePlayer[finalI].setText("Player :" + (finalI+1));
+                        _textNamePlayer[finalI].setText("Kingdom of : " + (finalI+1));
                     }
                     _textNamePlayer[finalI].setEditable(false);
                     _textNamePlayer[finalI].getCaret().setVisible(false);
@@ -254,6 +258,8 @@ public class KingDominoGame implements Observer {
                 _btnOnGraph[i][j] = new JButton(Integer.toString(j));
                 _btnOnGraph[i][j].setFont(new Font("Serif", Font.PLAIN, 8));
                 _btnOnGraph[i][j].setPreferredSize(new Dimension(42, 42));
+                _btnOnGraph[i][j].setBackground(Color.decode("#CECECE"));
+                _btnOnGraph[i][j].setRolloverEnabled(false);
                 _panelGraph[i].add(_btnOnGraph[i][j]);
 
                 int finalNumGraph = numGraph;
