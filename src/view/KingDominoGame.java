@@ -2,8 +2,13 @@ package view;
 
 import model.Game;
 import model.Observer;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class KingDominoGame implements Observer {
@@ -24,7 +29,7 @@ public class KingDominoGame implements Observer {
     private JPanel[] _panelGraph;
     private JButton[][] _btnOnGraph;
     private JPanel[] _panelAllGraphText;
-    private JLabel[] _labelNameOnGraph;
+    private JTextField[] _textNamePlayer;
 
     public KingDominoGame()
     {
@@ -88,6 +93,7 @@ public class KingDominoGame implements Observer {
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel( new GridLayout(2,2));
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
+        _panelMainGraph.setBackground(Color.WHITE);
         createGraph();
 
         // MAIN PANEL : We put element in the main Panel
@@ -192,10 +198,12 @@ public class KingDominoGame implements Observer {
 
     public void createGraph()
     {
-        _panelAllGraphText = new JPanel[4];
-        _panelGraph = new JPanel[4];
-        _btnOnGraph = new JButton[4][25];
-        _labelNameOnGraph = new JLabel[4];
+        int numberPlayers = _window.numberPlayer;
+
+        _panelAllGraphText = new JPanel[numberPlayers];
+        _panelGraph = new JPanel[numberPlayers];
+        _btnOnGraph = new JButton[numberPlayers][25];
+        _textNamePlayer = new JTextField[numberPlayers];
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -204,12 +212,39 @@ public class KingDominoGame implements Observer {
         int width = 335;
         int height = 300;
         int numGraph = 0;
-        for(int i=0; i<4; i++)
+
+        for(int i=0; i<numberPlayers; i++)
         {
+            // NAME OF EACH PLAYER
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
 
-            _labelNameOnGraph[i] = new JLabel("Player :" + i+1);
+            _textNamePlayer[i] = new JTextField("Player : " + (i+1));
+            _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
+            _textNamePlayer[i].setOpaque(false);
+            _textNamePlayer[i].setBorder(null);
+            _textNamePlayer[i].setHorizontalAlignment(JTextField.CENTER);
+            int finalI = i;
+            _textNamePlayer[i].addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    _textNamePlayer[finalI].setText("");
+                    _textNamePlayer[finalI].setEditable(true);
+                    _textNamePlayer[finalI].getCaret().setVisible(true);
+                }
+             });
+            _textNamePlayer[i].addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseExited(MouseEvent e){
+                    if(Objects.equals(_textNamePlayer[finalI].getText(), ""))
+                    {
+                        _textNamePlayer[finalI].setText("Player :" + (finalI+1));
+                    }
+                    _textNamePlayer[finalI].setEditable(false);
+                    _textNamePlayer[finalI].getCaret().setVisible(false);
+                }
+            });
 
+            // THE 25 BUTTONS (our graph) FOR EACH PLAYER
             _panelGraph[i] = new JPanel(new GridLayout(5, 5));
             _panelAllGraphText[i].setPreferredSize(new Dimension(207, 207));
 
@@ -228,6 +263,8 @@ public class KingDominoGame implements Observer {
                 });
             }
 
+            _btnOnGraph[i][12].setIcon(new ImageIcon("img/castle1.png"));
+
             if(i==1){
                 _panelAllGraphText[i].setPreferredSize(new Dimension(width*2, height));
             } else if(i==2) {
@@ -240,14 +277,12 @@ public class KingDominoGame implements Observer {
 
             constraints.gridx = 0;
             constraints.gridy = 0;
-            constraints.gridwidth = 2;
             constraints.insets = new Insets(10,0,0,0);
-            _panelAllGraphText[i].add(_labelNameOnGraph[i], constraints);
+            _panelAllGraphText[i].add(_textNamePlayer[i], constraints);
 
             constraints.gridy = 1;
             constraints.gridwidth = 1;
-            constraints.weighty = 1;
-            constraints.insets = new Insets(10,20,10,20);
+            constraints.insets = new Insets(10,0,10,0);
             _panelAllGraphText[i].add(_panelGraph[i], constraints);
 
             _panelMainGraph.add(_panelAllGraphText[i]);
