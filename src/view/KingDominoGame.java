@@ -11,30 +11,35 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class KingDominoGame implements Observer {
 
-    private final Window _window;
-    private final JPanel _panelMain;
-    private final JPanel _panelMainInfo;
-    private final JPanel _panelMainInfoTop;
-    private final JPanel _panelMainInfoLeft;
-    private final JPanel _panelMainInfoRight;
-    private final JPanel _subPanelRotation;
-    private final JPanel _panelMainGraph;
-    private JPanel _panelGridDominoes;
-    private final JLabel _labelRound;
-    private JPanel[] _panelHideDominoes;
-    private JButton[] _btnHideDominoes;
-    private JPanel[] _panelUnhideDominoes;
-    private CardLayout[] cardLayout;
-    private Container[] _container;
-    private JButton[][] _btnTiles;
-    private final JButton _btnShowDomino;
-    private JPanel[] _panelGraph;
-    private JButton[][] _btnOnGraph;
-    private JPanel[] _panelAllGraphText;
-    private JTextField[] _textNamePlayer;
-    private final JButton[] _rotateDomino;
-    private final JButton[] _dominoGraphRotation;
-    private JLabel _textInformationToDo;
+    private final Window _window; // our window that we get thanks to his static method and singleton variable
+
+    private final JPanel _panelMain; // Our main panel which will contains two panels inside : _panelMainInfo &
+    private final JPanel _panelMainInfo; // it will contain 3 panels (_panelMainInfoTop, LEFT, RIGHT) to show the titles, the 4 dominoes, a button to show it, and a system to rotate a domino. It will be showed at the left of the window
+    private final JPanel _panelMainInfoTop; // Contains labels
+    private final JPanel _panelMainInfoLeft; // Contains 4 dominoes and a button to show them (it will contain the _panelGridDominoes in it)
+    private JPanel _panelGridDominoes; // a panel to put the 4 dominoes (will be put inside the _panelMainInfoLeft panel)
+    private final JPanel _panelMainInfoRight; // Contains a mini graph 2*2 (contains _subPanelRotation) to rotate a domino + a button to inverse and rotate it
+    private final JPanel _subPanelRotation; // Contains a mini graph 2*2 to rotate a domino (it will be in the _panelMainInfoRight panel)
+    private final JPanel _panelMainGraph; // it will contain 2,3 or 4 graphs, depending on the amount of players, panel will be shown at the right of the window
+    private JPanel[] _panelUnhideDominoes; // array of panel to show the two tiles for each domino (unhidden domino)
+    private JPanel[] _panelHideDominoes; // array of panels which will contain one button for each domino (hidden domino)
+    private JPanel[] _panelAllGraphText; // a panel to show a label about the name of the player AND the graph of 25 buttons (_panelGraph)
+    private JPanel[] _panelGraph; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
+
+    private final JLabel _labelRound; // the main title
+    private final JLabel _textInformationToDo; // a title to put some information about what to do in the game
+
+    private JButton[] _btnHideDominoes; // array of button which wil contain one button for each hidden domino (it will be in the _panelMainInfoLeft panel)
+    private JButton[][] _btnTiles; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles) (it will be in the _panelMainInfoLeft panel)
+    private final JButton _btnShowDomino; // a button to return the 4 dominoes (it will be in the _panelMainInfoLeft panel)
+    private final JButton[] _rotateDomino; // an array of button, the index 0 = button to reverse and index = 1 to inverse the domino (it will be in the _panelMainInfoRight panel)
+    private final JButton[] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
+    private JButton[][] _btnOnGraph; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+
+    private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
+    private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
+
+    private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
 
     public KingDominoGame()
     {
@@ -68,12 +73,16 @@ public class KingDominoGame implements Observer {
                 super.paintComponent(graphics);
             }
         };
+
+        // PANEL MAIN INFO --> _panelMain = it will be at the left of the main panel to show the 4 dominoes and rotation of one domino + title and title of information
         _panelMainInfo.setLayout( new BorderLayout());
         _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
+        // PANEL MAIN INFO TOP -->  _panelMainInfo = we will show the main title + a label about the game to know what to do
         _panelMainInfoTop = new JPanel(new GridBagLayout());
         _panelMainInfoTop.setPreferredSize(new Dimension(430, 110));
-        // LABEL TITLE WELCOME
+
+        // LABEL TITLE WELCOME --> _panelMainInfoTop
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
@@ -83,23 +92,23 @@ public class KingDominoGame implements Observer {
         _labelRound.setVisible(true);
         _panelMainInfoTop.add(_labelRound, constraints);
 
-        // LABEL SUB TITLE ABOUT WHAT TO DO
+        // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
         _textInformationToDo = new JLabel("Boubakarh put your castle !");
         _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
         _panelMainInfoTop.add(_textInformationToDo, constraints);
 
-        // We create the four dominoes
+        // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the four dominoes
         createDominoes();
         _window._controller.putDominoOnTable(); // When we start we put the 4 dominoes
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
         _panelMainInfoLeft = new JPanel( new GridBagLayout());
         _panelMainInfoLeft.setPreferredSize(new Dimension(215, 490));
-        _panelMainInfoLeft.add(_panelGridDominoes, constraints);
+        _panelMainInfoLeft.add(_panelGridDominoes, constraints); // _panelGridDominoes was created in the method createDominoes()
 
-        // We create the button to show all the dominoes
+        // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the button to show all the dominoes
         constraints.gridy = 2;
         constraints.insets = new Insets(10,0,0,0);
         _btnShowDomino = new JButton("Show dominoes");
@@ -110,6 +119,7 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMainInfoLeft.add(_btnShowDomino, constraints);
 
+        // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create the graph of 2*2 to rotate a domino
         _panelMainInfoRight = new JPanel( new GridBagLayout());
         _panelMainInfoRight.setPreferredSize(new Dimension(215, 490));
         _rotateDomino = new JButton[2];
@@ -122,6 +132,7 @@ public class KingDominoGame implements Observer {
             _subPanelRotation.add(_dominoGraphRotation[i]);
         }
 
+        // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to rotate the domino
         _rotateDomino[0] = new JButton();
         _rotateDomino[0].setPreferredSize(new Dimension(60, 60));
         _rotateDomino[0].setIcon(new ImageIcon("img/rotate.png"));
@@ -130,6 +141,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino[0].setFocusPainted(false);
         _rotateDomino[0].setOpaque(false);
 
+        // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to inverse the domino
         _rotateDomino[1] = new JButton();
         _rotateDomino[1].setPreferredSize(new Dimension(60, 60));
         _rotateDomino[1].setIcon(new ImageIcon("img/inverse.png"));
@@ -138,7 +150,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino[1].setFocusPainted(false);
         _rotateDomino[1].setOpaque(false);
 
-
+        // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
         constraints.gridy = 0;
         constraints.gridx = 0;
         constraints.gridwidth = 3;
@@ -154,7 +166,7 @@ public class KingDominoGame implements Observer {
         constraints.gridx = 2;
         _panelMainInfoRight.add(_rotateDomino[1], constraints);
 
-        // We add the subPanels to the _panelMainInfo
+        // We add the 3 subPanels (_panelMainInfo TOP, LEFT, RIGHT) to the _panelMainInfo
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
@@ -169,16 +181,18 @@ public class KingDominoGame implements Observer {
         _panelMainInfoRight.setOpaque(false);
         _panelMainInfo.add(_panelMainInfoRight, BorderLayout.EAST);
 
+
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel( new GridLayout(2,2));
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
-        createGraph();
+        createGraph(); // We're going to create the graphs
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
+        // We show the _panelMain on our window
         _window.frame.setContentPane( _panelMain);
         _window.frame.setVisible( true );
 
@@ -286,10 +300,10 @@ public class KingDominoGame implements Observer {
     {
         int numberPlayers = _window.numberPlayer;
 
-        _panelAllGraphText = new JPanel[numberPlayers];
-        _panelGraph = new JPanel[numberPlayers];
-        _btnOnGraph = new JButton[numberPlayers][25];
-        _textNamePlayer = new JTextField[numberPlayers];
+        _panelAllGraphText = new JPanel[numberPlayers]; // a panel to show a label about the name of the player AND the graph of 25 buttons (_panelGraph)
+        _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
+        _btnOnGraph = new JButton[numberPlayers][25]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+        _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();

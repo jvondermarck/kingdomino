@@ -10,6 +10,6 @@ public class LauncherKingdomino {
         Game game = Game.getInstance();
         Controller controller = new Controller(game);
         game.addObservers(Window.getInstance(game, controller));
-        game.addObservers(KingDominoStart.getInstance());
+        game.addObservers(new KingDominoStart());
     }
 }

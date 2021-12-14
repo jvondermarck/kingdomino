@@ -8,21 +8,24 @@ import java.awt.*;
 @SuppressWarnings("FieldCanBeLocal")
 public class KingDominoStart implements Observer{
 
-    private final String[] strategyPlayers;
-    private final JComboBox<String> _cboStrategys;
+    private final JPanel _panelMain; // our main panel
+    private final Window _window; // our window that we get thanks to his static method and singleton variable
+
+    private final String[] strategyPlayers; // array of strings which contains duo, trio, quatro about the amount of players
+    private final JComboBox<String> _cboStrategys; // our combobox to select the strategy
+    private final DefaultListCellRenderer listRenderer; // to make a horizontal alignement in our cbo
+
     private final JRadioButton _rdbGameModeHarmony;
     private final JRadioButton _rdbGameModeMiddle;
     private final JRadioButton _rdbGameNothing;
+
     private final JLabel _labelTitle;
     private final JLabel _labelTitlePlayer;
     private final JLabel _labelTitleMode;
-    private final JPanel _panelMain;
-    private final JButton _btnValidate;
-    private static KingDominoStart instance;
-    private final Window _window;
-    private final DefaultListCellRenderer listRenderer;
 
-    private KingDominoStart() {
+    private final JButton _btnValidate; // btn to validate all our the information to start the game
+
+    public KingDominoStart() {
         // SET UP THE WINDOW
         _window = Window.instance; // we get our main window to access to its variables
         _window.frame.setTitle("Kingdomino");
@@ -105,6 +108,7 @@ public class KingDominoStart implements Observer{
         _rdbGameNothing.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameNothing, constraints);
 
+        // RADIO BUTTON HARMONY
         constraints.insets = new Insets(0,10,60,0);
         constraints.gridx = 1;
         _rdbGameModeHarmony = new JRadioButton("Harmony");
@@ -113,6 +117,7 @@ public class KingDominoStart implements Observer{
         _rdbGameModeHarmony.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameModeHarmony, constraints);
 
+        // RADIO BUTTON MIDDLE KINGDOM
         constraints.gridx = 2;
         constraints.insets = new Insets(0,10,60,0);
         _rdbGameModeMiddle = new JRadioButton("The middle Kingdom");
@@ -121,6 +126,7 @@ public class KingDominoStart implements Observer{
         _rdbGameModeMiddle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_rdbGameModeMiddle, constraints);
 
+        // BUTTON VALIDATE
         constraints.gridx = 0;
         constraints.gridy = 5;
         constraints.gridwidth = 3;
@@ -134,7 +140,7 @@ public class KingDominoStart implements Observer{
         _btnValidate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelMain.add(_btnValidate, constraints);
 
-        // MAIN PANEL : We put element in the main Panel
+        // MAIN PANEL : We put all element in the main Panel
         _window.frame.setContentPane( _panelMain);
         _window.frame.setVisible( true );
 
@@ -147,24 +153,24 @@ public class KingDominoStart implements Observer{
             if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
                 System.out.println("No game mode");
 
-            if(_cboStrategys.getSelectedIndex() == 0)
+            if(_cboStrategys.getSelectedIndex() == 0) // If we selected in the combobox the "Duo"
             {
                 _window._controller.switchToDuo();
                 _window.numberPlayer = 2;
             }
-            else if(_cboStrategys.getSelectedIndex() == 1) {
+            else if(_cboStrategys.getSelectedIndex() == 1) { // If we selected in the combobox the "Trio"
                 _window._controller.switchToTrio();
                 _window.numberPlayer = 3;
             }
-            else {
+            else { // If we selected in the combobox the "Quatro"
                 _window._controller.switchToQuatro();
                 _window.numberPlayer = 4;
             }
-            new KingDominoGame();
+            new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
         });
 
         _rdbGameNothing.addActionListener(actionEvent -> {
-            if(_rdbGameNothing.isSelected())
+            if(_rdbGameNothing.isSelected()) // If the Nothing mode is selected we make impossible to select the other mods
             {
                 _rdbGameModeHarmony.setEnabled(false);
                 _rdbGameModeMiddle.setEnabled(false);
@@ -184,14 +190,6 @@ public class KingDominoStart implements Observer{
             _rdbGameNothing.setSelected(!_rdbGameModeMiddle.isSelected() && !_rdbGameModeHarmony.isSelected());
         });
 
-    }
-
-    public static KingDominoStart getInstance()
-    {
-        if(instance == null){
-            instance = new KingDominoStart();
-        }
-        return instance;
     }
 
     @Override
