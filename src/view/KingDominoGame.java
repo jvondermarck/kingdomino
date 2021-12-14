@@ -52,7 +52,7 @@ public class KingDominoGame implements Observer {
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
         _window.frame.setLocationRelativeTo(null);
 
-        final ImageIcon icon = new ImageIcon("img/MainScreen.png");
+        ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -90,7 +90,6 @@ public class KingDominoGame implements Observer {
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
-        _labelRound.setVisible(true);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
@@ -189,12 +188,23 @@ public class KingDominoGame implements Observer {
         _panelMainInfoRight.setOpaque(false);
         _panelMainInfo.add(_panelMainInfoRight, BorderLayout.EAST);
 
-
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
-        _panelMainGraph = new JPanel( new GridLayout(2,2));
+        _panelMainGraph = new JPanel(new GridLayout(2,2)) // display in this panel a background image to get a beautiful game
+        {
+            final Image img = new ImageIcon("img/backGraph.png").getImage();
+            // instance initializer
+            {setOpaque(false);}
+            public void paintComponent(Graphics graphics)
+            {
+                graphics.drawImage(img, 0, 0, this);
+                super.paintComponent(graphics);
+            }
+        };
+
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
-        createGraph(); // We're going to create the graphs
+        createGraph(); // We're going to create the graph
+
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
@@ -327,6 +337,7 @@ public class KingDominoGame implements Observer {
             // NAME OF EACH PLAYER
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
             _panelAllGraphText[i].setBackground(Color.WHITE);
+            _panelAllGraphText[i].setOpaque(false);
 
             _textNamePlayer[i] = new JTextField("Kingdom of : " + (i+1));
             _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
