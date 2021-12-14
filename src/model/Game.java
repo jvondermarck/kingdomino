@@ -49,23 +49,14 @@ public class Game {
 
     public void setNumberPlayer(NumberPlayerStrategy strategy){
         this._numberplayer.setStrategy(strategy);
-        createPlayers();
+        createPlayers(this._numberplayer.getNumberPlayers());
     }
 
-    public void setTwoPlayers()
-    {
-        setNumberPlayer( this._numberplayer.getTwoPlayers());
-    }
+    public void setTwoPlayers() {  setNumberPlayer( this._numberplayer.getTwoPlayers()); }
 
-    public void setThreePlayers()
-    {
-        setNumberPlayer(this._numberplayer.getThreePlayers());
-    }
+    public void setThreePlayers()  {  setNumberPlayer(this._numberplayer.getThreePlayers());  }
 
-    public void setQuatroPlayers()
-    {
-        setNumberPlayer(this._numberplayer.getQuatroPlayers());
-    }
+    public void setQuatroPlayers()  {  setNumberPlayer(this._numberplayer.getQuatroPlayers()); }
 
 
     public void createPlayers(int numberPlayer){

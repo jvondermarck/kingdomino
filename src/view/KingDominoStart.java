@@ -160,9 +160,7 @@ public class KingDominoStart implements Observer{
                 _window._controller.switchToQuatro();
                 _window.numberPlayer = 4;
             }
-
-
-            _window._game.addObservers(new KingDominoGame());
+            new KingDominoGame();
         });
 
         _rdbGameNothing.addActionListener(actionEvent -> {

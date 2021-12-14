@@ -17,11 +17,16 @@ public class Controller {
         _game.createPlayers(numberPlayer);
     }
 
+    public void putDominoOnTable(){
+        _game.putDominoOnTable();
+    }
+
     // Methods for the strategy about the number of players
     public void switchToDuo(){ _game.setTwoPlayers();}
     public void switchToTrio(){ _game.setThreePlayers();}
     public void switchToQuatro(){ _game.setQuatroPlayers();}
 
+    // Methods about the game mode
     public void callHarmony(){ _game.factorHarmonyMode();  }
     public void callMiddleKingdom(){ _game.factorMiddleKingdom(); }
 
