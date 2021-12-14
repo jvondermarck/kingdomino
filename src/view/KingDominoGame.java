@@ -79,7 +79,7 @@ public class KingDominoGame implements Observer {
         _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
         // PANEL MAIN INFO TOP -->  _panelMainInfo = we will show the main title + a label about the game to know what to do
-        _panelMainInfoTop = new JPanel(new GridBagLayout());
+        _panelMainInfoTop = new JPanel(new BorderLayout());
         _panelMainInfoTop.setPreferredSize(new Dimension(430, 110));
 
         // LABEL TITLE WELCOME --> _panelMainInfoTop
@@ -89,15 +89,17 @@ public class KingDominoGame implements Observer {
         constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
+        _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _labelRound.setVisible(true);
-        _panelMainInfoTop.add(_labelRound, constraints);
+        _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
         _textInformationToDo = new JLabel("Boubakarh put your castle !");
+        _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
         _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
-        _panelMainInfoTop.add(_textInformationToDo, constraints);
+        _panelMainInfoTop.add(_textInformationToDo, BorderLayout.SOUTH);
 
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the four dominoes
         createDominoes();
@@ -115,8 +117,11 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setFocusable(false);
         _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
         _btnShowDomino.setForeground(Color.WHITE);
-        _btnShowDomino.setBackground(Color.decode("#DDAB40"));
+        //_btnShowDomino.setBackground(Color.decode("#DDAB40"));
         _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        _btnShowDomino.setOpaque(false);
+        _btnShowDomino.setContentAreaFilled(false);
+        _btnShowDomino.setBorderPainted(false);
         _panelMainInfoLeft.add(_btnShowDomino, constraints);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create the graph of 2*2 to rotate a domino
@@ -140,6 +145,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino[0].setContentAreaFilled(false);
         _rotateDomino[0].setFocusPainted(false);
         _rotateDomino[0].setOpaque(false);
+        _rotateDomino[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to inverse the domino
         _rotateDomino[1] = new JButton();
@@ -149,6 +155,8 @@ public class KingDominoGame implements Observer {
         _rotateDomino[1].setContentAreaFilled(false);
         _rotateDomino[1].setFocusPainted(false);
         _rotateDomino[1].setOpaque(false);
+        _rotateDomino[1].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
         constraints.gridy = 0;
@@ -201,7 +209,6 @@ public class KingDominoGame implements Observer {
             for(int i=0; i<cardLayout.length; i++)
             {
                 cardLayout[i].next(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
-                System.out.println(i);
             }
         });
     }
@@ -210,7 +217,7 @@ public class KingDominoGame implements Observer {
     public void update(Game game) {
         for(int i = 0; i < 4; i++){
             _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
-            System.out.println(game.getActualDominoes().get(i).getId().toString());
+            System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
             for(int j=0; j<2; j++)
             {
                 _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
@@ -243,8 +250,10 @@ public class KingDominoGame implements Observer {
             _btnHideDominoes[i] = new JButton(Integer.toString(i));
 
             _btnHideDominoes[i].setPreferredSize(new Dimension(170, 85));
-            _btnHideDominoes[i].setBackground(Color.decode("#3C3C3C"));
+            _btnHideDominoes[i].setIcon(new ImageIcon("img/domino1.png"));
             _btnHideDominoes[i].setForeground(Color.WHITE);
+            _btnHideDominoes[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 25));
+            _btnHideDominoes[i].setHorizontalTextPosition(SwingConstants.CENTER);
             _btnHideDominoes[i].setFocusable(false);
 
             // We add a listenner which will show the unhide domino with the 2 tiles
@@ -265,8 +274,8 @@ public class KingDominoGame implements Observer {
             _panelUnhideDominoes[i] = new JPanel( new GridLayout(1,2));
 
             // We add two buttons in our panel[i]
-            _btnTiles[i][0] = new JButton(0 + "" + i);
-            _btnTiles[i][1] = new JButton(1 + "" + i);
+            _btnTiles[i][0] = new JButton();
+            _btnTiles[i][1] = new JButton();
 
             _btnTiles[i][0].setFocusable(false);
             _btnTiles[i][1].setFocusable(false);
@@ -276,9 +285,9 @@ public class KingDominoGame implements Observer {
 
             // When we click of the left tile :
             int finalI = i;
-            _btnTiles[i][0].addActionListener(clickevent -> System.out.println("0" + finalI));
+            _btnTiles[i][0].addActionListener(clickevent -> System.out.println("Tile [" + finalI + "][0]"));
             // When we click of the right tile :
-            _btnTiles[i][1].addActionListener(clickevent -> System.out.println("1" + finalI));
+            _btnTiles[i][1].addActionListener(clickevent -> System.out.println("Tile [" + finalI + "][1]"));
         }
 
         for(int i=0; i<_numberDomino; i++)
