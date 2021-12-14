@@ -37,11 +37,13 @@ public class KingDominoGame implements Observer {
     public KingDominoGame()
     {
         _window = Window.instance; // we get our main window to access to its variables
+        _window._controller.addObserver(this);
         _window.frame.setTitle("Game Kingdomino");
         _window.frame.getContentPane().removeAll();
         _window.frame.repaint();
         _window.frame.setSize(1100,600);
-        _window.frame.setLocationRelativeTo(null);
+        _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
+        //_window.frame.setLocationRelativeTo(null);
 
         final ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -64,7 +66,7 @@ public class KingDominoGame implements Observer {
                 super.paintComponent(graphics);
             }
         };
-        _panelMainInfo.setLayout( new GridBagLayout() );
+        _panelMainInfo.setLayout( new GridBagLayout());
         _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
         // LABEL TITLE WELCOME
@@ -78,6 +80,7 @@ public class KingDominoGame implements Observer {
 
         // We create the four dominoes
         createDominoes();
+        _window._controller.putDominoOnTable(); // When we start we put the 4 dominoes
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
         _panelMainInfo.add(_panelGridDominoes, constraints);
@@ -118,7 +121,14 @@ public class KingDominoGame implements Observer {
 
     @Override
     public void update(Game game) {
-
+        for(int i = 0; i < 4; i++){
+            _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
+            System.out.println(game.getActualDominoes().get(i).getId().toString());
+            for(int j=0; j<2; j++)
+            {
+                _btnTiles[i][j].setBackground(Color.BLUE);
+            }
+        }
     }
 
     public void createDominoes()

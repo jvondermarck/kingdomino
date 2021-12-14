@@ -1,6 +1,7 @@
 package model;
 
 import model.entities.Deck;
+import model.entities.Domino;
 import model.entities.Player;
 import model.set.GameMode;
 import model.set.GameModeFactory;
@@ -16,6 +17,7 @@ public class Game {
 
     private Deck _deck;
     private List<Player> _listPlayers;
+    private List<Domino> _actualDominoes;
     private NumberPlayer _numberplayer;
 
     private GameModeFactory _factoryGameMode;
@@ -66,13 +68,28 @@ public class Game {
     }
 
 
-    public void createPlayers(){
+    public void createPlayers(int numberPlayer){
         _listPlayers = new ArrayList<>();
-        System.out.println("nombre de joueurs : " + this._numberplayer.getNumberPlayers());
+        for(int i = 0; i < numberPlayer; i++){
+            _listPlayers.add(new Player());
+        }
     }
 
-    public void createDeck(){
-        _deck = new Deck();
+    public void createDeck(int numberPlayer){
+        _deck = new Deck(numberPlayer);
+    }
+
+    public List<Domino> getActualDominoes(){
+        return this._actualDominoes;
+    }
+
+    public void putDominoOnTable(){
+        _actualDominoes = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            _actualDominoes.add(_deck.giveADomino());
+        }
+        //Collections.sort(_actualDominoes.getId());
+        notifyObservers();
     }
 
     public void addObservers(Observer observer){
@@ -85,8 +102,4 @@ public class Game {
         }
     }
 
-    public void resetElement()
-    {
-
-    }
 }

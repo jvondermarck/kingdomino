@@ -8,7 +8,7 @@ public class Deck {
     private final List<Domino> _listdominoes;
     private static final Random rand = new Random();
 
-    public Deck(){
+    public Deck(int numberPlayer){
         _listdominoes = new ArrayList<>();
         List<List<String>> dataCSV = CSVReader.readCSV("docs/kingdomino.csv");
         for(int i = 1; i < dataCSV.size(); i++){
@@ -16,6 +16,20 @@ public class Deck {
             _listdominoes.add(domino);
         }
         this.shuffle();
+
+        if(numberPlayer == 3){
+            removeDomino(12);
+        }
+        else if(numberPlayer == 2){
+            removeDomino(24);
+        }
+    }
+
+    private void removeDomino(int iteration){
+        for(int i = 0; i < iteration; i++){
+            int random = rand.nextInt(_listdominoes.size());
+            _listdominoes.remove(random);
+        }
     }
 
     private Domino generateDomino(int i, List<List<String>> dataCSV){
@@ -41,7 +55,7 @@ public class Deck {
     }
 
     public void shuffle(){
-        Collections.shuffle(this._listdominoes, new Random());
+        Collections.shuffle(this._listdominoes, rand);
     }
 
     public Domino giveADomino(){

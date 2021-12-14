@@ -9,6 +9,8 @@ public class Player {
     public Player()
     {
         this._king = new King();
+        initialiseCastle();
+        initialiseGraph();
     }
 
     public void initialiseGraph(){
