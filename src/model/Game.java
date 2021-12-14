@@ -79,9 +79,31 @@ public class Game {
         for(int i = 0; i < 4; i++){
             _actualDominoes.add(_deck.giveADomino());
         }
-        //Collections.sort(_actualDominoes.getId());
+
+        sortDominoTable(_actualDominoes.size());
         notifyObservers();
     }
+
+    public void sortDominoTable(int n)
+    {
+        // Base case
+        if (n == 1)
+            return;
+
+        for (int i=0; i<n-1; i++)
+        {
+            if (_actualDominoes.get(i).getId() > _actualDominoes.get(i + 1).getId())
+            {
+                Domino temp = _actualDominoes.get(i);
+                _actualDominoes.set(i, _actualDominoes.get(i+1));
+                _actualDominoes.set(i+1,temp);
+            }
+        }
+
+        // Largest element is fixed, recur for remaining array
+        sortDominoTable(n-1);
+    }
+
 
     public void addObservers(Observer observer){
         this._observer.add(observer);

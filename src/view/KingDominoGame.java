@@ -2,8 +2,6 @@ package view;
 
 import model.Game;
 import model.Observer;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -16,10 +14,10 @@ public class KingDominoGame implements Observer {
     private final Window _window;
     private final JPanel _panelMain;
     private final JPanel _panelMainInfo;
-    private JPanel _panelMainInfoTop;
-    private JPanel _panelMainInfoLeft;
-    private JPanel _panelMainInfoRight;
-    private JPanel _subPanelRotation;
+    private final JPanel _panelMainInfoTop;
+    private final JPanel _panelMainInfoLeft;
+    private final JPanel _panelMainInfoRight;
+    private final JPanel _subPanelRotation;
     private final JPanel _panelMainGraph;
     private JPanel _panelGridDominoes;
     private final JLabel _labelRound;
@@ -34,8 +32,9 @@ public class KingDominoGame implements Observer {
     private JButton[][] _btnOnGraph;
     private JPanel[] _panelAllGraphText;
     private JTextField[] _textNamePlayer;
-    private JButton[] _rotateDomino;
-    private JButton[] _dominoGraphRotation;
+    private final JButton[] _rotateDomino;
+    private final JButton[] _dominoGraphRotation;
+    private JLabel _textInformationToDo;
 
     public KingDominoGame()
     {
@@ -83,6 +82,13 @@ public class KingDominoGame implements Observer {
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setVisible(true);
         _panelMainInfoTop.add(_labelRound, constraints);
+
+        // LABEL SUB TITLE ABOUT WHAT TO DO
+        constraints.gridy = 1;
+        constraints.insets = new Insets(10,0,0,0);
+        _textInformationToDo = new JLabel("Boubakarh put your castle !");
+        _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
+        _panelMainInfoTop.add(_textInformationToDo, constraints);
 
         // We create the four dominoes
         createDominoes();
@@ -341,9 +347,7 @@ public class KingDominoGame implements Observer {
 
                 int finalNumGraph = numGraph;
                 int finalJ = j;
-                _btnOnGraph[i][j].addActionListener(actionEvent -> {
-                        System.out.println(finalNumGraph + " " + finalJ);
-                });
+                _btnOnGraph[i][j].addActionListener(actionEvent -> System.out.println(finalNumGraph + " " + finalJ));
             }
 
             _btnOnGraph[i][12].setIcon(new ImageIcon("img/castle1.png"));
