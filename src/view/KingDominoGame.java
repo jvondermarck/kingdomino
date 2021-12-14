@@ -117,29 +117,35 @@ public class KingDominoGame implements Observer {
         }
 
         _rotateDomino[0] = new JButton();
-        _rotateDomino[0].setPreferredSize(new Dimension(63, 60));
-        _rotateDomino[0].setIcon(new ImageIcon("img/leftRotate.png"));
+        _rotateDomino[0].setPreferredSize(new Dimension(60, 60));
+        _rotateDomino[0].setIcon(new ImageIcon("img/rotate.png"));
+        _rotateDomino[0].setBorderPainted(false);
+        _rotateDomino[0].setContentAreaFilled(false);
+        _rotateDomino[0].setFocusPainted(false);
         _rotateDomino[0].setOpaque(false);
-//        _rotateDomino[0].setContentAreaFilled(false);
-//        _rotateDomino[0].setBorderPainted(false);
 
         _rotateDomino[1] = new JButton();
-        _rotateDomino[1].setPreferredSize(new Dimension(63, 60));
-        _rotateDomino[1].setIcon(new ImageIcon("img/rightRotate.png"));
+        _rotateDomino[1].setPreferredSize(new Dimension(60, 60));
+        _rotateDomino[1].setIcon(new ImageIcon("img/inverse.png"));
+        _rotateDomino[1].setBorderPainted(false);
+        _rotateDomino[1].setContentAreaFilled(false);
+        _rotateDomino[1].setFocusPainted(false);
         _rotateDomino[1].setOpaque(false);
+
 
         constraints.gridy = 0;
         constraints.gridx = 0;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 3;
         constraints.insets = new Insets(0,0,0,0);
         _panelMainInfoRight.add(_subPanelRotation, constraints);
         constraints.gridwidth = 1;
         constraints.gridy = 1;
         constraints.gridx = 0;
-        constraints.insets = new Insets(20,0,0,0);
+        constraints.insets = new Insets(20,30,0,0);
         _panelMainInfoRight.add(_rotateDomino[0], constraints);
-        constraints.insets = new Insets(20,20,0,0);
-        constraints.gridx = 1;
+        constraints.insets = new Insets(20,10,0,30);
+        constraints.gridy = 1;
+        constraints.gridx = 2;
         _panelMainInfoRight.add(_rotateDomino[1], constraints);
 
         // We add the subPanels to the _panelMainInfo
