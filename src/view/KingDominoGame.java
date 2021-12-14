@@ -16,8 +16,9 @@ public class KingDominoGame implements Observer {
     private final Window _window;
     private final JPanel _panelMain;
     private final JPanel _panelMainInfo;
-    private JPanel _subPanelTitle;
-    private JPanel _subPanelDominoes;
+    private JPanel _panelMainInfoTop;
+    private JPanel _panelMainInfoLeft;
+    private JPanel _panelMainInfoRight;
     private JPanel _subPanelRotation;
     private final JPanel _panelMainGraph;
     private JPanel _panelGridDominoes;
@@ -33,6 +34,8 @@ public class KingDominoGame implements Observer {
     private JButton[][] _btnOnGraph;
     private JPanel[] _panelAllGraphText;
     private JTextField[] _textNamePlayer;
+    private JButton[] _rotateDomino;
+    private JButton[] _dominoGraphRotation;
 
     public KingDominoGame()
     {
@@ -43,7 +46,7 @@ public class KingDominoGame implements Observer {
         _window.frame.repaint();
         _window.frame.setSize(1100,600);
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
-        //_window.frame.setLocationRelativeTo(null);
+        _window.frame.setLocationRelativeTo(null);
 
         final ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -66,24 +69,29 @@ public class KingDominoGame implements Observer {
                 super.paintComponent(graphics);
             }
         };
-        _panelMainInfo.setLayout( new GridBagLayout());
+        _panelMainInfo.setLayout( new BorderLayout());
         _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
+        _panelMainInfoTop = new JPanel(new GridBagLayout());
+        _panelMainInfoTop.setPreferredSize(new Dimension(430, 110));
         // LABEL TITLE WELCOME
         constraints.gridx = 0;
         constraints.gridy = 0;
+        constraints.gridwidth = 2;
         constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND");
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setVisible(true);
-        _panelMainInfo.add(_labelRound, constraints);
+        _panelMainInfoTop.add(_labelRound, constraints);
 
         // We create the four dominoes
         createDominoes();
         _window._controller.putDominoOnTable(); // When we start we put the 4 dominoes
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
-        _panelMainInfo.add(_panelGridDominoes, constraints);
+        _panelMainInfoLeft = new JPanel( new GridBagLayout());
+        _panelMainInfoLeft.setPreferredSize(new Dimension(215, 490));
+        _panelMainInfoLeft.add(_panelGridDominoes, constraints);
 
         // We create the button to show all the dominoes
         constraints.gridy = 2;
@@ -94,7 +102,60 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setForeground(Color.WHITE);
         _btnShowDomino.setBackground(Color.decode("#DDAB40"));
         _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        _panelMainInfo.add(_btnShowDomino, constraints);
+        _panelMainInfoLeft.add(_btnShowDomino, constraints);
+
+        _panelMainInfoRight = new JPanel( new GridBagLayout());
+        _panelMainInfoRight.setPreferredSize(new Dimension(215, 490));
+        _rotateDomino = new JButton[2];
+        _subPanelRotation = new JPanel(new GridLayout(2,2));
+        _dominoGraphRotation = new JButton[4];
+        for(int i=0; i<4; i++)
+        {
+            _dominoGraphRotation[i] = new JButton(Integer.toString(i));
+            _dominoGraphRotation[i].setPreferredSize(new Dimension(85, 85));
+            _subPanelRotation.add(_dominoGraphRotation[i]);
+        }
+
+        _rotateDomino[0] = new JButton();
+        _rotateDomino[0].setPreferredSize(new Dimension(63, 60));
+        _rotateDomino[0].setIcon(new ImageIcon("img/leftRotate.png"));
+        _rotateDomino[0].setOpaque(false);
+//        _rotateDomino[0].setContentAreaFilled(false);
+//        _rotateDomino[0].setBorderPainted(false);
+
+        _rotateDomino[1] = new JButton();
+        _rotateDomino[1].setPreferredSize(new Dimension(63, 60));
+        _rotateDomino[1].setIcon(new ImageIcon("img/rightRotate.png"));
+        _rotateDomino[1].setOpaque(false);
+
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(0,0,0,0);
+        _panelMainInfoRight.add(_subPanelRotation, constraints);
+        constraints.gridwidth = 1;
+        constraints.gridy = 1;
+        constraints.gridx = 0;
+        constraints.insets = new Insets(20,0,0,0);
+        _panelMainInfoRight.add(_rotateDomino[0], constraints);
+        constraints.insets = new Insets(20,20,0,0);
+        constraints.gridx = 1;
+        _panelMainInfoRight.add(_rotateDomino[1], constraints);
+
+        // We add the subPanels to the _panelMainInfo
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+        _panelMainInfoTop.setOpaque(false);
+        _panelMainInfo.add(_panelMainInfoTop, BorderLayout.NORTH);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        _panelMainInfoLeft.setOpaque(false);
+        _panelMainInfo.add(_panelMainInfoLeft, BorderLayout.WEST);
+        constraints.gridx = 1;
+        _panelMainInfoRight.setOpaque(false);
+        _panelMainInfo.add(_panelMainInfoRight, BorderLayout.EAST);
 
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel( new GridLayout(2,2));
@@ -126,7 +187,7 @@ public class KingDominoGame implements Observer {
             System.out.println(game.getActualDominoes().get(i).getId().toString());
             for(int j=0; j<2; j++)
             {
-                _btnTiles[i][j].setBackground(Color.BLUE);
+                _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
             }
         }
     }
