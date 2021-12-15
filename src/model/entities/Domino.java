@@ -47,11 +47,19 @@ public class Domino {
 
     public void reverse()
     {
+        Tile temp = _arrayTile[0][0];
         if(this.isXX()){
-
+            _arrayTile[0][0] = _arrayTile[0][1];
+            _arrayTile[0][1] = temp;
         }
         else if(this.isXY()){
-
+            _arrayTile[0][0] = _arrayTile[1][0];
+            _arrayTile[1][0] = temp;
         }
+    }
+
+    public String getColor(int x, int y)
+    {
+        return _arrayTile[x][y].getColor();
     }
 }

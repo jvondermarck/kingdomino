@@ -110,6 +110,12 @@ public class Game {
         notifyObserversRotation();
     }
 
+    public void reverseDomino(int index)
+    {
+        _actualDominoes.get(index).reverse();
+        notifyObserversRotation();
+    }
+
     public boolean isXXDomino(int index)
     {
         return  _actualDominoes.get(index).isXX();
@@ -118,6 +124,11 @@ public class Game {
     public boolean isXYDomino(int index)
     {
         return  _actualDominoes.get(index).isXY();
+    }
+
+    public String getColorTile(int index, int x, int y)
+    {
+        return  _actualDominoes.get(index).getColor(x,y);
     }
 
     public void addObservers(Observer observer){

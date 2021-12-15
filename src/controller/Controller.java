@@ -31,6 +31,7 @@ public class Controller {
     public void callMiddleKingdom(){ _game.factorMiddleKingdom(); }
 
     public void callRotationDomino(int index) { _game.rotateDomino(index); }
+    public void callReverseDomino(int index) { _game.reverseDomino(index); }
 
     public void addObserver(Observer observer){
         _game.addObservers(observer);

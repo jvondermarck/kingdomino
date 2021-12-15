@@ -234,6 +234,9 @@ public class KingDominoGame implements Observer {
         _rotateDomino[0].addActionListener(actionEvent -> {
             _window._controller.callRotationDomino(indexDominoClicked);
         });
+        _rotateDomino[1].addActionListener(actionEvent -> {
+            _window._controller.callReverseDomino(indexDominoClicked);
+        });
     }
 
     @Override
@@ -250,16 +253,15 @@ public class KingDominoGame implements Observer {
 
     @Override
     public void rotationDomino(Game game) {
+        _dominoGraphRotation[0][0].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 0,0)));
         if(game.isXXDomino(indexDominoClicked))
         {
-            _dominoGraphRotation[0][0].setBackground(_btnTiles[indexDominoClicked][0].getBackground());
-            _dominoGraphRotation[0][1].setBackground(_btnTiles[indexDominoClicked][1].getBackground());
+            _dominoGraphRotation[0][1].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 0,1)));
             setBackgroudDominoGraph(0,1,true);
             setBackgroudDominoGraph(1,0,false);
 
         } else if(game.isXYDomino(indexDominoClicked)){
-            _dominoGraphRotation[0][0].setBackground(_btnTiles[indexDominoClicked][0].getBackground());
-            _dominoGraphRotation[1][0].setBackground(_btnTiles[indexDominoClicked][1].getBackground());
+            _dominoGraphRotation[1][0].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 1,0)));
             setBackgroudDominoGraph(1,0,true);
             setBackgroudDominoGraph(0,1,false);
         }
