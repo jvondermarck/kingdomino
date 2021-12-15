@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Deck {
     private final List<Domino> _listdominoes;
-    private static final Random rand = new Random();
+    private static final Random _rand = new Random();
 
     public Deck(int numberPlayer){
         _listdominoes = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Deck {
 
     private void removeDomino(int iteration){
         for(int i = 0; i < iteration; i++){
-            int random = rand.nextInt(_listdominoes.size());
+            int random = _rand.nextInt(_listdominoes.size());
             _listdominoes.remove(random);
         }
     }
@@ -55,11 +55,11 @@ public class Deck {
     }
 
     public void shuffle(){
-        Collections.shuffle(this._listdominoes, rand);
+        Collections.shuffle(this._listdominoes, _rand);
     }
 
     public Domino giveADomino(){
-        int random = rand.nextInt(_listdominoes.size());
+        int random = _rand.nextInt(_listdominoes.size());
         Domino domino = this._listdominoes.get(random);
         this._listdominoes.remove(domino);
         return domino;

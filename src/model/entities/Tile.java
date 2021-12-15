@@ -1,29 +1,29 @@
 package model.entities;
 
 public class Tile {
-    private final int crowns;
-    private String color;
+    private final int _crowns;
+    private String _color;
 
     public Tile(int crowns, String color){
-        this.crowns = crowns;
-        this.color = color;
+        this._crowns = crowns;
+        this._color = color;
     }
 
     public Tile(){
-        crowns = 0;
-        color = "white";
+        _crowns = 0;
+        _color = "white";
     }
 
     public void setColorTile(String color){
-        this.color = color;
+        this._color = color;
     }
 
     public int getCrowns(){
-        return this.crowns;
+        return this._crowns;
     }
 
     public String getColor(){
-        return this.color;
+        return this._color;
     }
 
 }

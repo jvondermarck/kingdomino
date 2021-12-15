@@ -13,15 +13,15 @@ import java.util.List;
 
 public class Game {
     private static Game instance;
-    private List<Observer> _observer;
+    private final List<Observer> _observer;
 
     private Deck _deck;
     private List<Player> _listPlayers;
     private List<Domino> _actualDominoes;
-    private NumberPlayer _numberplayer;
+    private final NumberPlayer _numberplayer;
 
-    private GameModeFactory _factoryGameMode;
-    private List<GameMode> _listGameMode;
+    private final GameModeFactory _factoryGameMode;
+    private final List<GameMode> _listGameMode;
 
     private Game()
     {
