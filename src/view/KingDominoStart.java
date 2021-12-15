@@ -196,4 +196,9 @@ public class KingDominoStart implements Observer{
     public void update(Game game) {
 
     }
+
+    @Override
+    public void rotationDomino(Game game) {
+
+    }
 }

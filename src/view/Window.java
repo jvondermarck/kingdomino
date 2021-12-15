@@ -46,4 +46,8 @@ public class Window extends JFrame implements Observer {
     public void update(Game game) {
 
     }
+    @Override
+    public void rotationDomino(Game game) {
+
+    }
 }

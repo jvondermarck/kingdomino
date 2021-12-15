@@ -1,5 +1,6 @@
 package model;
 
 public interface Observer {
-    public void update(Game game);
+    void update(Game game);
+    void rotationDomino(Game game);
 }

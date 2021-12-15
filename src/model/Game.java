@@ -104,6 +104,21 @@ public class Game {
         sortDominoTable(n-1);
     }
 
+    public void rotateDomino(int index)
+    {
+        _actualDominoes.get(index).rotate();
+        notifyObserversRotation();
+    }
+
+    public boolean isXXDomino(int index)
+    {
+        return  _actualDominoes.get(index).isXX();
+    }
+
+    public boolean isXYDomino(int index)
+    {
+        return  _actualDominoes.get(index).isXY();
+    }
 
     public void addObservers(Observer observer){
         this._observer.add(observer);
@@ -112,6 +127,13 @@ public class Game {
     public void notifyObservers(){
         for(Observer observer : _observer){
             observer.update(this);
+        }
+    }
+
+    public void notifyObserversRotation()
+    {
+        for(Observer observer : _observer){
+            observer.rotationDomino(this);
         }
     }
 

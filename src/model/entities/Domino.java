@@ -44,4 +44,14 @@ public class Domino {
             _arrayTile[1][0] = null;
         }
     }
+
+    public void reverse()
+    {
+        if(this.isXX()){
+
+        }
+        else if(this.isXY()){
+
+        }
+    }
 }

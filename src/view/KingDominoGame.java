@@ -33,13 +33,14 @@ public class KingDominoGame implements Observer {
     private JButton[][] _btnTiles; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles) (it will be in the _panelMainInfoLeft panel)
     private final JButton _btnShowDomino; // a button to return the 4 dominoes (it will be in the _panelMainInfoLeft panel)
     private final JButton[] _rotateDomino; // an array of button, the index 0 = button to reverse and index = 1 to inverse the domino (it will be in the _panelMainInfoRight panel)
-    private final JButton[] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
+    private final JButton[][] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
     private JButton[][] _btnOnGraph; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
 
     private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
+    private int indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
 
     public KingDominoGame()
     {
@@ -128,12 +129,19 @@ public class KingDominoGame implements Observer {
         _panelMainInfoRight.setPreferredSize(new Dimension(215, 490));
         _rotateDomino = new JButton[2];
         _subPanelRotation = new JPanel(new GridLayout(2,2));
-        _dominoGraphRotation = new JButton[4];
-        for(int i=0; i<4; i++)
+        _subPanelRotation.setOpaque(false);
+        _dominoGraphRotation = new JButton[2][2]; // 2 lines and 2 columns
+        for(int i=0; i<2; i++)
         {
-            _dominoGraphRotation[i] = new JButton(Integer.toString(i));
-            _dominoGraphRotation[i].setPreferredSize(new Dimension(85, 85));
-            _subPanelRotation.add(_dominoGraphRotation[i]);
+            for(int j=0; j<2; j++)
+            {
+                _dominoGraphRotation[i][j] = new JButton();
+                _dominoGraphRotation[i][j].setPreferredSize(new Dimension(85, 85));
+                _dominoGraphRotation[i][j].setFocusPainted(false);
+                _dominoGraphRotation[i][j].setContentAreaFilled(false);
+                _dominoGraphRotation[i][j].setBorderPainted(false);
+                _subPanelRotation.add(_dominoGraphRotation[i][j]);
+            }
         }
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to rotate the domino
@@ -221,6 +229,11 @@ public class KingDominoGame implements Observer {
                 cardLayout[i].next(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
             }
         });
+
+        // ROTATE A DOMINO
+        _rotateDomino[0].addActionListener(actionEvent -> {
+            _window._controller.callRotationDomino(indexDominoClicked);
+        });
     }
 
     @Override
@@ -232,6 +245,23 @@ public class KingDominoGame implements Observer {
             {
                 _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
             }
+        }
+    }
+
+    @Override
+    public void rotationDomino(Game game) {
+        if(game.isXXDomino(indexDominoClicked))
+        {
+            _dominoGraphRotation[0][0].setBackground(_btnTiles[indexDominoClicked][0].getBackground());
+            _dominoGraphRotation[0][1].setBackground(_btnTiles[indexDominoClicked][1].getBackground());
+            setBackgroudDominoGraph(0,1,true);
+            setBackgroudDominoGraph(1,0,false);
+
+        } else if(game.isXYDomino(indexDominoClicked)){
+            _dominoGraphRotation[0][0].setBackground(_btnTiles[indexDominoClicked][0].getBackground());
+            _dominoGraphRotation[1][0].setBackground(_btnTiles[indexDominoClicked][1].getBackground());
+            setBackgroudDominoGraph(1,0,true);
+            setBackgroudDominoGraph(0,1,false);
         }
     }
 
@@ -295,9 +325,23 @@ public class KingDominoGame implements Observer {
 
             // When we click of the left tile :
             int finalI = i;
-            _btnTiles[i][0].addActionListener(clickevent -> System.out.println("Tile [" + finalI + "][0]"));
+            _btnTiles[i][0].addActionListener(clickevent -> {
+                System.out.println("Tile [" + finalI + "][0]");
+                indexDominoClicked = finalI;
+                _dominoGraphRotation[0][0].setBackground(_btnTiles[finalI][0].getBackground());
+                _dominoGraphRotation[0][1].setBackground(_btnTiles[finalI][1].getBackground());
+                setBackgroudDominoGraph(0,0,true);
+                setBackgroudDominoGraph(0,1,true);
+            });
             // When we click of the right tile :
-            _btnTiles[i][1].addActionListener(clickevent -> System.out.println("Tile [" + finalI + "][1]"));
+            _btnTiles[i][1].addActionListener(clickevent -> {
+                 indexDominoClicked = finalI;
+                 _dominoGraphRotation[0][0].setBackground(_btnTiles[finalI][0].getBackground());
+                 _dominoGraphRotation[0][1].setBackground(_btnTiles[finalI][1].getBackground());
+                setBackgroudDominoGraph(0,0,true);
+                setBackgroudDominoGraph(0,1,true);
+                System.out.println("Tile [" + finalI + "][1]");
+            });
         }
 
         for(int i=0; i<_numberDomino; i++)
@@ -408,5 +452,11 @@ public class KingDominoGame implements Observer {
 
             _panelMainGraph.add(_panelAllGraphText[i]);
         }
+    }
+
+    public void setBackgroudDominoGraph(int x, int y, boolean condition)
+    {
+        _dominoGraphRotation[x][y].setContentAreaFilled(condition);
+        _dominoGraphRotation[x][y].setBorderPainted(condition);
     }
 }

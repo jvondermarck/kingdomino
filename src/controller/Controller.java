@@ -30,6 +30,8 @@ public class Controller {
     public void callHarmony(){ _game.factorHarmonyMode();  }
     public void callMiddleKingdom(){ _game.factorMiddleKingdom(); }
 
+    public void callRotationDomino(int index) { _game.rotateDomino(index); }
+
     public void addObserver(Observer observer){
         _game.addObservers(observer);
     }
