@@ -56,6 +56,7 @@ public class KingDominoGame implements Observer {
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
         _window.frame.setLocationRelativeTo(null);
         _unicodeCrown = "\uD83D\uDC51";
+        indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
 
         ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -237,8 +238,14 @@ public class KingDominoGame implements Observer {
         });
 
         // ROTATE A DOMINO
-        _rotateDomino[0].addActionListener(actionEvent -> _window._controller.callRotationDomino(indexDominoClicked));
-        _rotateDomino[1].addActionListener(actionEvent -> _window._controller.callReverseDomino(indexDominoClicked));
+        _rotateDomino[0].addActionListener(actionEvent -> {
+            if(indexDominoClicked!=-1)
+                _window._controller.callRotationDomino(indexDominoClicked);
+        });
+        _rotateDomino[1].addActionListener(actionEvent -> {
+            if(indexDominoClicked!=-1)
+                _window._controller.callReverseDomino(indexDominoClicked);
+        });
     }
 
     @Override
@@ -445,6 +452,7 @@ public class KingDominoGame implements Observer {
                     {
                         _btnOnGraph[finalI][finalJ].setIcon(new ImageIcon("img/castle1.png"));
                         _castleIsSet[finalI] = true;
+                        // TODO : update coordinate of the castle to the model
                     }
                     allCastleSet();
                 });
