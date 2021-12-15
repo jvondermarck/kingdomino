@@ -41,6 +41,7 @@ public class KingDominoGame implements Observer {
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
     private int indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
+    private final String unicodeCrown; // the unicode crown to show all the crowns of a Tile
 
     public KingDominoGame()
     {
@@ -52,6 +53,7 @@ public class KingDominoGame implements Observer {
         _window.frame.setSize(1100,600);
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
         _window.frame.setLocationRelativeTo(null);
+        unicodeCrown = "\uD83D\uDC51";
 
         ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -140,6 +142,8 @@ public class KingDominoGame implements Observer {
                 _dominoGraphRotation[i][j].setFocusPainted(false);
                 _dominoGraphRotation[i][j].setContentAreaFilled(false);
                 _dominoGraphRotation[i][j].setBorderPainted(false);
+                _dominoGraphRotation[i][j].setFont(new Font(_dominoGraphRotation[i][j].getFont().getName(), Font.PLAIN, 20));
+                _dominoGraphRotation[i][j].setForeground(Color.WHITE);
                 _subPanelRotation.add(_dominoGraphRotation[i][j]);
             }
         }
@@ -231,12 +235,8 @@ public class KingDominoGame implements Observer {
         });
 
         // ROTATE A DOMINO
-        _rotateDomino[0].addActionListener(actionEvent -> {
-            _window._controller.callRotationDomino(indexDominoClicked);
-        });
-        _rotateDomino[1].addActionListener(actionEvent -> {
-            _window._controller.callReverseDomino(indexDominoClicked);
-        });
+        _rotateDomino[0].addActionListener(actionEvent -> _window._controller.callRotationDomino(indexDominoClicked));
+        _rotateDomino[1].addActionListener(actionEvent -> _window._controller.callReverseDomino(indexDominoClicked));
     }
 
     @Override
@@ -247,23 +247,31 @@ public class KingDominoGame implements Observer {
             for(int j=0; j<2; j++)
             {
                 _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
+                // We get all the crowns of the title
+                for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
+                {
+                    _btnTiles[i][j].setText( _btnTiles[i][j].getText() + unicodeCrown); // it's a unicode string to access to a crown
+                }
             }
         }
     }
 
     @Override
     public void rotationDomino(Game game) {
-        _dominoGraphRotation[0][0].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 0,0)));
-        if(game.isXXDomino(indexDominoClicked))
-        {
-            _dominoGraphRotation[0][1].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 0,1)));
-            setBackgroudDominoGraph(0,1,true);
-            setBackgroudDominoGraph(1,0,false);
+        putDominoRotate();
+    }
 
-        } else if(game.isXYDomino(indexDominoClicked)){
-            _dominoGraphRotation[1][0].setBackground(Color.decode(game.getColorTile(indexDominoClicked, 1,0)));
-            setBackgroudDominoGraph(1,0,true);
-            setBackgroudDominoGraph(0,1,false);
+    public void setCrownRotation(int x, int y)
+    {
+        int numberCrown = _window._game.getActualDominoes().get(indexDominoClicked).getTile()[x][y].getCrowns();
+        if(numberCrown==0)
+        {
+            _dominoGraphRotation[x][y].setText("");
+        } else {
+            for(int k=0; k<numberCrown; k++)
+            {
+                _dominoGraphRotation[x][y].setText( _dominoGraphRotation[x][y].getText() + unicodeCrown);
+            }
         }
     }
 
@@ -317,7 +325,11 @@ public class KingDominoGame implements Observer {
 
             // We add two buttons in our panel[i]
             _btnTiles[i][0] = new JButton();
+            _btnTiles[i][0].setFont(new Font(_btnTiles[i][0].getFont().getName(), Font.PLAIN, 20));
+            _btnTiles[i][0].setForeground(Color.WHITE);
             _btnTiles[i][1] = new JButton();
+            _btnTiles[i][1].setFont(new Font(_btnTiles[i][1].getFont().getName(), Font.PLAIN, 20));
+            _btnTiles[i][1].setForeground(Color.WHITE);
 
             _btnTiles[i][0].setFocusable(false);
             _btnTiles[i][1].setFocusable(false);
@@ -328,22 +340,19 @@ public class KingDominoGame implements Observer {
             // When we click of the left tile :
             int finalI = i;
             _btnTiles[i][0].addActionListener(clickevent -> {
-                System.out.println("Tile [" + finalI + "][0]");
                 indexDominoClicked = finalI;
-                _dominoGraphRotation[0][0].setBackground(_btnTiles[finalI][0].getBackground());
-                _dominoGraphRotation[0][1].setBackground(_btnTiles[finalI][1].getBackground());
                 setBackgroudDominoGraph(0,0,true);
-                setBackgroudDominoGraph(0,1,true);
+                putDominoRotate();
+                System.out.println("Tile [" + finalI + "][0]");
             });
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
-                 indexDominoClicked = finalI;
-                 _dominoGraphRotation[0][0].setBackground(_btnTiles[finalI][0].getBackground());
-                 _dominoGraphRotation[0][1].setBackground(_btnTiles[finalI][1].getBackground());
+                indexDominoClicked = finalI;
                 setBackgroudDominoGraph(0,0,true);
-                setBackgroudDominoGraph(0,1,true);
+                putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
             });
+
         }
 
         for(int i=0; i<_numberDomino; i++)
@@ -456,9 +465,34 @@ public class KingDominoGame implements Observer {
         }
     }
 
+    // We remove or display a font to put or remove a color in our mini graph at one specifi coordinate
     public void setBackgroudDominoGraph(int x, int y, boolean condition)
     {
         _dominoGraphRotation[x][y].setContentAreaFilled(condition);
         _dominoGraphRotation[x][y].setBorderPainted(condition);
+        if(!condition)
+          _dominoGraphRotation[x][y].setText(""); // we remove the crown unicode (even if there wasn't any)
     }
+
+    public void putDominoRotate()
+    {
+        _dominoGraphRotation[0][0].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 0,0)));
+        _dominoGraphRotation[0][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
+        setCrownRotation(0,0);
+
+        if(_window._game.isXXDomino(indexDominoClicked))
+        {
+            setBackgroudDominoGraph(0,1,true);
+            setBackgroudDominoGraph(1,0,false);
+            _dominoGraphRotation[0][1].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 0,1)));
+            setCrownRotation(0,1);
+        } else if(_window._game.isXYDomino(indexDominoClicked)){
+            setBackgroudDominoGraph(1,0,true);
+            setBackgroudDominoGraph(0,1,false);
+            _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 1,0)));
+            setCrownRotation(1,0);
+        }
+    }
+
+
 }
