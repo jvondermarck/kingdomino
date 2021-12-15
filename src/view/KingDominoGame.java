@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -41,7 +42,8 @@ public class KingDominoGame implements Observer {
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
     private int indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
-    private final String unicodeCrown; // the unicode crown to show all the crowns of a Tile
+    private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
+    private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
 
     public KingDominoGame()
     {
@@ -53,7 +55,7 @@ public class KingDominoGame implements Observer {
         _window.frame.setSize(1100,600);
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
         _window.frame.setLocationRelativeTo(null);
-        unicodeCrown = "\uD83D\uDC51";
+        _unicodeCrown = "\uD83D\uDC51";
 
         ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -98,7 +100,7 @@ public class KingDominoGame implements Observer {
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
-        _textInformationToDo = new JLabel("Boubakarh put your castle !");
+        _textInformationToDo = new JLabel("Players... put your castle !");
         _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
         _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
         _panelMainInfoTop.add(_textInformationToDo, BorderLayout.SOUTH);
@@ -216,7 +218,7 @@ public class KingDominoGame implements Observer {
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
         createGraph(); // We're going to create the graph
-
+        allCastleSet(); // we disable the button if we didn't put the castle
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
@@ -250,7 +252,7 @@ public class KingDominoGame implements Observer {
                 // We get all the crowns of the title
                 for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
                 {
-                    _btnTiles[i][j].setText( _btnTiles[i][j].getText() + unicodeCrown); // it's a unicode string to access to a crown
+                    _btnTiles[i][j].setText( _btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
                 }
             }
         }
@@ -270,7 +272,7 @@ public class KingDominoGame implements Observer {
         } else {
             for(int k=0; k<numberCrown; k++)
             {
-                _dominoGraphRotation[x][y].setText( _dominoGraphRotation[x][y].getText() + unicodeCrown);
+                _dominoGraphRotation[x][y].setText( _dominoGraphRotation[x][y].getText() + _unicodeCrown);
             }
         }
     }
@@ -309,8 +311,8 @@ public class KingDominoGame implements Observer {
             // We add a listenner which will show the unhide domino with the 2 tiles
             int finalI = i;
             _btnHideDominoes[i].addActionListener(clickevent -> {
-                cardLayout[finalI].next(_container[finalI]); // when we click of one of the four domino, it will call the next card layout
-                System.out.println(finalI);
+                //cardLayout[finalI].next(_container[finalI]); // when we click of one of the four domino, it will call the next card layout
+                System.out.println("Clicked on domino : " + finalI);
             });
 
             // We add the button[i] on the array of the hidden dominoes[i]
@@ -378,6 +380,7 @@ public class KingDominoGame implements Observer {
         _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
         _btnOnGraph = new JButton[numberPlayers][25]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
         _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
+        _castleIsSet = new boolean[_window.numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -436,10 +439,16 @@ public class KingDominoGame implements Observer {
 
                 int finalNumGraph = numGraph;
                 int finalJ = j;
-                _btnOnGraph[i][j].addActionListener(actionEvent -> System.out.println(finalNumGraph + " " + finalJ));
+                _btnOnGraph[i][j].addActionListener(actionEvent -> {
+                    System.out.println(finalNumGraph + " " + finalJ);
+                    if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
+                    {
+                        _btnOnGraph[finalI][finalJ].setIcon(new ImageIcon("img/castle1.png"));
+                        _castleIsSet[finalI] = true;
+                    }
+                    allCastleSet();
+                });
             }
-
-            _btnOnGraph[i][12].setIcon(new ImageIcon("img/castle1.png"));
 
             if(i==1){
                 _panelAllGraphText[i].setPreferredSize(new Dimension(width*2, height));
@@ -491,6 +500,28 @@ public class KingDominoGame implements Observer {
             setBackgroudDominoGraph(0,1,false);
             _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 1,0)));
             setCrownRotation(1,0);
+        }
+    }
+
+    public void setTextInformation(JTextField player, String text)
+    {
+        _textInformationToDo.setText(player.getText() + " " + text);
+    }
+    public void setTextInformation(String text)
+    {
+        _textInformationToDo.setText(text);
+    }
+    public void allCastleSet()
+    {
+        _btnShowDomino.setEnabled(true);
+        setTextInformation("Players, unhide the dominoes !");
+        for(int i=0; i<_castleIsSet.length; i++)
+        {
+            if (!_castleIsSet[i]) {
+                _btnShowDomino.setEnabled(false);
+                setTextInformation(_textNamePlayer[i], " put your castle !");
+                break;
+            }
         }
     }
 
