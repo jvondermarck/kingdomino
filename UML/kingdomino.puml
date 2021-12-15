@@ -4,8 +4,11 @@ skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 skinparam roundcorner 20
+skinparam linetype polyline
+skinparam linetype ortho
 skinparam classBackgroundColor #wheat
-
+skinparam nodesep 100
+skinparam ranksep 200
 
 class LauncherKingdomino{
     +{static} main( args:String[] )
@@ -30,13 +33,18 @@ package Model #salmon;line:red{
         {static}-instance:Game
         -Game()
         {static}+getInstance()
-        +setGameMode()
+        +addGameMode(gameMode: GameMode)
+        +factorHarmonyMode()
+        +factorMiddleKingdom()
         +setNumberPlayer(strategy: NumberPlayerStrategy)
         +setTwoPlayers()
         +setThreePlayers()
         +setQuatroPlayers()
-        +createPlayers()
-        +createDeck()
+        +createPlayers(numberPlayer: Integer)
+        +createDeck(numberPlayer: Integer)
+        +getActualDominoes(): Collection<Domino>
+        +putDominoOnTable()
+        +sortDominoTable(n: Integer)
         +addObservers(observer: Observer)
         +notifyObservers()
     }
@@ -66,17 +74,18 @@ package Model #salmon;line:red{
         }
 
 
-        Deck "-_listDominoes\n0..*" *-> Domino : <<composed of>> >
+        Deck "-_listDominoes\n1..*" *-> Domino : <<composed of>> >
 
 
         class Deck{
             {static}-rand:Integer{readOnly}
-            -maxsize:Integer
-            +Deck()
+            +Deck(numberPlayer: Integer)
+            -removeDomino(iteration: Integer)
             -generateDomino(i:Integer, dataCSV:String[][])
-            +getStack()
+            +getStack(): Collection<Domino>
+            +sizeOfDeck(): Integer
             +shuffle()
-            +giveADomino()
+            +giveADomino(): Domino
         }
 
         Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
@@ -87,14 +96,18 @@ package Model #salmon;line:red{
            +isXX():Boolean
            +isXY():Boolean
            +getTile():Tile[][]
+           +getId(): Integer
            +rotate()
         }
 
         class Tile{
-           -suitColor:String
-           -crownsSuit:Integer
+           -_color:String
+           -_crowns:Integer
            +Tile(suitColor, crownsSuit)
            +Tile()
+           +setColorTile(color: String)
+           +getCrowns() Integer
+           +getColor(): String
         }
 
         Player "1\n-_graph" *--> Graph : > <<has>>
@@ -104,10 +117,12 @@ package Model #salmon;line:red{
             +Player()
             +initialiseGraph()
             +initialiseCastle()
+            +setCastle(x: Integer, y:Integer)
+            +getGraph(): Graph
         }
 
         class Castle extends Tile{
-
+            +Castle(color: String)
         }
 
         enum KINGCOLOR {
@@ -155,7 +170,6 @@ package Model #salmon;line:red{
             }
         }
 
-        Game ..> GameModeFactory : <<use>> >
         GameModeFactory ..> GameMode : <<use>> >
 
         class GameModeFactory{
@@ -236,19 +250,22 @@ package Controller #gold;line:goldenrod {
 
     class Controller{
         +Controller(game: Game)
-        +instanciateDeck()
+        +instanciateDeck(numberPlayer: Integer)
+        +instanciatePlayer(numberPlayer: Integer)
+        +putDominoOnTable()
         +switchToDuo()
         +switchToTrio()
         +switchToQuatro()
         +callHarmony()
         +callMiddleKingdom()
+        +addObserver(observer: Observer)
     }
 
 }
 
-Window "1\n{static}#instance"-> Window
-Window "1\n #_controller".> Controller :<<use>> >
-Window "1\n #_game".> Game : <<use>> >
+Window -> Window : "1\n{static}#instance"
+Window .> Controller : "1\n #_controller"<<use>> >
+Window .> Game : "1\n #_game" <<use>> >
 Window "1\n #_fontGermania" .> FontUtilities : <<use>>
 Window "1\n #_fontTimeless" .> FontUtilities : <<use>>
 
@@ -259,12 +276,15 @@ LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
-Game "1\n{static}instance" --> Game
-Game "1\n-_listGameMode"*-u-> GameMode : <<has>> >
-Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
+Game "1\n{static}instance" ..> Game
+Game "1\n-_listGameMode" o..> GameMode : <<has>> >
+Game "1\n-_numberplayer" *..> NumberPlayer : <<has>> >
 Game "1\n-_deck" *-> Deck : <<has>> >
 Game "2..4\n-_listPlayers" *--> Player : <<has>> >
-Game ..> NumberPlayerStrategy : <<use>> >
+Game *..> NumberPlayerStrategy : <<use>> >
+Game *.l.> Observer : "0..*\n-_observer"<<notify>> >
+Game ..> GameModeFactory : "1..2\n_factoryGameMode"<<use>> >
+Game ..> Domino : "4\n_actualDominoes"<<use>> >
 
 NumberPlayer ..> Duo : <<use>> >
 NumberPlayer ..> Trio : <<use>> >
@@ -272,8 +292,10 @@ NumberPlayer ..> Quatro : <<use>> >
 
 
 Controller "1\n-_game"..> Game : <<use>> >
-Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
+Controller o.> Observer : <<use>> >
+
 King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >
+
 Deck .d.> CSVReader : <<use>> >
 
 @enduml
