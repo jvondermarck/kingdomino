@@ -6,9 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class KingDominoGame implements Observer {
@@ -46,6 +45,10 @@ public class KingDominoGame implements Observer {
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
     private Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
+    private int[] _orderPlayerPrevious; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
+    private int[] _orderPlayerActual; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
+    private boolean _firstGame;
+    private final Random _rand = new Random();
 
     public KingDominoGame()
     {
@@ -221,7 +224,7 @@ public class KingDominoGame implements Observer {
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
         createGraph(); // We're going to create the graph
-        allCastleSet(); // we disable the button if we didn't put the castle
+        allCastleSet(); // we disable the button if we didn't put the castle}
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
@@ -236,6 +239,11 @@ public class KingDominoGame implements Observer {
             for(int i=0; i<cardLayout.length; i++)
             {
                 cardLayout[i].next(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
+            }
+            if(!_firstGame)
+            {
+                // TODO : firstLaunchGame();
+                //firstLaunchGameRandom();
             }
         });
 
@@ -361,6 +369,7 @@ public class KingDominoGame implements Observer {
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][0]");
+                // TODO : firstLaunchGameRandom();
             });
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
@@ -368,8 +377,8 @@ public class KingDominoGame implements Observer {
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
+                // TODO : firstLaunchGameRandom();
             });
-
         }
 
         for(int i=0; i<_numberDomino; i++)
@@ -526,10 +535,12 @@ public class KingDominoGame implements Observer {
     {
         _textInformationToDo.setText(player.getText() + " " + text);
     }
+
     public void setTextInformation(String text)
     {
         _textInformationToDo.setText(text);
     }
+
     public void allCastleSet()
     {
         _btnShowDomino.setEnabled(true);
@@ -543,6 +554,84 @@ public class KingDominoGame implements Observer {
             }
         }
     }
+
+    public void firstLaunchGame()
+    {
+        int _numberDomino = 4;
+        if(_window.numberPlayer == 3)
+            _numberDomino = 3;
+
+        _orderPlayerPrevious = new int[_numberDomino];
+        for(int i=0; i<_numberDomino; i++)
+        {
+            if(_window.numberPlayer == 2 && i < 2) // we add in the list the player one and two --> twice = size of 4 then in the list
+            {
+                _orderPlayerPrevious[i] = i;
+                _orderPlayerPrevious[i+1] = i;
+            } else if(_window.numberPlayer >= 3){
+                _orderPlayerPrevious[i] = i;
+            }
+        }
+    }
+
+    public void firstLaunchGameRandom()
+    {
+        int _randPlayer;
+        _randPlayer = _rand.nextInt(_orderPlayerPrevious.length);
+        _orderPlayerPrevious[_randPlayer] = -1;
+        setTextInformation(_textNamePlayer[_randPlayer], " choose your domino !");
+
+        boolean allPlayersAreSet = true;
+        for (int orderPlayerPrevious : _orderPlayerPrevious) {
+            if (orderPlayerPrevious >= 0) {
+                allPlayersAreSet = false;
+                break;
+            }
+        }
+        if(allPlayersAreSet)
+            _firstGame = true;
+    }
+
+    public void otherLaunchGame(int number)
+    {
+
+    }
+
+    public void chooseDomino()
+    {
+
+    }
+
+    public void addKingOnDomino()
+    {
+        //_panelMainInfoLeft
+//        _panelMainInfoLeft.setLayout(new OverlayLayout(_panelMainInfoLeft));
+//        JButton button = new JButton("Small");
+//        button.setMaximumSize(new Dimension(15, 15));
+//        button.setBackground(Color.white);
+//        button.setAlignmentX(0.5f);
+//        button.setAlignmentY(0.5f);
+//        _panelMainInfoLeft.add(button);
+
+        //        _indexDominoClicked = 1;
+//        _panelUnhideDominoes[_indexDominoClicked].setLayout(new OverlayLayout(_panelUnhideDominoes[_indexDominoClicked]));
+//        JButton popupCloseButton = new JButton("Close");
+//        popupCloseButton.setAlignmentX(0.1f);
+//        popupCloseButton.setAlignmentY(0.1f);
+//        JPanel jPanel = new JPanel();
+//        jPanel.setBackground(new Color(50, 210, 250, 150));
+//        jPanel.add(popupCloseButton);
+//        _panelUnhideDominoes[_indexDominoClicked].add(popupCloseButton);
+//        tryOver[i] = new JPanel(new OverlayLayout(tryOver[i]));
+//        JButton button = new JButton("Small");
+//        button.setMaximumSize(new Dimension(15, 15));
+//        button.setBackground(Color.white);
+//        button.setAlignmentX(0.5f);
+//        button.setAlignmentY(0.5f);
+//        tryOver[i].add(_panelUnhideDominoes[i]);
+//        tryOver[i].add(button);
+    }
+
 
 
 }
