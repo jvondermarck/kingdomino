@@ -152,7 +152,7 @@ package Model #salmon;line:red{
             +getQuatroPlayers(): Quatro
          }
 
-        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
+        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<choose>>
 
         package Number{
             class Duo implements NumberPlayerStrategy
@@ -282,27 +282,28 @@ package Controller #gold;line:goldenrod {
 }
 
 Window -> Window : "1\n{static}#instance"
-Window .> Controller : "1\n #_controller"<<use>> >
+Window .> Controller : "1\n #_controller\t"<<use>> >
 Window .> Game : "1\n #_game" <<use>> >
 Window "1\n #_fontGermania" .> FontUtilities : <<use>>
 Window "1\n #_fontTimeless" .> FontUtilities : <<use>>
 
 KingDominoStart "1\n-_window"*--> Window
 KingDominoGame "1\n-_window"*-> Window
+KingDominoEnd "1\n-_window"*-> Window
 
 LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
-Game "1\n{static}instance" ..> Game
-Game "1\n-_listGameMode" o..> GameMode : <<has>> >
-Game "1\n-_numberplayer" *..> NumberPlayer : <<has>> >
+Game "1\n{static}instance" --> Game
+Game "1\n-_listGameMode" *--> GameMode : <<has>> >
+Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *-> Deck : <<has>> >
 Game "2..4\n-_listPlayers" *--> Player : <<has>> >
-Game *..> NumberPlayerStrategy : <<use>> >
-Game *.l.> Observer : "0..*\n-_observer"<<notify>> >
-Game ..> GameModeFactory : "1..2\n_factoryGameMode"<<use>> >
-Game ..> Domino : "4\n_actualDominoes"<<use>> >
+Game o..> NumberPlayerStrategy : <<set>> >
+Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
+Game *--> GameModeFactory : "1..2\n_factoryGameMode"<<has>> >
+Game *--> Domino : "4\n_actualDominoes"<<has>> >
 
 NumberPlayer ..> Duo : <<use>> >
 NumberPlayer ..> Trio : <<use>> >
