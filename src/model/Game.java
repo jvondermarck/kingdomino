@@ -66,6 +66,11 @@ public class Game {
         }
     }
 
+    public void setCastlePlayer(int index, int x, int y)
+    {
+        _listPlayers.get(index).setCastle(x,y);
+    }
+
     public void createDeck(int numberPlayer){
         _deck = new Deck(numberPlayer);
     }

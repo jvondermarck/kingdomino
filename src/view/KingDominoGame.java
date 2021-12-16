@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -44,6 +45,7 @@ public class KingDominoGame implements Observer {
     private int indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
+    Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
     public KingDominoGame()
     {
@@ -385,9 +387,10 @@ public class KingDominoGame implements Observer {
 
         _panelAllGraphText = new JPanel[numberPlayers]; // a panel to show a label about the name of the player AND the graph of 25 buttons (_panelGraph)
         _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
-        _btnOnGraph = new JButton[numberPlayers][25]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+        //_btnOnGraph = new JButton[numberPlayers][25]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
         _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
         _castleIsSet = new boolean[_window.numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
+        _mapGraphPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -395,10 +398,11 @@ public class KingDominoGame implements Observer {
 
         int width = 335;
         int height = 300;
-        int numGraph = 0;
 
         for(int i=0; i<numberPlayers; i++)
         {
+            _btnOnGraph = new JButton[5][5]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+            _mapGraphPlayer.put(i, _btnOnGraph); // we put in the key the number of the player and his graph of 5*5
             // NAME OF EACH PLAYER
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
             _panelAllGraphText[i].setBackground(Color.WHITE);
@@ -434,28 +438,30 @@ public class KingDominoGame implements Observer {
             _panelGraph[i] = new JPanel(new GridLayout(5, 5));
             _panelAllGraphText[i].setPreferredSize(new Dimension(207, 207));
 
-            numGraph++;
-            for(int j=0; j<25; j++)
+            for(int k=0; k<5; k++)
             {
-                _btnOnGraph[i][j] = new JButton(Integer.toString(j));
-                _btnOnGraph[i][j].setFont(new Font("Serif", Font.PLAIN, 8));
-                _btnOnGraph[i][j].setPreferredSize(new Dimension(42, 42));
-                _btnOnGraph[i][j].setBackground(Color.decode("#CECECE"));
-                _btnOnGraph[i][j].setRolloverEnabled(false);
-                _panelGraph[i].add(_btnOnGraph[i][j]);
+                for(int l=0; l<5; l++)
+                {
+                    _btnOnGraph[k][l] = new JButton(Integer.toString(k+l));
+                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 8));
+                    _btnOnGraph[k][l].setPreferredSize(new Dimension(42, 42));
+                    _btnOnGraph[k][l].setBackground(Color.decode("#CECECE"));
+                    _btnOnGraph[k][l].setRolloverEnabled(false);
+                    _panelGraph[i].add(_btnOnGraph[k][l]);
 
-                int finalNumGraph = numGraph;
-                int finalJ = j;
-                _btnOnGraph[i][j].addActionListener(actionEvent -> {
-                    System.out.println(finalNumGraph + " " + finalJ);
-                    if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
-                    {
-                        _btnOnGraph[finalI][finalJ].setIcon(new ImageIcon("img/castle1.png"));
-                        _castleIsSet[finalI] = true;
-                        // TODO : update coordinate of the castle to the model
-                    }
-                    allCastleSet();
-                });
+                    int finalK = k;
+                    int finalL = l;
+                    _mapGraphPlayer.get(i)[k][l].addActionListener(actionEvent -> {
+                        System.out.println(finalI + " " + finalK + " " + finalL);
+                        if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
+                        {
+                            _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon("img/castle1.png"));
+                            _castleIsSet[finalI] = true;
+                            _window._controller.setCastle(finalI, finalK, finalL);
+                        }
+                        allCastleSet();
+                    });
+                }
             }
 
             if(i==1){
