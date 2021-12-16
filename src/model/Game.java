@@ -81,7 +81,12 @@ public class Game {
 
     public void putDominoOnTable(){
         _actualDominoes = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
+        int numberDominoes = 4;
+        if(_numberplayer.getNumberPlayers() == 3){
+            numberDominoes = 3;
+        }
+
+        for(int i = 0; i < numberDominoes; i++){
             _actualDominoes.add(_deck.giveADomino());
         }
 

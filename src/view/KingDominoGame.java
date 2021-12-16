@@ -252,7 +252,11 @@ public class KingDominoGame implements Observer {
 
     @Override
     public void update(Game game) {
-        for(int i = 0; i < 4; i++){
+        int numberDominoes = 4;
+        if(_window.numberPlayer == 3)
+            numberDominoes = 3;
+
+        for(int i = 0; i < numberDominoes; i++){
             _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
             System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
             for(int j=0; j<2; j++)
@@ -289,19 +293,21 @@ public class KingDominoGame implements Observer {
     public void createDominoes()
     {
         int _numberDomino = 4; // we will have 4 dominoes
-        cardLayout = new CardLayout[4]; // our card layout
-        _container = new Container[4]; // our container
+        if(_window.numberPlayer == 3)
+            _numberDomino = 3;
+        cardLayout = new CardLayout[_numberDomino]; // our card layout
+        _container = new Container[_numberDomino]; // our container
 
         // We create an instance of grid layout just to put a margin between each domino (vgap =  the vertical gap)
         GridLayout gridLayout = new GridLayout(4, 1, 0, 10);
         _panelGridDominoes = new JPanel(gridLayout); // we add the layout in our main panel which will contain our CardLayout panel
         _panelGridDominoes.setOpaque(false);
 
-        _panelHideDominoes = new JPanel[4]; // array of panels which will contain one button for each domino (hidden domino)
-        _btnHideDominoes = new JButton[4]; // array of button which wil contain one button for each hidden domino
+        _panelHideDominoes = new JPanel[_numberDomino]; // array of panels which will contain one button for each domino (hidden domino)
+        _btnHideDominoes = new JButton[_numberDomino]; // array of button which wil contain one button for each hidden domino
 
-        _btnTiles = new JButton[4][2]; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles)
-        _panelUnhideDominoes = new JPanel[4]; // array of panel to show the two tiles for each domino (unhidden domino)
+        _btnTiles = new JButton[_numberDomino][2]; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles)
+        _panelUnhideDominoes = new JPanel[_numberDomino]; // array of panel to show the two tiles for each domino (unhidden domino)
 
         // LOOP which will create an array of panels, to put one single button inside (to show a hidden domino)
         for(int i=0; i<_numberDomino; i++)
