@@ -36,16 +36,16 @@ public class KingDominoGame implements Observer {
     private final JButton _btnShowDomino; // a button to return the 4 dominoes (it will be in the _panelMainInfoLeft panel)
     private final JButton[] _rotateDomino; // an array of button, the index 0 = button to reverse and index = 1 to inverse the domino (it will be in the _panelMainInfoRight panel)
     private final JButton[][] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
-    private JButton[][] _btnOnGraph; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+    private JButton[][] _btnOnGraph; // We will have 5*5 lines and columns that we will instantiate for each player
 
     private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
-    private int indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
+    private int _indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
-    Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
+    private Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
     public KingDominoGame()
     {
@@ -58,7 +58,7 @@ public class KingDominoGame implements Observer {
         _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
         _window.frame.setLocationRelativeTo(null);
         _unicodeCrown = "\uD83D\uDC51";
-        indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
+        _indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
 
         ImageIcon icon = new ImageIcon("img/MainScreen.png");
 
@@ -241,12 +241,12 @@ public class KingDominoGame implements Observer {
 
         // ROTATE A DOMINO
         _rotateDomino[0].addActionListener(actionEvent -> {
-            if(indexDominoClicked!=-1)
-                _window._controller.callRotationDomino(indexDominoClicked);
+            if(_indexDominoClicked!=-1)
+                _window._controller.callRotationDomino(_indexDominoClicked);
         });
         _rotateDomino[1].addActionListener(actionEvent -> {
-            if(indexDominoClicked!=-1)
-                _window._controller.callReverseDomino(indexDominoClicked);
+            if(_indexDominoClicked!=-1)
+                _window._controller.callReverseDomino(_indexDominoClicked);
         });
     }
 
@@ -274,7 +274,7 @@ public class KingDominoGame implements Observer {
 
     public void setCrownRotation(int x, int y)
     {
-        int numberCrown = _window._game.getActualDominoes().get(indexDominoClicked).getTile()[x][y].getCrowns();
+        int numberCrown = _window._game.getActualDominoes().get(_indexDominoClicked).getTile()[x][y].getCrowns();
         if(numberCrown==0)
         {
             _dominoGraphRotation[x][y].setText("");
@@ -351,14 +351,14 @@ public class KingDominoGame implements Observer {
             // When we click of the left tile :
             int finalI = i;
             _btnTiles[i][0].addActionListener(clickevent -> {
-                indexDominoClicked = finalI;
+                _indexDominoClicked = finalI;
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][0]");
             });
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
-                indexDominoClicked = finalI;
+                _indexDominoClicked = finalI;
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
@@ -387,7 +387,6 @@ public class KingDominoGame implements Observer {
 
         _panelAllGraphText = new JPanel[numberPlayers]; // a panel to show a label about the name of the player AND the graph of 25 buttons (_panelGraph)
         _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
-        //_btnOnGraph = new JButton[numberPlayers][25]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
         _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
         _castleIsSet = new boolean[_window.numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
         _mapGraphPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
@@ -401,7 +400,7 @@ public class KingDominoGame implements Observer {
 
         for(int i=0; i<numberPlayers; i++)
         {
-            _btnOnGraph = new JButton[5][5]; // We will have "numberPlayers" lines AND 25 columns because it's a 5*5 graph
+            _btnOnGraph = new JButton[5][5]; // We will have 5*5 lines and columns that we will instantiate for each player
             _mapGraphPlayer.put(i, _btnOnGraph); // we put in the key the number of the player and his graph of 5*5
             // NAME OF EACH PLAYER
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
@@ -499,20 +498,20 @@ public class KingDominoGame implements Observer {
 
     public void putDominoRotate()
     {
-        _dominoGraphRotation[0][0].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 0,0)));
+        _dominoGraphRotation[0][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
         _dominoGraphRotation[0][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
         setCrownRotation(0,0);
 
-        if(_window._game.isXXDomino(indexDominoClicked))
+        if(_window._game.isXXDomino(_indexDominoClicked))
         {
             setBackgroudDominoGraph(0,1,true);
             setBackgroudDominoGraph(1,0,false);
-            _dominoGraphRotation[0][1].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 0,1)));
+            _dominoGraphRotation[0][1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
             setCrownRotation(0,1);
-        } else if(_window._game.isXYDomino(indexDominoClicked)){
+        } else if(_window._game.isXYDomino(_indexDominoClicked)){
             setBackgroudDominoGraph(1,0,true);
             setBackgroudDominoGraph(0,1,false);
-            _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(indexDominoClicked, 1,0)));
+            _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
             setCrownRotation(1,0);
         }
     }

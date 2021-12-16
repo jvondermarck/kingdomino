@@ -41,6 +41,7 @@ package Model #salmon;line:red{
         +setThreePlayers()
         +setQuatroPlayers()
         +createPlayers(numberPlayer: Integer)
+        +setCastlePlayer(index:Integer, x:Integer, y:Integer)
         +createDeck(numberPlayer: Integer)
         +getActualDominoes(): Collection<Domino>
         +putDominoOnTable()
@@ -225,24 +226,40 @@ package View #lightgreen;line:green{
     {
         +Window(game:Game, controller:Controller)
         {override}+update(observer:Observer)
+        {override}+rotationDomino(game:Game)
     }
 
     class KingDominoStart implements Observer
     {
         +KingDominoStart()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
     }
 
     class KingDominoGame implements Observer
     {
+        -_indexDominoClicked: Integer
+        -_unicodeCrown: String
+        -_castleIsSet: Boolean[]
+        -_mapGraphPlayer: Map<Integer, Button[][]>
+
         +KingDominoGame()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
+        +setCrownRotation()
+        +createDominoes()
+        +createGraph()
+        setBackgroudDominoGraph(x:Integer, y:Integer, condition:Boolean)
+        +putDominoRotate()
+        +setTextInformation(text: String)
+        +allCastleSet()
     }
 
     class KingDominoEnd implements Observer
     {
         +KingDominoEnd()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
     }
 }
 
@@ -258,6 +275,7 @@ package Controller #gold;line:goldenrod {
         +switchToQuatro()
         +callHarmony()
         +callMiddleKingdom()
+        +setCastle(index:Integer, x:Integer, y:Integer)
         +addObserver(observer: Observer)
     }
 
