@@ -241,7 +241,7 @@ package View #lightgreen;line:green{
         -_indexDominoClicked: Integer
         -_unicodeCrown: String
         -_castleIsSet: Boolean[]
-        -_mapGraphPlayer: Map<Integer, Button[][]>
+        -_mapGraphPlayer: Dictionnary<Integer, Button[][]>
 
         +KingDominoGame()
         {override}+update(game:Game)
