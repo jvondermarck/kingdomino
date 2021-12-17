@@ -41,6 +41,7 @@ package Model #salmon;line:red{
         +setThreePlayers()
         +setQuatroPlayers()
         +createPlayers(numberPlayer: Integer)
+        +setCastlePlayer(index:Integer, x:Integer, y:Integer)
         +createDeck(numberPlayer: Integer)
         +getActualDominoes(): Collection<Domino>
         +putDominoOnTable()
@@ -151,7 +152,7 @@ package Model #salmon;line:red{
             +getQuatroPlayers(): Quatro
          }
 
-        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<select>>
+        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<choose>>
 
         package Number{
             class Duo implements NumberPlayerStrategy
@@ -225,24 +226,40 @@ package View #lightgreen;line:green{
     {
         +Window(game:Game, controller:Controller)
         {override}+update(observer:Observer)
+        {override}+rotationDomino(game:Game)
     }
 
     class KingDominoStart implements Observer
     {
         +KingDominoStart()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
     }
 
     class KingDominoGame implements Observer
     {
+        -_indexDominoClicked: Integer
+        -_unicodeCrown: String
+        -_castleIsSet: Boolean[]
+        -_mapGraphPlayer: Dictionnary<Integer, Button[][]>
+
         +KingDominoGame()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
+        +setCrownRotation()
+        +createDominoes()
+        +createGraph()
+        setBackgroudDominoGraph(x:Integer, y:Integer, condition:Boolean)
+        +putDominoRotate()
+        +setTextInformation(text: String)
+        +allCastleSet()
     }
 
     class KingDominoEnd implements Observer
     {
         +KingDominoEnd()
         {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
     }
 }
 
@@ -258,33 +275,35 @@ package Controller #gold;line:goldenrod {
         +switchToQuatro()
         +callHarmony()
         +callMiddleKingdom()
+        +setCastle(index:Integer, x:Integer, y:Integer)
         +addObserver(observer: Observer)
     }
 
 }
 
 Window -> Window : "1\n{static}#instance"
-Window .> Controller : "1\n #_controller"<<use>> >
+Window .> Controller : "1\n #_controller\t"<<use>> >
 Window .> Game : "1\n #_game" <<use>> >
 Window "1\n #_fontGermania" .> FontUtilities : <<use>>
 Window "1\n #_fontTimeless" .> FontUtilities : <<use>>
 
 KingDominoStart "1\n-_window"*--> Window
 KingDominoGame "1\n-_window"*-> Window
+KingDominoEnd "1\n-_window"*-> Window
 
 LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
-Game "1\n{static}instance" ..> Game
-Game "1\n-_listGameMode" o..> GameMode : <<has>> >
-Game "1\n-_numberplayer" *..> NumberPlayer : <<has>> >
+Game "1\n{static}instance" --> Game
+Game "1\n-_listGameMode" *--> GameMode : <<has>> >
+Game "1\n-_numberplayer" *--> NumberPlayer : <<has>> >
 Game "1\n-_deck" *-> Deck : <<has>> >
 Game "2..4\n-_listPlayers" *--> Player : <<has>> >
-Game *..> NumberPlayerStrategy : <<use>> >
-Game *.l.> Observer : "0..*\n-_observer"<<notify>> >
-Game ..> GameModeFactory : "1..2\n_factoryGameMode"<<use>> >
-Game ..> Domino : "4\n_actualDominoes"<<use>> >
+Game o..> NumberPlayerStrategy : <<set>> >
+Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
+Game *--> GameModeFactory : "1..2\n_factoryGameMode"<<has>> >
+Game *--> Domino : "4\n_actualDominoes"<<has>> >
 
 NumberPlayer ..> Duo : <<use>> >
 NumberPlayer ..> Trio : <<use>> >
