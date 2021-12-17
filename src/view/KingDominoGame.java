@@ -45,10 +45,10 @@ public class KingDominoGame implements Observer {
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
     private Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
-    private int[] _orderPlayerPrevious; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
-    private int[] _orderPlayerActual; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
-    private boolean _firstGame;
-    private final Random _rand = new Random();
+    private List<Integer> _orderPlayerPrevious; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
+    private int[] _orderPlayerActual; // an array which will contain at the index of the array, the number of the player who selected the domino
+    private boolean _firstGame = true; // condition to check if it's the beginning of the game (because rules are different for the first round, like we shuffle under the table which player will start first)
+    private boolean _dominoesAreChoosen;
 
     public KingDominoGame()
     {
@@ -224,7 +224,7 @@ public class KingDominoGame implements Observer {
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
         createGraph(); // We're going to create the graph
-        allCastleSet(); // we disable the button if we didn't put the castle}
+        allCastleSet(); // we disable the button if we didn't put the castle
 
         // MAIN PANEL : We put element in the main Panel
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
@@ -240,10 +240,12 @@ public class KingDominoGame implements Observer {
             {
                 cardLayout[i].next(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
             }
-            if(!_firstGame)
+            if(_firstGame)
             {
                 // TODO : firstLaunchGame();
-                //firstLaunchGameRandom();
+                firstLaunchGame();
+            } else {
+                otherLaunchGame();
             }
         });
 
@@ -370,6 +372,7 @@ public class KingDominoGame implements Observer {
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][0]");
                 // TODO : firstLaunchGameRandom();
+                addPlayerPlaceDomino();
             });
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
@@ -378,6 +381,7 @@ public class KingDominoGame implements Observer {
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
                 // TODO : firstLaunchGameRandom();
+                addPlayerPlaceDomino();
             });
         }
 
@@ -555,51 +559,69 @@ public class KingDominoGame implements Observer {
         }
     }
 
+    // For the first round, we just shuffle under the table who will start to choose the domino first
     public void firstLaunchGame()
     {
         int _numberDomino = 4;
         if(_window.numberPlayer == 3)
             _numberDomino = 3;
 
-        _orderPlayerPrevious = new int[_numberDomino];
+        _orderPlayerPrevious = new ArrayList<>();
+        _orderPlayerActual = new int[_numberDomino];
         for(int i=0; i<_numberDomino; i++)
         {
             if(_window.numberPlayer == 2 && i < 2) // we add in the list the player one and two --> twice = size of 4 then in the list
             {
-                _orderPlayerPrevious[i] = i;
-                _orderPlayerPrevious[i+1] = i;
+                _orderPlayerPrevious.add(i);
+                _orderPlayerPrevious.add(i);
             } else if(_window.numberPlayer >= 3){
-                _orderPlayerPrevious[i] = i;
+                _orderPlayerPrevious.add(i);
             }
         }
+        Collections.shuffle(_orderPlayerPrevious); // we shuffle the list
+        _firstGame = false;
+        _btnShowDomino.setEnabled(false);
+        nextPlayerToChooseDomino(); // we put at the screen game, the first player who will have to choose his domino for the game
     }
 
-    public void firstLaunchGameRandom()
+    // When we start a new round, we look at the last round the ascendant order (if player 2 choose the first domino, at this new round he will start first, etc.)
+    public void otherLaunchGame()
     {
-        int _randPlayer;
-        _randPlayer = _rand.nextInt(_orderPlayerPrevious.length);
-        _orderPlayerPrevious[_randPlayer] = -1;
-        setTextInformation(_textNamePlayer[_randPlayer], " choose your domino !");
+        int _numberDomino = 4;
+        if(_window.numberPlayer == 3)
+            _numberDomino = 3;
 
-        boolean allPlayersAreSet = true;
-        for (int orderPlayerPrevious : _orderPlayerPrevious) {
-            if (orderPlayerPrevious >= 0) {
-                allPlayersAreSet = false;
-                break;
-            }
+        _orderPlayerActual = new int[_numberDomino];
+        _dominoesAreChoosen = false;
+        _orderPlayerPrevious.clear();
+        for(int i=0; i<_numberDomino; i++)
+        {
+            _orderPlayerPrevious.add(_orderPlayerActual[i]);
         }
-        if(allPlayersAreSet)
-            _firstGame = true;
+        nextPlayerToChooseDomino();
+        _btnShowDomino.setEnabled(false);
     }
 
-    public void otherLaunchGame(int number)
+    // We add a player in our array of the actual round
+    public void addPlayerPlaceDomino()
     {
-
+        _orderPlayerActual[_indexDominoClicked] = _orderPlayerPrevious.get(0);
+        _orderPlayerPrevious.remove(0);
+        // TODO : check if a player didnt click on the domino of another player
+        nextPlayerToChooseDomino();
     }
 
-    public void chooseDomino()
+    // We tell to the next player that he has to start selecting his domino
+    public void nextPlayerToChooseDomino()
     {
-
+        if(_orderPlayerPrevious.isEmpty())
+        {
+            _dominoesAreChoosen = true;
+            _btnShowDomino.setEnabled(true);
+            setTextInformation(_textNamePlayer[_orderPlayerActual[0]], " place your domino !");
+        } else {
+            setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], " choose your domino !");
+        }
     }
 
     public void addKingOnDomino()
