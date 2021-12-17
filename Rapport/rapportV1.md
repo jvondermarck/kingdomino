@@ -11,50 +11,59 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ## 2. Choix de conception
 
-- La contrainte principale est de respecter une structure MVC. Donc nous avons un package model, controller, view.
-- Dans le package `Set`, concernant la classe `GameMode` nous avons choisis de faire un Template Mode au lieu d'une stratégie
-  car nous pouvons choisir entre 1 et 3 modes, donc une stratégie ne semble pas efficace pour ce type de choix.
+- La contrainte principale est de respecter une structure MVC. Donc nous avons un package `model`, `controller`, `view`.
+- Nous avons voulue bien ordonnée notre projet, alors nous avons créé différent package dans `model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classe
+
+```
+....
+├── controller
+│ └── Controller.java
+├── launcher
+│ └── LauncherKingdomino.java
+├── model
+│ ├── entities
+│ │ ├── Castle.java
+│ │ ├── Deck.java
+│ │ ├── Domino.java
+│ │ ├── Graph.java
+│ │ ├── KINGCOLOR.java
+│ │ ├── King.java
+│ │ ├── Player.java
+│ │ └── Tile.java
+│ ├── Game.java
+│ ├── Observer.java
+│ └── set
+│     ├── GameModeFactory.java
+│     ├── GameMode.java
+│     ├── mode
+│     │ ├── Harmony.java
+│     │ ├── MiddleKingdom.java
+│     │ └── MightyDuel.java
+│     ├── number
+│     │ ├── Duo.java
+│     │ ├── Quatro.java
+│     │ └── Trio.java
+│     ├── NumberPlayer.java
+│     └── NumberPlayerStrategy.java
+├── utilities
+│ └── CSVReader.java
+└── view
+    ├── KingDominoEnd.java
+    ├── KingDominoGame.java
+    ├── KingDominoStart.java
+    └── Window.java
+
+```
+
+- Dans le package `Set`, concernant la classe `GameMode` nous avons hésitez à choisir entre le pattern Stratégie et Template method, mais nous avons décider d'utiliser le pattern Template method 
+  car le joueur pourra selectionner plusieurs mode de jeu en pour une partie, donc une stratégie ne semble pas efficace pour ce type de choix car cela nous restreindrai à un unique mode de jeu.
 - La stratégie concernant NumberPlayer permet de choisir le nombre de joueurs donc soit 2, 3 ou 4. 
-- Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader`, elle permet de diminuer la cohésion et couplage
-- On utilise le Singleton sur la classe `Graph` afin de pouvoir l'instancier qu'une seule fois
-- Nous avons créer une Factory car pour choisir les différents mode de jeu on a une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait 
- qu'une Factory soit vachement utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
+- Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader` (qui permet de lire et stocker les données) et `FontUtilities` (permet d'importer des polices d'écriture personalisé au format .ogg, .tff pour pouvoir les utilisées en JavaSwing ...), cela permet de diminuer la cohésion et couplage
+- On utilise le pattern Singleton sur la classe `Game` afin de pouvoir créé qu'une seul instance de notre partie (cela n'est pas très intéressant dans notre cas car nous devons respecter la structure MVC, mais appliquer le pattern Singleton nous a sembler important de l'appliquer ici car la représentation d'une seul partie en cours nous semble importante.)
+- Nous avons créer une `GameModeFactory` qui nous permet de choisir les différents mode de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait 
+ qu'une Factory soit très utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
+- Pour gérer les différentes vue, nous avons la classe `Window` qui nous permet de gérer les différentes vue.        
 
-### Nous avons différentes classe et package dans le package `model` :
-- `Game` : representation de la partie courante, qui suit le pattern Singleton. Ce qui vas permettre d'avoir une unique instance pour une partie.
-
-Dans le package `entities` : 
--   `Graph` : representation la grille d'un joueur 
--   `Deck` : classe qui permet de faire notre paquet de domino
--   `KINGCOLOR` : enumération qui vas permettre de représenter la couleur du roi
--   `Dominoes` : représentation de la tuile qu’on pourra pas placer sur le graphe. Il sera initialisé à l’aide d’un CSV.
--   `King` : représente la case de départ du joueur.
--   `Player` : (plus explicite je peux pas faire)
-
-### Dans le package `set` :
-#### Explication de nos choix
- 
--   Le package `Mode` comprend différent classes qui vont toutes implémenter la classe `GameModeStrategy` :
-    -   ̀`Dynasty`
-    -   `MiddleGame`
-    -   `Harmony`
-    -   `MightyDuel`
--   `NumberPlayer` : une classe qui va permettre de gérer la stratégie concernant le nombre de joueurs    
--   `NumberPlayerStrategy` : l'interface de la stratégie concernant le nombre de joueurs
--   Le package `Number`
-    - `Duo` : qui permettre de lancer une partie avec deux joueurs avec des règles spécifiques
-    - `AboveTwo` : qui permettra de lancer le jeu avec 3 ou 4 joueurs avec des règles spécifique
-    
-###Dans le package `View` :
-
-- `Window` : une classe qui va permettre de gérer l'interface graphique en Swing
-- `KingDominoStart` : l'interface graphique fait en Swing qui va permettre de préparer le jeu (choix du mode de jeu, du nombre de joueurs)
-- `KingDominoGame` : l'interface graphique qui va permettre aux joueurs de jouer au jeu 
-- `KingDominoEnd` : l'interface graphique où sera affiché le gagnant et les scores
-
-
-#Notes :
-- Changer les variables static en minuscule
 
     
     
