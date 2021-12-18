@@ -372,7 +372,10 @@ public class KingDominoGame implements Observer {
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][0]");
                 // TODO : firstLaunchGameRandom();
-                addPlayerPlaceDomino();
+                if(!_dominoesAreChoosen)
+                {
+                    addPlayerPlaceDomino();
+                }
             });
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
@@ -381,7 +384,10 @@ public class KingDominoGame implements Observer {
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
                 // TODO : firstLaunchGameRandom();
-                addPlayerPlaceDomino();
+                if(!_dominoesAreChoosen)
+                {
+                    addPlayerPlaceDomino();
+                }
             });
         }
 
@@ -426,7 +432,7 @@ public class KingDominoGame implements Observer {
             _panelAllGraphText[i].setBackground(Color.WHITE);
             _panelAllGraphText[i].setOpaque(false);
 
-            _textNamePlayer[i] = new JTextField("Kingdom of : " + (i+1));
+            _textNamePlayer[i] = new JTextField("Kingdom " + (i+1));
             _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
             _textNamePlayer[i].setOpaque(false);
             _textNamePlayer[i].setBorder(null);
@@ -445,7 +451,7 @@ public class KingDominoGame implements Observer {
                 public void mouseExited(MouseEvent e){
                     if(Objects.equals(_textNamePlayer[finalI].getText(), ""))
                     {
-                        _textNamePlayer[finalI].setText("Kingdom of : " + (finalI+1));
+                        _textNamePlayer[finalI].setText("Kingdom" + (finalI+1));
                     }
                     _textNamePlayer[finalI].setEditable(false);
                     _textNamePlayer[finalI].getCaret().setVisible(false);
@@ -553,7 +559,7 @@ public class KingDominoGame implements Observer {
         {
             if (!_castleIsSet[i]) {
                 _btnShowDomino.setEnabled(false);
-                setTextInformation(_textNamePlayer[i], " put your castle !");
+                setTextInformation(_textNamePlayer[i], "put your castle !");
                 break;
             }
         }
@@ -581,6 +587,7 @@ public class KingDominoGame implements Observer {
         Collections.shuffle(_orderPlayerPrevious); // we shuffle the list
         _firstGame = false;
         _btnShowDomino.setEnabled(false);
+        Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
         nextPlayerToChooseDomino(); // we put at the screen game, the first player who will have to choose his domino for the game
     }
 
@@ -591,13 +598,15 @@ public class KingDominoGame implements Observer {
         if(_window.numberPlayer == 3)
             _numberDomino = 3;
 
-        _orderPlayerActual = new int[_numberDomino];
         _dominoesAreChoosen = false;
         _orderPlayerPrevious.clear();
         for(int i=0; i<_numberDomino; i++)
         {
             _orderPlayerPrevious.add(_orderPlayerActual[i]);
         }
+
+        _orderPlayerActual = new int[_numberDomino];
+        Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
         nextPlayerToChooseDomino();
         _btnShowDomino.setEnabled(false);
     }
@@ -605,10 +614,14 @@ public class KingDominoGame implements Observer {
     // We add a player in our array of the actual round
     public void addPlayerPlaceDomino()
     {
-        _orderPlayerActual[_indexDominoClicked] = _orderPlayerPrevious.get(0);
-        _orderPlayerPrevious.remove(0);
-        // TODO : check if a player didnt click on the domino of another player
-        nextPlayerToChooseDomino();
+        if(_orderPlayerActual[_indexDominoClicked] != -1) // if the value not equal to -1, it means that someboby already choose the domino
+        {
+            setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose another domino !");
+        } else {
+            _orderPlayerActual[_indexDominoClicked] = _orderPlayerPrevious.get(0);
+            _orderPlayerPrevious.remove(0);
+            nextPlayerToChooseDomino();
+        }
     }
 
     // We tell to the next player that he has to start selecting his domino
@@ -618,10 +631,16 @@ public class KingDominoGame implements Observer {
         {
             _dominoesAreChoosen = true;
             _btnShowDomino.setEnabled(true);
-            setTextInformation(_textNamePlayer[_orderPlayerActual[0]], " place your domino !");
+            setTextInformation(_textNamePlayer[_orderPlayerActual[0]], "place your domino !");
         } else {
-            setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], " choose your domino !");
+            setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose your domino !");
         }
+    }
+
+    public void letPlayerSetDomino()
+    {
+        setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose your domino !");
+
     }
 
     public void addKingOnDomino()
