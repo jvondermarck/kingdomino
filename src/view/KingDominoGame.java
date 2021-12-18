@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -50,8 +51,7 @@ public class KingDominoGame implements Observer {
     private boolean _firstGame = true; // condition to check if it's the beginning of the game (because rules are different for the first round, like we shuffle under the table which player will start first)
     private boolean _dominoesAreChoosen;
 
-    public KingDominoGame()
-    {
+    public KingDominoGame() throws IOException {
         _window = Window.instance; // we get our main window to access to its variables
         _window._controller.addObserver(this);
         _window.frame.setTitle("Game Kingdomino");
@@ -63,7 +63,7 @@ public class KingDominoGame implements Observer {
         _unicodeCrown = "\uD83D\uDC51";
         _indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
 
-        ImageIcon icon = new ImageIcon("img/MainScreen.png");
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen.png")).readAllBytes());
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -159,7 +159,7 @@ public class KingDominoGame implements Observer {
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to rotate the domino
         _rotateDomino[0] = new JButton();
         _rotateDomino[0].setPreferredSize(new Dimension(60, 60));
-        _rotateDomino[0].setIcon(new ImageIcon("img/rotate.png"));
+        _rotateDomino[0].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rotate.png")).readAllBytes()));
         _rotateDomino[0].setBorderPainted(false);
         _rotateDomino[0].setContentAreaFilled(false);
         _rotateDomino[0].setFocusPainted(false);
@@ -169,7 +169,7 @@ public class KingDominoGame implements Observer {
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to inverse the domino
         _rotateDomino[1] = new JButton();
         _rotateDomino[1].setPreferredSize(new Dimension(60, 60));
-        _rotateDomino[1].setIcon(new ImageIcon("img/inverse.png"));
+        _rotateDomino[1].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("inverse.png")).readAllBytes()));
         _rotateDomino[1].setBorderPainted(false);
         _rotateDomino[1].setContentAreaFilled(false);
         _rotateDomino[1].setFocusPainted(false);
@@ -211,7 +211,7 @@ public class KingDominoGame implements Observer {
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel(new GridLayout(2,2)) // display in this panel a background image to get a beautiful game
         {
-            final Image img = new ImageIcon("img/backGraph.png").getImage();
+            final Image img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("backGraph.png")).readAllBytes()).getImage();
             // instance initializer
             {setOpaque(false);}
             public void paintComponent(Graphics graphics)
@@ -300,8 +300,7 @@ public class KingDominoGame implements Observer {
         }
     }
 
-    public void createDominoes()
-    {
+    public void createDominoes() throws IOException {
         int _numberDomino = 4; // we will have 4 dominoes
         if(_window.numberPlayer == 3)
             _numberDomino = 3;
@@ -327,7 +326,7 @@ public class KingDominoGame implements Observer {
             _btnHideDominoes[i] = new JButton(Integer.toString(i));
 
             _btnHideDominoes[i].setPreferredSize(new Dimension(170, 85));
-            _btnHideDominoes[i].setIcon(new ImageIcon("img/domino1.png"));
+            _btnHideDominoes[i].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("domino1.png")).readAllBytes()));
             _btnHideDominoes[i].setForeground(Color.WHITE);
             _btnHideDominoes[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 25));
             _btnHideDominoes[i].setHorizontalTextPosition(SwingConstants.CENTER);
@@ -479,7 +478,11 @@ public class KingDominoGame implements Observer {
                         System.out.println(finalI + " " + finalK + " " + finalL);
                         if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
                         {
-                            _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon("img/castle1.png"));
+                            try {
+                                _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             _castleIsSet[finalI] = true;
                             _window._controller.setCastle(finalI, finalK, finalL);
                         }

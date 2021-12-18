@@ -10,7 +10,7 @@ public class Deck {
 
     public Deck(int numberPlayer){
         _listdominoes = new ArrayList<>();
-        List<List<String>> dataCSV = CSVReader.readCSV("docs/kingdomino.csv");
+        List<List<String>> dataCSV = CSVReader.readCSV("kingdomino.csv");
         for(int i = 1; i < dataCSV.size(); i++){
             Domino domino = generateDomino(i, dataCSV);
             _listdominoes.add(domino);

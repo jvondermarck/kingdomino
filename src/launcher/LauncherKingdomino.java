@@ -5,8 +5,10 @@ import model.Game;
 import view.KingDominoStart;
 import view.Window;
 
+import java.io.IOException;
+
 public class LauncherKingdomino {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Game game = Game.getInstance();
         Controller controller = new Controller(game);
         game.addObservers(Window.getInstance(game, controller));

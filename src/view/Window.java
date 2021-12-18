@@ -30,8 +30,8 @@ public class Window extends JFrame implements Observer {
         frame.setLocationRelativeTo(null); // put window in the center of the screen
         frame.setIconImage(img.getImage()); // icon of the application
         frame.setResizable(false); // make impossible to resize the window to avoid error or whatever
-        _fontGermania = FontUtilities.setFont("font/Germania.otf"); // We use this for the user to access to our custom font
-        _fontTimeless = FontUtilities.setFont("font/Timeless.ttf");
+        _fontGermania = FontUtilities.setFont("Germania.otf"); // We use this for the user to access to our custom font
+        _fontTimeless = FontUtilities.setFont("Timeless.ttf");
     }
 
     public static Window getInstance(Game game, Controller controller)

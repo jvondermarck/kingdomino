@@ -4,6 +4,8 @@ import model.Game;
 import model.Observer;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class KingDominoStart implements Observer{
@@ -25,11 +27,12 @@ public class KingDominoStart implements Observer{
 
     private final JButton _btnValidate; // btn to validate all our the information to start the game
 
-    public KingDominoStart() {
+    public KingDominoStart() throws IOException {
         // SET UP THE WINDOW
         _window = Window.instance; // we get our main window to access to its variables
+
         _window.frame.setTitle("Kingdomino");
-        final ImageIcon icon = new ImageIcon("img/LaunchScreen.png");
+        final ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("LaunchScreen.png")).readAllBytes());
 
         // Constraints
         GridBagConstraints constraints = new GridBagConstraints();
@@ -166,7 +169,11 @@ public class KingDominoStart implements Observer{
                 _window._controller.switchToQuatro();
                 _window.numberPlayer = 4;
             }
-            new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
+            try {
+                new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         _rdbGameNothing.addActionListener(actionEvent -> {
