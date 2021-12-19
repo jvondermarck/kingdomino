@@ -43,15 +43,23 @@ package Model #salmon;line:red{
         +createPlayers(numberPlayer: Integer)
         +setCastlePlayer(index:Integer, x:Integer, y:Integer)
         +createDeck(numberPlayer: Integer)
+        +getPlayer(index:Integer): Player
         +getActualDominoes(): Collection<Domino>
         +putDominoOnTable()
         +sortDominoTable(n: Integer)
+        +rotateDomino(index:Integer)
+        +reverseDomino(index:Integer)
+        +isXX(index:Integer):Boolean
+        +isXY(index:Integer):Boolean
+        +getColorTile(index:Integer, x:Integer, y:Integer):String
         +addObservers(observer: Observer)
         +notifyObservers()
+        +notifyObserversRotation()
     }
 
     interface Observer<<interface>>{
        +update(game:Game)
+       +rotationDomino(game:Game)
     }
 
     package Entities #indianred{
@@ -60,9 +68,10 @@ package Model #salmon;line:red{
         class Graph {
             +Graph()
             +setDomino(domino:Domino, x:Integer, y:Integer)
+            +isSameTile(tile1:Tile , tile2:Tile):Boolean
             +isPlaceAvailable(x:Integer, y:Integer):Boolean
             +setCastle(x:Integer, y:Integer, castle:Castle)
-
+            +getTiles():Tile[][]
         }
 
         class King{
@@ -72,6 +81,7 @@ package Model #salmon;line:red{
 
             +King()
             +randomChose(): KINGCOLOR
+            +getKingColor():KINGCOLOR
         }
 
 
@@ -99,6 +109,8 @@ package Model #salmon;line:red{
            +getTile():Tile[][]
            +getId(): Integer
            +rotate()
+           +inverse()
+           +getColor(x:Integer, y:Integer):String
         }
 
         class Tile{
@@ -116,10 +128,11 @@ package Model #salmon;line:red{
         Player "1\n-_castle" *-l-> Castle : > <<has>>
         class Player {
             +Player()
-            +initialiseGraph()
-            +initialiseCastle()
-            +setCastle(x: Integer, y:Integer)
-            +getGraph(): Graph
+            -initialiseGraph()
+            -initialiseCastle()
+            +setCastle(x:Integer, y:Integer)
+            +getGraph():Graph
+            +getKing():King
         }
 
         class Castle extends Tile{
@@ -144,7 +157,6 @@ package Model #salmon;line:red{
             -_numberPlayers: Integer
             +NumberPlayer()
             +setStrategyPlayer(strategy: NumberPlayerStrategy)
-            +executeStrategy()
             +setNumberPlayers(players: Integer)
             +getNumberPlayers(): Integer
             +getTwoPlayers(): Duo
@@ -158,16 +170,19 @@ package Model #salmon;line:red{
             class Duo implements NumberPlayerStrategy
             {
                 +setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
             }
 
             class Trio implements NumberPlayerStrategy
             {
                 +setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
             }
 
             class Quatro implements NumberPlayerStrategy
             {
                 +setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
             }
         }
 
@@ -184,8 +199,8 @@ package Model #salmon;line:red{
             -_isSevenSize: Boolean
             -_numberBonus: Integer
             +executeGameMode()
-            {abstract}+numberBonus(): Integer
-            {abstract}+sizeGraph(): Boolean
+            {abstract}+numberBonus() <<abstract>>: Integer
+            {abstract}+sizeGraph() <<abstract>>: Boolean
         }
 
 
@@ -193,16 +208,19 @@ package Model #salmon;line:red{
                 class MiddleKingdom extends GameMode{
                     +numberBonus(): Integer
                     +sizeGraph(): Boolean
+                    {override}+toString():String
                 }
 
                 class Harmony extends GameMode{
                     +numberBonus(): Integer
                     +sizeGraph(): Boolean
+                    {override}+toString():String
                 }
 
                 class MightyDuel extends GameMode{
                     +numberBonus(): Integer
                     +sizeGraph(): Boolean
+                    {override}+toString():String
                 }
 
                 GameModeFactory ..> MiddleKingdom: <<use>> >
@@ -224,7 +242,11 @@ package View #lightgreen;line:green{
 
     class Window implements Observer
     {
-        +Window(game:Game, controller:Controller)
+        #numberPlayer: Integer
+        {static}#instance:Window
+        -Window(game:Game, controller:Controller)
+        #setWindow()
+        {static}+getInstance(game:Game, controller:Game):Window
         {override}+update(observer:Observer)
         {override}+rotationDomino(game:Game)
     }

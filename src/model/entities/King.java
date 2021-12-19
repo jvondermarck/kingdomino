@@ -29,10 +29,12 @@ public class King{
         return color;
      }
 
-    public KINGCOLOR get_kingColor() {
+    public KINGCOLOR getKingColor() {
         return _kingColor;
     }
 
+    // A SUPPRIMER
+    // N4EST PAS PRESENT DDANS LUML CAR NE SERA PAS PRESENT DANS LE RENDU FINAL !!!
     public String color()
     {
         return this._kingColor.toString();

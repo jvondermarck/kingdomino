@@ -368,7 +368,7 @@ public class KingDominoGame implements Observer {
     public void changeLabelKing()
     {
         // TODO : CECI EST TEMPORAIRE JUSTE UN TEST, NOUS ALLONS METTRE DES IMAGES PAR LA SUITE (ca ne respecte pas MVC)
-        switch (_window._game.getPlayer(_orderPlayerPrevious.get(0)).get_king()) {
+        switch (_window._game.getPlayer(_orderPlayerPrevious.get(0)).getKing()) {
             case PINK -> _lblKingPicture[_indexDominoClicked].setBackground(Color.PINK);
             case YELLOW -> _lblKingPicture[_indexDominoClicked].setBackground(Color.YELLOW);
             case GREEN -> _lblKingPicture[_indexDominoClicked].setBackground(Color.RED);

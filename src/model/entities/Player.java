@@ -13,11 +13,12 @@ public class Player {
         initialiseGraph();
     }
 
-    public void initialiseGraph(){
+    // Le player est sensé faire ça ou ça serai de l'over engineering de passer par une classe intermédiaire ?
+    private void initialiseGraph(){
         this._graph = new Graph();
     }
-
-    public void initialiseCastle(){
+    // Le player est sensé faire ça ou ça serai de l'over engineering de passer par une classe intermédiaire ?
+    private void initialiseCastle(){
         this._castle = new Castle(this._king.color());
     }
 
@@ -29,7 +30,7 @@ public class Player {
         return this._graph;
     }
 
-    public KINGCOLOR get_king() {
-        return _king.get_kingColor();
+    public KINGCOLOR getKing() {
+        return _king.getKingColor();
     }
 }
