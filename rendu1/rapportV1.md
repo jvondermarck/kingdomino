@@ -22,7 +22,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 ### a. Contraintes
 - La contrainte principale est de respecter une structure MVC. Donc nous avons un package `model`, `controller`, `view`.
 ### b. Structure
-- Nous avons voulu bien ordonnée notre projet, alors nous avons créé différent package dans `launcher` (contient le Main),`model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classes
+- Nous avons voulu bien ordonnée notre projet, alors nous avons créé différent package dans `launcher` (contiens le Main),`model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classes
 
 ```
 ....
@@ -110,7 +110,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 (vidéo youtube)
 
 - Le joueur, en cliquant sur son domino, obtient une petite zone sur l'interface de jeu, pour pouvoir faire une rotation de son domino et/ou inverser son sens, avant de le placer sur son graph.
-- Une fois la sélection des dominos réalisés par l'ensemble des joueurs, l'ordre pour chaque joueur de jouer marche de la facon suivante (pour mettre leur domino sur leur propre graphe) : le joueur dont le roi est placé sur le 1er domino de la ligne commence, et ainsi de suite pour les autres joueurs. 
+- Une fois la sélection des dominos réalisés par l'ensemble des joueurs, l'ordre pour chaque joueur de jouer marche de la façon suivante (pour mettre leur domino sur leur propre graphe) : le joueur dont le roi est placé sur le 1er domino de la ligne commence, et ainsi de suite pour les autres joueurs. 
 - Nous n'avons pas encore implémenté graphiquement la mise en place du domino sur le graphe, mais nous avons juste implémenté une phase de test permettant de cliquer aléatoirement sur le graphe de chaque joueur, ainsi de suite. (Il suffira de regarder les indications que donne le jeu, en haut à gauche de l'écran, pour savoir quel joueur doit faire quoi).
 - Une fois que tous les joueurs ont cliqué sur leur graphe (dans une prochaine version il sera possible de mettre leur domino sur leur graphe), un nouveau tour commence : de nouveaux dominos sont mis en jeu et les joueurs recommencent à choisir leur domino. (Le joueur ayant sélectionné le 1er domino de la ligne à la partie précédente, commencera à choisir son domino en premier pour cette nouvelle partie, et ainsi de suite pour les autres joueurs).
 
