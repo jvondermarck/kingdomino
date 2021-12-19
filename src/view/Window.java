@@ -6,18 +6,20 @@ import model.Observer;
 import utilities.FontUtilities;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class Window extends JFrame implements Observer {
     protected Game _game;
     protected Controller _controller;
     protected JFrame frame;
     protected static Window instance;
-    protected ImageIcon img = new ImageIcon("img/ico.png");
+    protected ImageIcon img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("ico.png")).readAllBytes());
     protected Font _fontGermania;
     protected Font _fontTimeless;
     protected int numberPlayer = 0;
 
-    private Window(Game game, Controller controller){
+    private Window(Game game, Controller controller) throws IOException {
         _game = game;
         _controller = controller;
         this.setWindow();
@@ -34,8 +36,7 @@ public class Window extends JFrame implements Observer {
         _fontTimeless = FontUtilities.setFont("Timeless.ttf");
     }
 
-    public static Window getInstance(Game game, Controller controller)
-    {
+    public static Window getInstance(Game game, Controller controller) throws IOException {
         if(instance == null){
             instance = new Window(game, controller);
         }
