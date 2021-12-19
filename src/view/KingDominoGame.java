@@ -783,7 +783,6 @@ public class KingDominoGame implements Observer {
             _window._controller.putDominoOnTable(); // we put again new dominoes;
             for(int i=0; i<_numberDomino; i++)
             {
-                cardLayout[i].first(_container[i]);
                 _lblKingPicture[i].setOpaque(false);
                 _btnTiles[i][0].setEnabled(true);
                 _btnTiles[i][1].setEnabled(true);
@@ -800,6 +799,11 @@ public class KingDominoGame implements Observer {
             _btnShowDomino.setEnabled(true);
             _roundNumber += 1;
             _labelRound.setText("ROUND " + _roundNumber);
+
+            for(int i=0; i<cardLayout.length; i++)
+            {
+                cardLayout[i].first(_container[i]); // when we click oon the button the four domino will show the two tiles of each domino
+            }
         }
     }
 
