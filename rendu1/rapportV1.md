@@ -80,29 +80,29 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 - Nous avons créé une `GameModeFactory` qui nous permet de choisir les différents modes de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait
   qu'une Factory soit très utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
 
-- Dans le Package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile plaçable sur le `Graph`d'un `Player`, différente méthode aurais pu être utilisé comme l'implémentation d'une interface `Posable` par exemple qui permettrai aux classes qui implémentent cette méthode d'être posable, mais le premier choix nous paraissait plus pratique.
+- Dans le Package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile plaçable sur le `Graph`d'un `Player`, différente méthode aurais pu être utilisé comme l'implémentation d'une interface `Posable` par exemple qui permettrait aux classes qui implémentent cette méthode d'être posable, mais le premier choix nous paraissait plus pratique.
 
 ### e. Package `View`
 - Pour gérer les différentes vues, nous avons la classe `Window` qui nous permet de gérer les différentes vues.
 
 ### f. Autres
-- Nous avons modifié le csv fournit, en effet nous avons seulement modifié les couleurs (Ex : dark green -> couleur en hex), nous avons choisie de faire ce choix, car cela nous permet facilement de changer, mais aussi d'appliquer ses couleurs là en Swing. (Cela évite l'over engineering)
+- Nous avons modifié le csv fourni, en effet nous avons seulement modifié les couleurs (Ex : dark green -> couleur en hex), nous avons choisi de faire ce choix, car cela nous permet facilement de changer, mais aussi d'appliquer ces couleurs-là en Swing. (Cela évite l'Over Engineering)
 
 
 ## 3. L'exécutable
-### Ecran d'accueil
+### Écran d'accueil
 ![image](https://i.imgur.com/eJz7y6o.png)
-1. Premièrement, quand nous lancons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu Kingdomino.
-### Ecran en partie
+1. Premièrement, quand nous lançons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu Kingdomino.
+### Écran en partie
 ![image](https://i.imgur.com/qUoIDui.png)
 
 2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.\
 ![image](https://i.imgur.com/UuEB7PT.png)
-- Tout d'abord, chacun des joueurs doivent placer leur chateau sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.\
+- Tout d'abord, chacun des joueurs doit placer leur château sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.\
   ![image](https://i.imgur.com/HsvpiRx.png)
 - Ensuite, avant de pouvoir choisir leur domino, la personne doit montrer les dominos.\
   ![image](https://i.imgur.com/oj6gSPP.png) 
-- Chacun des joueurs doivent choisir leur domino, tout en ne prenant pas le meme qu'un autre joueur.\
+- Chacun des joueurs doit choisir leur domino, tout en ne prenant pas le même qu'un autre joueur.\
   ![image](https://i.imgur.com/w8GzzFc.png) 
 - Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).\
 
