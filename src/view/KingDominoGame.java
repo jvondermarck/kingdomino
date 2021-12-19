@@ -299,10 +299,11 @@ public class KingDominoGame implements Observer {
             for(int j=0; j<2; j++)
             {
                 _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
+                _btnTiles[i][j].setText(""); // we put the counter at 0 to remove all the previous crowns
                 // We get all the crowns of the title
                 for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
                 {
-                    _btnTiles[i][j].setText( _btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
+                    _btnTiles[i][j].setText(_btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
                 }
             }
         }
