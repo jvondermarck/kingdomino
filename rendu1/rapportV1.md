@@ -9,11 +9,12 @@
 
 - L'objectif de ce projet est de concevoir une application permettant de jouer au jeu de société Kingdomino.
 - Si en clonant notre projet, en compilant vous avez des erreurs, il faut cliquer droit sur les dossiers :`font`, `docs`, `img`, et `out` ->"Make directory as" -> "Ressources root".  
+- Si en voulant tester le Swing, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 30 et enlever la ligne `frame.setLocationRelativeTo(null);`
 
 ## 2. Choix de conception
 
 - La contrainte principale est de respecter une structure MVC. Donc nous avons un package `model`, `controller`, `view`.
-- Nous avons voulue bien ordonnée notre projet, alors nous avons créé différent package dans `model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classe
+- Nous avons voulue bien ordonnée notre projet, alors nous avons créé différent package dans `model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classe.
 
 ```
 ....
