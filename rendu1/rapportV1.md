@@ -1,9 +1,15 @@
+
 # Projet A31 - Rapport Kingdomino”
 
 # Sommaire
-1.  ### Introduction
-2.  ### Choix de conception
-
+1. ### Introduction
+2. ### Choix de conception
+   #### a. Contraintes
+   #### b.  Structure
+   #### c. Package `Set`
+   #### d. Package `Game`
+   #### e. Package `View`
+   #### f. Autres
 
 ## 1.  Introduction
 
@@ -11,7 +17,9 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ## 2. Choix de conception
 
+### a. Contraintes
 - La contrainte principale est de respecter une structure MVC. Donc nous avons un package `model`, `controller`, `view`.
+### b. Structure
 - Nous avons voulue bien ordonnée notre projet, alors nous avons créé différent package dans `model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classe
 
 ```
@@ -55,18 +63,23 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ```
 
-- Dans le package `Set`, concernant la classe `GameMode` nous avons hésitez à choisir entre le pattern Stratégie et Template method, mais nous avons décider d'utiliser le pattern Template method
-  car le joueur pourra selectionner plusieurs mode de jeu en pour une partie, donc une stratégie ne semble pas efficace pour ce type de choix car cela nous restreindrai à un unique mode de jeu.
+### c. Package `Set`
+- Pour la classe `GameMode` nous avons hésitez à choisir entre le pattern Stratégie et Template method, mais nous avons décider d'utiliser le pattern Template method  car le joueur pourra selectionner plusieurs mode de jeu en pour une partie, donc une stratégie ne semble pas efficace pour ce type de choix car cela nous restreindrai à un unique mode de jeu.
+
 - La stratégie concernant NumberPlayer permet de choisir le nombre de joueurs donc soit 2, 3 ou 4.
+### d. Package `Utilities`
 - Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader` (qui permet de lire et stocker les données) et `FontUtilities` (permet d'importer des polices d'écriture personalisé au format .ogg, .tff pour pouvoir les utilisées en JavaSwing ...), cela permet de diminuer la cohésion et couplage
+
+### d. Package `Game`
 - On utilise le pattern Singleton sur la classe `Game` afin de pouvoir créé qu'une seul instance de notre partie (cela n'est pas très intéressant dans notre cas car nous devons respecter la structure MVC, mais appliquer le pattern Singleton nous a sembler important de l'appliquer ici car la représentation d'une seul partie en cours nous semble importante.)
-- Nous avons créer une `GameModeFactory` qui nous permet de choisir les différents mode de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait
+
+- Nous avons créer une `GameModeFactory` qui nous permet de choisir les différents mode de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait  
   qu'une Factory soit très utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
+
+- Dans la package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile placable sur le `Graph`d'un `Player`, différente méthode aurais pu être utiliser comme l'implémentation d'une interface `Posable` par exemple qui permettrai au classe qui implémente cet méthode d'être posable, mais le premier choix nous paraissait plus pratique.
+
+### e. Package `View`
 - Pour gérer les différentes vue, nous avons la classe `Window` qui nous permet de gérer les différentes vue.
-- Dans la package `entities`, nous avons la classe `Castle` qui extends la class `Tile` parce que nous voulions representer notre chateau comme une tuile placable sur le `Graph`d'un `Player`, différente méthode aurais pu être utiliser comme l'implémentation d'une interface `Posable` par exemple qui permettrai au classe qui implemente cet methode d'être posable, mais le premier choix nous paraissait plus pratique.
+
+### f. Autres
 - Nous avons modifier le csv fournit, en effet nous avons seulement modifier les couleurs (Ex : dark green -> couleur en hex), nous avons choisie de faire ce choix car cela nous permet facilement de changer mais aussi d'appliquer ses couleurs la en Swing. (Cela évite l'over engineering)
-
-
-
-    
-    
