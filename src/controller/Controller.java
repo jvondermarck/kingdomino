@@ -1,6 +1,9 @@
 package controller;
 import model.Game;
 import model.Observer;
+import view.KingDominoGame;
+
+import java.io.IOException;
 
 public class Controller {
     private final Game _game;
@@ -38,6 +41,7 @@ public class Controller {
     public void addObserver(Observer observer){
         _game.addObservers(observer);
     }
+    public void instantiateKingdominoGame() throws IOException { addObserver(new KingDominoGame()) ;}
 
 }
 

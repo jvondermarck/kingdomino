@@ -170,7 +170,8 @@ public class KingDominoStart implements Observer{
                 _window.numberPlayer = 4;
             }
             try {
-                new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
+                //new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
+                _window._controller.instantiateKingdominoGame();
             } catch (IOException e) {
                 e.printStackTrace();
             }

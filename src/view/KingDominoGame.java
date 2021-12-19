@@ -45,7 +45,7 @@ public class KingDominoGame implements Observer {
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
-    private GridBagConstraints constraints;
+    private final GridBagConstraints constraints;
     private int _indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
@@ -54,6 +54,8 @@ public class KingDominoGame implements Observer {
     private int[] _orderPlayerActual; // an array which will contain at the index of the array, the number of the player who selected the domino
     private boolean _firstGame = true; // condition to check if it's the beginning of the game (because rules are different for the first round, like we shuffle under the table which player will start first)
     private boolean _dominoesAreChoosen;
+    private boolean[] _allDominoesAreSet;
+    private int _roundNumber = 0;
 
     public KingDominoGame() throws IOException {
         _window = Window.instance; // we get our main window to access to its variables
@@ -102,7 +104,7 @@ public class KingDominoGame implements Observer {
         constraints.gridy = 0;
         constraints.gridwidth = 2;
         constraints.insets = new Insets(20,0,0,0);
-        _labelRound = new JLabel("ROUND");
+        _labelRound = new JLabel("ROUND " + _roundNumber);
         _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
@@ -345,12 +347,16 @@ public class KingDominoGame implements Observer {
 
             if(i==0)
             {
-                constraints.insets = new Insets(-130,0,20,0);
+                constraints.insets = new Insets(-123,0,60,0);
             } else if(i==1) {
-                constraints.insets = new Insets(0,0,90,0);
-            } else if(i==3)
+                constraints.insets = new Insets(-5,0,0,0);
+            } else if (i==2)
             {
-                constraints.insets = new Insets(20,0,0,0);
+                constraints.insets = new Insets(80,0,0,0);
+            }
+            else if(i==3)
+            {
+                constraints.insets = new Insets(77,0,0,0);
             }
 
             _panelLabelKing.add(_lblKingPicture[i], constraints);
@@ -361,21 +367,14 @@ public class KingDominoGame implements Observer {
 
     public void changeLabelKing()
     {
-        switch( _window._game.getPlayer(_orderPlayerPrevious.get(0)).get_king()) {
-            case PINK:
-                _lblKingPicture[_indexDominoClicked].setBackground(Color.PINK);
-                break;
-            case YELLOW:
-                _lblKingPicture[_indexDominoClicked].setBackground(Color.YELLOW);
-                break;
-            case GREEN:
-                _lblKingPicture[_indexDominoClicked].setBackground(Color.RED);
-                break;
-            case BLUE:
-                _lblKingPicture[_indexDominoClicked].setBackground(Color.BLUE);
-                break;
-            default:
-                break;
+        // TODO : CECI EST TEMPORAIRE JUSTE UN TEST, NOUS ALLONS METTRE DES IMAGES PAR LA SUITE (ca ne respecte pas MVC)
+        switch (_window._game.getPlayer(_orderPlayerPrevious.get(0)).get_king()) {
+            case PINK -> _lblKingPicture[_indexDominoClicked].setBackground(Color.PINK);
+            case YELLOW -> _lblKingPicture[_indexDominoClicked].setBackground(Color.YELLOW);
+            case GREEN -> _lblKingPicture[_indexDominoClicked].setBackground(Color.RED);
+            case BLUE -> _lblKingPicture[_indexDominoClicked].setBackground(Color.BLUE);
+            default -> {
+            }
         }
 
         _lblKingPicture[_indexDominoClicked].setOpaque(true);
@@ -566,6 +565,12 @@ public class KingDominoGame implements Observer {
                             _window._controller.setCastle(finalI, finalK, finalL);
                         }
                         allCastleSet();
+                        if(_dominoesAreChoosen) // if castles are all set
+                        {
+                            //TODO : put the domino on the graph
+                            _allDominoesAreSet[_indexDominoClicked] = true;
+                            letPlayerSetDomino();
+                        }
                     });
                 }
             }
@@ -637,8 +642,20 @@ public class KingDominoGame implements Observer {
 
     public void allCastleSet()
     {
-        _btnShowDomino.setEnabled(true);
-        setTextInformation("Players, unhide the dominoes !");
+        boolean _castleArentSet = false;
+        for (boolean b : _castleIsSet) {
+            if (!b) {
+                _castleArentSet = true;
+                break;
+            }
+        }
+
+        if(!_castleArentSet)
+        {
+            _btnShowDomino.setEnabled(true);
+            setTextInformation("Players, unhide the dominoes !");
+        }
+
         for(int i=0; i<_castleIsSet.length; i++)
         {
             if (!_castleIsSet[i]) {
@@ -672,6 +689,7 @@ public class KingDominoGame implements Observer {
         _firstGame = false;
         _btnShowDomino.setEnabled(false);
         Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
+        _allDominoesAreSet = new boolean[_numberDomino];
         nextPlayerToChooseDomino(); // we put at the screen game, the first player who will have to choose his domino for the game
     }
 
@@ -690,6 +708,7 @@ public class KingDominoGame implements Observer {
         }
 
         _orderPlayerActual = new int[_numberDomino];
+        _allDominoesAreSet = new boolean[_numberDomino];
         Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
         nextPlayerToChooseDomino();
         _btnShowDomino.setEnabled(false);
@@ -715,8 +734,7 @@ public class KingDominoGame implements Observer {
         if(_orderPlayerPrevious.isEmpty())
         {
             _dominoesAreChoosen = true;
-            _btnShowDomino.setEnabled(true);
-            setTextInformation(_textNamePlayer[_orderPlayerActual[0]], "place your domino !");
+            letPlayerSetDomino();
         } else {
             setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose your domino !");
         }
@@ -724,40 +742,76 @@ public class KingDominoGame implements Observer {
 
     public void letPlayerSetDomino()
     {
-        setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose your domino !");
+        int _numberDomino = 4;
+        if(_window.numberPlayer == 3)
+            _numberDomino = 3;
 
+        for(int i=0; i<_numberDomino; i++)
+        {
+            _btnTiles[i][0].setEnabled(false);
+            _btnTiles[i][1].setEnabled(false);
+            //_lblKingPicture[i].setOpaque(false);
+            graphEnabled(false, _orderPlayerActual[i]);
+        }
+        for(int i=0; i<_numberDomino; i++)
+        {
+            if(!_allDominoesAreSet[i])
+            {
+                _btnTiles[i][0].setEnabled(true);
+                _btnTiles[i][1].setEnabled(true);
+                //_lblKingPicture[i].setOpaque(true);
+                graphEnabled(true, _orderPlayerActual[i]);
+                setTextInformation(_textNamePlayer[_orderPlayerActual[i]], "place your domino !");
+                _indexDominoClicked = i;
+                putDominoRotate();
+                break;
+            }
+        }
+
+        boolean _dominoesAreSet = true;
+        for(int i=0; i<_numberDomino; i++)
+        {
+             if(!_allDominoesAreSet[i])
+             {
+                 _dominoesAreSet = false;
+                 break;
+             }
+        }
+
+        if(_dominoesAreSet)
+        {
+            _window._controller.putDominoOnTable(); // we put again new dominoes;
+            for(int i=0; i<_numberDomino; i++)
+            {
+                cardLayout[i].first(_container[i]);
+                _lblKingPicture[i].setOpaque(false);
+                _btnTiles[i][0].setEnabled(true);
+                _btnTiles[i][1].setEnabled(true);
+            }
+
+            for(int i=0; i<2; i++)
+            {
+                for(int j=0; j<2; j++)
+                {
+                    setBackgroudDominoGraph(i,j,false);
+                }
+            }
+
+            _btnShowDomino.setEnabled(true);
+            _roundNumber += 1;
+            _labelRound.setText("ROUND " + _roundNumber);
+        }
     }
 
-    public void addKingOnDomino()
+    // Disable or enabled the 25 buttons on the player's graph depending on if it's the player'a turn to put his domino
+    public void graphEnabled(boolean condition, int index)
     {
-        //_panelMainInfoLeft
-//        _panelMainInfoLeft.setLayout(new OverlayLayout(_panelMainInfoLeft));
-//        JButton button = new JButton("Small");
-//        button.setMaximumSize(new Dimension(15, 15));
-//        button.setBackground(Color.white);
-//        button.setAlignmentX(0.5f);
-//        button.setAlignmentY(0.5f);
-//        _panelMainInfoLeft.add(button);
-
-        //        _indexDominoClicked = 1;
-//        _panelUnhideDominoes[_indexDominoClicked].setLayout(new OverlayLayout(_panelUnhideDominoes[_indexDominoClicked]));
-//        JButton popupCloseButton = new JButton("Close");
-//        popupCloseButton.setAlignmentX(0.1f);
-//        popupCloseButton.setAlignmentY(0.1f);
-//        JPanel jPanel = new JPanel();
-//        jPanel.setBackground(new Color(50, 210, 250, 150));
-//        jPanel.add(popupCloseButton);
-//        _panelUnhideDominoes[_indexDominoClicked].add(popupCloseButton);
-//        tryOver[i] = new JPanel(new OverlayLayout(tryOver[i]));
-//        JButton button = new JButton("Small");
-//        button.setMaximumSize(new Dimension(15, 15));
-//        button.setBackground(Color.white);
-//        button.setAlignmentX(0.5f);
-//        button.setAlignmentY(0.5f);
-//        tryOver[i].add(_panelUnhideDominoes[i]);
-//        tryOver[i].add(button);
+        for(int i=0; i<5; i++)
+        {
+            for(int j=0; j<5; j++)
+            {
+                _mapGraphPlayer.get(index)[i][j].setEnabled(condition);
+            }
+        }
     }
-
-
-
 }

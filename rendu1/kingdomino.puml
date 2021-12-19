@@ -253,6 +253,12 @@ package View #lightgreen;line:green{
         +putDominoRotate()
         +setTextInformation(text: String)
         +allCastleSet()
+        +firstLaunchGame()
+        +otherLaunchGame()
+        +addPlayerPlaceDomino()
+        +nextPlayerToChooseDomino()
+        +letPlayerSetDomino()
+        +graphEnabled()
     }
 
     class KingDominoEnd implements Observer
