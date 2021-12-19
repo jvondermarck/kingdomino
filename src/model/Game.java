@@ -67,6 +67,11 @@ public class Game {
         }
     }
 
+    public Player getPlayer(int index)
+    {
+        return _listPlayers.get(index);
+    }
+
     public void setCastlePlayer(int index, int x, int y)
     {
         _listPlayers.get(index).setCastle(x,y);

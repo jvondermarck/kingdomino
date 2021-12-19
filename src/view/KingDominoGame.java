@@ -18,7 +18,9 @@ public class KingDominoGame implements Observer {
     private final JPanel _panelMain; // Our main panel which will contains two panels inside : _panelMainInfo &
     private final JPanel _panelMainInfo; // it will contain 3 panels (_panelMainInfoTop, LEFT, RIGHT) to show the titles, the 4 dominoes, a button to show it, and a system to rotate a domino. It will be showed at the left of the window
     private final JPanel _panelMainInfoTop; // Contains labels
-    private final JPanel _panelMainInfoLeft; // Contains 4 dominoes and a button to show them (it will contain the _panelGridDominoes in it)
+    private final JPanel _panelMainInfoLeft; // Contains the OverLayout to put OVER of each domino the player who selected the domino AND contains the : _panelLeftDominoes
+    private final JPanel _panelLeftDominoes; // It will contain the _panelGridDominoes AND _panelLabelKing
+    private final JPanel _panelLabelKing; // contains the 4 labels to put picture of the king inside
     private JPanel _panelGridDominoes; // a panel to put the 4 dominoes (will be put inside the _panelMainInfoLeft panel)
     private final JPanel _panelMainInfoRight; // Contains a mini graph 2*2 (contains _subPanelRotation) to rotate a domino + a button to inverse and rotate it
     private final JPanel _subPanelRotation; // Contains a mini graph 2*2 to rotate a domino (it will be in the _panelMainInfoRight panel)
@@ -30,6 +32,7 @@ public class KingDominoGame implements Observer {
 
     private final JLabel _labelRound; // the main title
     private final JLabel _textInformationToDo; // a title to put some information about what to do in the game
+    private JLabel[] _lblKingPicture; // We will show at the top of each domino the player who selected the domino, to see better who selected what
 
     private JButton[] _btnHideDominoes; // array of button which wil contain one button for each hidden domino (it will be in the _panelMainInfoLeft panel)
     private JButton[][] _btnTiles; // array of button for each domino which will contains 2 tiles (one domino = 2 tiles) (it will be in the _panelMainInfoLeft panel)
@@ -42,6 +45,7 @@ public class KingDominoGame implements Observer {
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
+    private GridBagConstraints constraints;
     private int _indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
@@ -66,7 +70,7 @@ public class KingDominoGame implements Observer {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen.png")).readAllBytes());
 
         // Constraints
-        GridBagConstraints constraints = new GridBagConstraints();
+        constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
         // MAIN PANEL : Panel where we'll find the two main panels which is the information about the game, and a panel which contains the graphs
@@ -114,11 +118,31 @@ public class KingDominoGame implements Observer {
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the four dominoes
         createDominoes();
         _window._controller.putDominoOnTable(); // When we start we put the 4 dominoes
+        constraints.insets = new Insets(10,0,0,0);
+        _panelMainInfoLeft = new JPanel() {
+            public boolean isOptimizedDrawingEnabled() {
+                return false;
+            }
+        };
+        LayoutManager overlay = new OverlayLayout(_panelMainInfoLeft);
+        _panelMainInfoLeft.setLayout(overlay);
+        _panelMainInfoLeft.setPreferredSize(new Dimension(215, 490));
+
+        // _panelLabelKing --> PANEL TO PUT LABEL IN IT
+        _panelLabelKing = new JPanel(new GridBagLayout());
+        _panelLabelKing.setOpaque(false);
+        labelKingONDominoes();
+
+        // _panelLeftDominoes : panel where we put only the 4 dominoes
+        _panelLeftDominoes = new JPanel(new GridBagLayout());
         constraints.gridy = 1;
         constraints.insets = new Insets(10,0,0,0);
-        _panelMainInfoLeft = new JPanel( new GridBagLayout());
-        _panelMainInfoLeft.setPreferredSize(new Dimension(215, 490));
-        _panelMainInfoLeft.add(_panelGridDominoes, constraints); // _panelGridDominoes was created in the method createDominoes()
+        _panelLeftDominoes.add(_panelGridDominoes, constraints); // _panelGridDominoes was created in the method createDominoes()
+        _panelLeftDominoes.setOpaque(false);
+
+        // _panelMainInfoLeft : we add the 4 labels and the 4 dominoes
+        _panelMainInfoLeft.add(_panelLabelKing);
+        _panelMainInfoLeft.add(_panelLeftDominoes);
 
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the button to show all the dominoes
         constraints.gridy = 2;
@@ -132,7 +156,8 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setOpaque(false);
         _btnShowDomino.setContentAreaFilled(false);
         _btnShowDomino.setBorderPainted(false);
-        _panelMainInfoLeft.add(_btnShowDomino, constraints);
+        _panelLeftDominoes.add(_btnShowDomino, constraints);
+        _panelMainInfoLeft.add(_panelLeftDominoes, constraints);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create the graph of 2*2 to rotate a domino
         _panelMainInfoRight = new JPanel( new GridBagLayout());
@@ -300,6 +325,62 @@ public class KingDominoGame implements Observer {
         }
     }
 
+    public void labelKingONDominoes() throws IOException {
+        int _numberDomino = 4; // we will have 4 dominoes
+        if(_window.numberPlayer == 3)
+            _numberDomino = 3;
+        _lblKingPicture = new JLabel[_numberDomino];
+        int _gridY = 0;
+        constraints.gridx = 0;
+
+        for(int i=0; i<_numberDomino; i++)
+        {
+            _lblKingPicture[i] = new JLabel("     ");
+            //_lblKingPicture[i].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("kingtry.png")).readAllBytes()));
+            constraints.gridy = _gridY;
+            _lblKingPicture[i].setOpaque(false);
+            _lblKingPicture[i].setBackground(Color.BLUE);
+            _lblKingPicture[i].setMinimumSize(new Dimension(25,25));
+            _lblKingPicture[i].setMaximumSize(new Dimension(25,25));
+
+            if(i==0)
+            {
+                constraints.insets = new Insets(-130,0,20,0);
+            } else if(i==1) {
+                constraints.insets = new Insets(0,0,90,0);
+            } else if(i==3)
+            {
+                constraints.insets = new Insets(20,0,0,0);
+            }
+
+            _panelLabelKing.add(_lblKingPicture[i], constraints);
+
+            _gridY++;
+        }
+    }
+
+    public void changeLabelKing()
+    {
+        switch( _window._game.getPlayer(_orderPlayerPrevious.get(0)).get_king()) {
+            case PINK:
+                _lblKingPicture[_indexDominoClicked].setBackground(Color.PINK);
+                break;
+            case YELLOW:
+                _lblKingPicture[_indexDominoClicked].setBackground(Color.YELLOW);
+                break;
+            case GREEN:
+                _lblKingPicture[_indexDominoClicked].setBackground(Color.RED);
+                break;
+            case BLUE:
+                _lblKingPicture[_indexDominoClicked].setBackground(Color.BLUE);
+                break;
+            default:
+                break;
+        }
+
+        _lblKingPicture[_indexDominoClicked].setOpaque(true);
+    }
+
     public void createDominoes() throws IOException {
         int _numberDomino = 4; // we will have 4 dominoes
         if(_window.numberPlayer == 3)
@@ -370,7 +451,6 @@ public class KingDominoGame implements Observer {
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][0]");
-                // TODO : firstLaunchGameRandom();
                 if(!_dominoesAreChoosen)
                 {
                     addPlayerPlaceDomino();
@@ -382,7 +462,6 @@ public class KingDominoGame implements Observer {
                 setBackgroudDominoGraph(0,0,true);
                 putDominoRotate();
                 System.out.println("Tile [" + finalI + "][1]");
-                // TODO : firstLaunchGameRandom();
                 if(!_dominoesAreChoosen)
                 {
                     addPlayerPlaceDomino();
@@ -528,6 +607,8 @@ public class KingDominoGame implements Observer {
     {
         _dominoGraphRotation[0][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
         _dominoGraphRotation[0][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
+        _dominoGraphRotation[0][1].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
+        _dominoGraphRotation[1][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
         setCrownRotation(0,0);
 
         if(_window._game.isXXDomino(_indexDominoClicked))
@@ -622,6 +703,7 @@ public class KingDominoGame implements Observer {
             setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose another domino !");
         } else {
             _orderPlayerActual[_indexDominoClicked] = _orderPlayerPrevious.get(0);
+            changeLabelKing();
             _orderPlayerPrevious.remove(0);
             nextPlayerToChooseDomino();
         }

@@ -29,4 +29,7 @@ public class Player {
         return this._graph;
     }
 
+    public KINGCOLOR get_king() {
+        return _king.get_kingColor();
+    }
 }

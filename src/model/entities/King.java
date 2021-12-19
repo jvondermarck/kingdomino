@@ -1,8 +1,6 @@
 package model.entities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class King{
 
@@ -13,6 +11,7 @@ public class King{
 
     public King()
     {
+        Collections.shuffle(_colorUsed);
         _kingColor = randomChose();
     }
 
@@ -29,6 +28,10 @@ public class King{
 
         return color;
      }
+
+    public KINGCOLOR get_kingColor() {
+        return _kingColor;
+    }
 
     public String color()
     {
