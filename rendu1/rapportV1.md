@@ -105,7 +105,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
   ![image](https://i.imgur.com/w8GzzFc.png) 
 - Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).
 
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/8-EZ7INDJqg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center> 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8-EZ7INDJqg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 - Le joueur, en cliquant sur son domino, obtient une petite zone sur l'interface de jeu, pour pouvoir faire une rotation de son domino et/ou inverser son sens, avant de le placer sur son graph.
 - Une fois la sélection des dominos réalisés par l'ensemble des joueurs, l'ordre pour chaque joueur de jouer marche de la facon suivante (pour mettre leur domino sur leur propre graphe) : le joueur dont le roi est placé sur le 1er domino de la ligne commence, et ainsi de suite pour les autres joueurs. 
