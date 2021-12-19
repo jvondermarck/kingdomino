@@ -22,7 +22,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 ### a. Contraintes
 - La contrainte principale est de respecter une structure MVC. Donc nous avons un package `model`, `controller`, `view`.
 ### b. Structure
-- Nous avons voulue bien ordonnée notre projet, alors nous avons créé différent package dans `launcher` (contient le main),`model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classe
+- Nous avons voulu bien ordonnée notre projet, alors nous avons créé différent package dans `launcher` (contient le Main),`model`, `controller`, `view`. Voici une représentation de la structure des packages contenant nos classes
 
 ```
 ....
@@ -68,31 +68,31 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 ```
 
 ### c. Package `Set`
-- Pour la classe `GameMode` nous avons hésitez à choisir entre le pattern Stratégie et Template method, mais nous avons décider d'utiliser le pattern Template method  car le joueur pourra selectionner plusieurs mode de jeu en pour une partie, donc une stratégie ne semble pas efficace pour ce type de choix car cela nous restreindrai à un unique mode de jeu.
+- Pour la classe `GameMode` nous avons hésité à choisir entre le Pattern Stratégie et Template Method, mais nous avons décidé d'utiliser le Pattern Template Method, car le joueur pourra sélectionner plusieurs modes de jeu en pour une partie, donc une stratégie ne semble pas efficace pour ce type de choix, car cela nous restreindrait à un unique mode de jeu.
 
 - La stratégie concernant NumberPlayer permet de choisir le nombre de joueurs donc soit 2, 3 ou 4.
 ### d. Package `Utilities`
-- Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader` (qui permet de lire et stocker les données) et `FontUtilities` (permet d'importer des polices d'écriture personalisé au format .ogg, .tff pour pouvoir les utilisées en JavaSwing ...), cela permet de diminuer la cohésion et couplage
+- Une pure invention (GRASP) nous permet d'isoler la classe `CSVReader` (qui permet de lire et stocker les données) et `FontUtilities` (permet d'importer des polices d'écriture personnalisée au format .ogg, .tff pour pouvoir les utiliser en JavaSwing ...), cela permet de diminuer la cohésion et couplage
 
 ### d. Package `Game`
-- On utilise le pattern Singleton sur la classe `Game` afin de pouvoir créé qu'une seul instance de notre partie (cela n'est pas très intéressant dans notre cas car nous devons respecter la structure MVC, mais appliquer le pattern Singleton nous a sembler important de l'appliquer ici car la représentation d'une seul partie en cours nous semble importante.)
+- On utilise le Pattern Singleton sur la classe `Game` afin de pouvoir créer qu'une seule instance de notre partie (cela n'est pas très intéressant dans notre cas, car nous devons respecter la structure MVC, mais appliquer le Pattern Singleton nous à sembler important de l'appliquer ici, car la représentation d'une seule partie en cours nous semble importante.)
 
-- Nous avons créer une `GameModeFactory` qui nous permet de choisir les différents mode de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait  
+- Nous avons créé une `GameModeFactory` qui nous permet de choisir les différents modes de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait
   qu'une Factory soit très utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
 
-- Dans la package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile placable sur le `Graph`d'un `Player`, différente méthode aurais pu être utiliser comme l'implémentation d'une interface `Posable` par exemple qui permettrai au classe qui implémente cet méthode d'être posable, mais le premier choix nous paraissait plus pratique.
+- Dans le Package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile plaçable sur le `Graph`d'un `Player`, différente méthode aurais pu être utilisé comme l'implémentation d'une interface `Posable` par exemple qui permettrai aux classes qui implémentent cette méthode d'être posable, mais le premier choix nous paraissait plus pratique.
 
 ### e. Package `View`
-- Pour gérer les différentes vue, nous avons la classe `Window` qui nous permet de gérer les différentes vue.
+- Pour gérer les différentes vues, nous avons la classe `Window` qui nous permet de gérer les différentes vues.
 
 ### f. Autres
-- Nous avons modifier le csv fournit, en effet nous avons seulement modifier les couleurs (Ex : dark green -> couleur en hex), nous avons choisie de faire ce choix car cela nous permet facilement de changer mais aussi d'appliquer ses couleurs la en Swing. (Cela évite l'over engineering)
+- Nous avons modifié le csv fournit, en effet nous avons seulement modifié les couleurs (Ex : dark green -> couleur en hex), nous avons choisie de faire ce choix, car cela nous permet facilement de changer, mais aussi d'appliquer ses couleurs là en Swing. (Cela évite l'over engineering)
 
 
 ## 3. L'exécutable
 ### Ecran d'accueil
 ![image](https://i.imgur.com/eJz7y6o.png)
-1. Premièrement, quand nous lancons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenetre, qui lui permettra de joueur au jeu Kingdomino.
+1. Premièrement, quand nous lancons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu Kingdomino.
 ### Ecran en partie
 ![image](https://i.imgur.com/qUoIDui.png)
 
