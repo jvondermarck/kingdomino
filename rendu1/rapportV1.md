@@ -80,7 +80,7 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 - Nous avons créé une `GameModeFactory` qui nous permet de choisir les différents modes de jeu. Nous avons une classe abstraite `GameMode` et plusieurs classes concrètes, ce qui fait
   qu'une Factory soit très utile quand l'utilisateur choisira sur l'interface graphique le ou les modes de jeu qui souhaite.
 
-- Dans le Package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile plaçable sur le `Graph`d'un `Player`, différente méthode aurais pu être utilisé comme l'implémentation d'une interface `Posable` par exemple qui permettrait aux classes qui implémentent cette méthode d'être posable, mais le premier choix nous paraissait plus pratique.
+- Dans le Package `entities`, nous avons la classe `Castle` qui extends la classe `Tile` parce que nous voulions représenter notre château comme une tuile plaçable sur le `Graph`d'un `Player`, différente méthode aurais pu être utilisé comme l'implémentation d'une interface `Posable` par exemple qui permettrait aux classes qui implémentent cette méthode d'être positionable sur notre `Graph`, mais le premier choix nous paraissait plus pratique.
 
 ### e. Package `View`
 - Pour gérer les différentes vues, nous avons la classe `Window` qui nous permet de gérer les différentes vues.
