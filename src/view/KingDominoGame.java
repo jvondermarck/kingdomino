@@ -24,6 +24,7 @@ public class KingDominoGame implements Observer {
     private JPanel _panelGridDominoes; // a panel to put the 4 dominoes (will be put inside the _panelMainInfoLeft panel)
     private final JPanel _panelMainInfoRight; // Contains a mini graph 2*2 (contains _subPanelRotation) to rotate a domino + a button to inverse and rotate it
     private final JPanel _subPanelRotation; // Contains a mini graph 2*2 to rotate a domino (it will be in the _panelMainInfoRight panel)
+    private final JPanel _subPanelSwitchRotate; // contains 4 bouttons : rotate, reverse, LEFT&RIGHT or UP&DOWN
     private final JPanel _panelMainGraph; // it will contain 2,3 or 4 graphs, depending on the amount of players, panel will be shown at the right of the window
     private JPanel[] _panelUnhideDominoes; // array of panel to show the two tiles for each domino (unhidden domino)
     private JPanel[] _panelHideDominoes; // array of panels which will contain one button for each domino (hidden domino)
@@ -39,6 +40,7 @@ public class KingDominoGame implements Observer {
     private final JButton _btnShowDomino; // a button to return the 4 dominoes (it will be in the _panelMainInfoLeft panel)
     private final JButton[] _rotateDomino; // an array of button, the index 0 = button to reverse and index = 1 to inverse the domino (it will be in the _panelMainInfoRight panel)
     private final JButton[][] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
+    private JButton[] _switchDomino; // Left, right, up or down to put the domino on the grap is the correct way
     private JButton[][] _btnOnGraph; // We will have 5*5 lines and columns that we will instantiate for each player
 
     private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
@@ -56,7 +58,6 @@ public class KingDominoGame implements Observer {
     private boolean _dominoesAreChoosen;
     private boolean[] _allDominoesAreSet;
     private int _roundNumber = 0;
-    private int[] _tabCoordinateClicked = new int[2];
     private boolean _waitPlayerPutDomino;
     private int _indexGraphClicked;
 
@@ -170,6 +171,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino = new JButton[2];
         _subPanelRotation = new JPanel(new GridLayout(2,2));
         _subPanelRotation.setOpaque(false);
+        //_subPanelRotation.setPreferredSize(new Dimension(190,190));
         _dominoGraphRotation = new JButton[2][2]; // 2 lines and 2 columns
         for(int i=0; i<2; i++)
         {
@@ -187,6 +189,9 @@ public class KingDominoGame implements Observer {
         }
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to rotate the domino
+        _subPanelSwitchRotate = new JPanel(new GridLayout(2,2));
+        _subPanelSwitchRotate.setOpaque(false);
+
         _rotateDomino[0] = new JButton();
         _rotateDomino[0].setPreferredSize(new Dimension(60, 60));
         _rotateDomino[0].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rotate.png")).readAllBytes()));
@@ -206,22 +211,44 @@ public class KingDominoGame implements Observer {
         _rotateDomino[1].setOpaque(false);
         _rotateDomino[1].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        // SWITCH DOMINO
+        _switchDomino = new JButton[2];
+        _switchDomino[0] = new JButton("L");
+        _switchDomino[0].setPreferredSize(new Dimension(60, 60));
+        _switchDomino[0].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+        _switchDomino[0].setForeground(Color.BLACK);
+        _switchDomino[0].setOpaque(false);
+        _switchDomino[0].setFocusable(false);
+        _switchDomino[0].setContentAreaFilled(false);
+        _switchDomino[0].setBorderPainted(false);
+        _switchDomino[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        _switchDomino[1] = new JButton("R");
+        _switchDomino[1].setPreferredSize(new Dimension(60, 60));
+        _switchDomino[1].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+        _switchDomino[1].setForeground(Color.WHITE);
+        _switchDomino[1].setOpaque(false);
+        _switchDomino[1].setFocusable(false);
+        _switchDomino[1].setContentAreaFilled(false);
+        _switchDomino[1].setBorderPainted(false);
+        _switchDomino[1].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        _subPanelSwitchRotate.add(_rotateDomino[0]);
+        _subPanelSwitchRotate.add(_rotateDomino[1]);
+        _subPanelSwitchRotate.add(_switchDomino[0]);
+        _subPanelSwitchRotate.add(_switchDomino[1]);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
         constraints.gridy = 0;
         constraints.gridx = 0;
-        constraints.gridwidth = 3;
-        constraints.insets = new Insets(0,0,0,0);
+        constraints.insets = new Insets(30,0,0,0);
         _panelMainInfoRight.add(_subPanelRotation, constraints);
-        constraints.gridwidth = 1;
+
         constraints.gridy = 1;
-        constraints.gridx = 0;
-        constraints.insets = new Insets(20,30,0,0);
-        _panelMainInfoRight.add(_rotateDomino[0], constraints);
-        constraints.insets = new Insets(20,10,0,30);
-        constraints.gridy = 1;
-        constraints.gridx = 2;
-        _panelMainInfoRight.add(_rotateDomino[1], constraints);
+        constraints.insets = new Insets(20,0,0,20);
+        _panelMainInfoRight.add(_subPanelSwitchRotate, constraints);
 
         // We add the 3 subPanels (_panelMainInfo TOP, LEFT, RIGHT) to the _panelMainInfo
         constraints.gridx = 0;
@@ -287,6 +314,27 @@ public class KingDominoGame implements Observer {
         _rotateDomino[1].addActionListener(actionEvent -> {
             if(_indexDominoClicked!=-1)
                 _window._controller.callReverseDomino(_indexDominoClicked);
+        });
+
+        _switchDomino[0].addActionListener(actionEvent -> {
+            if(_switchDomino[0].getForeground() == Color.WHITE)
+            {
+                _switchDomino[0].setForeground(Color.BLACK);
+                _switchDomino[1].setForeground(Color.WHITE);
+            } else {
+                _switchDomino[0].setForeground(Color.WHITE);
+                _switchDomino[1].setForeground(Color.BLACK);
+            }
+        });
+        _switchDomino[1].addActionListener(actionEvent -> {
+            if(_switchDomino[1].getForeground() == Color.WHITE)
+            {
+                _switchDomino[1].setForeground(Color.BLACK);
+                _switchDomino[0].setForeground(Color.WHITE);
+            } else {
+                _switchDomino[1].setForeground(Color.WHITE);
+                _switchDomino[0].setForeground(Color.BLACK);
+            }
         });
     }
 
@@ -599,9 +647,24 @@ public class KingDominoGame implements Observer {
                         {
                             //TODO : put the domino on the graph
                             _allDominoesAreSet[_indexDominoClicked] = true;
-                            _tabCoordinateClicked[0] = finalK;
-                            _tabCoordinateClicked[1] = finalL;
-                            _window._controller.setDominoOnGraph(_indexDominoClicked, finalI, finalK, finalL);
+                            int x = finalK, y = finalL;
+                            if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
+                            {
+                                if(_switchDomino[0].getForeground() == Color.WHITE){ // if LEFT activated
+                                    y -= 1;
+                                } else {
+                                    y += 1;
+                                }
+                            } else { // if XY
+                                if(_switchDomino[0].getForeground() == Color.WHITE){ // if RIGHT activated
+                                    x -= 1;
+                                } else {
+                                    x += 1;
+                                }
+                            }
+
+                            _window._controller.setDominoOnGraph(_indexDominoClicked, finalI, x, y);
+
                             if(!_waitPlayerPutDomino)
                             {
                                 letPlayerSetDomino();
@@ -630,7 +693,6 @@ public class KingDominoGame implements Observer {
             constraints.gridwidth = 1;
             constraints.insets = new Insets(10,0,10,0);
             _panelAllGraphText[i].add(_panelGraph[i], constraints);
-
             _panelMainGraph.add(_panelAllGraphText[i]);
         }
     }
@@ -658,11 +720,15 @@ public class KingDominoGame implements Observer {
             setBackgroudDominoGraph(1,0,false);
             _dominoGraphRotation[0][1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
             setCrownRotation(0,1);
+            _switchDomino[0].setText("L");
+            _switchDomino[1].setText("R");
         } else if(_window._game.isXYDomino(_indexDominoClicked)){
             setBackgroudDominoGraph(1,0,true);
             setBackgroudDominoGraph(0,1,false);
             _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
             setCrownRotation(1,0);
+            _switchDomino[0].setText("U");
+            _switchDomino[1].setText("D");
         }
     }
 
