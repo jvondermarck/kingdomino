@@ -56,6 +56,9 @@ public class KingDominoGame implements Observer {
     private boolean _dominoesAreChoosen;
     private boolean[] _allDominoesAreSet;
     private int _roundNumber = 0;
+    private int[] _tabCoordinateClicked = new int[2];
+    private boolean _waitPlayerPutDomino;
+    private int _indexGraphClicked;
 
     public KingDominoGame() throws IOException {
         _window = Window.instance; // we get our main window to access to its variables
@@ -314,6 +317,33 @@ public class KingDominoGame implements Observer {
         putDominoRotate();
     }
 
+    @Override
+    public void dominoGraph(Game game) {
+        String msgError = game.getErrorMessageSetDomino(_indexGraphClicked);
+
+        if(Objects.equals(msgError, ""))
+        {
+            if(_window._game.isXXDomino(_indexDominoClicked))
+            {
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[0][0].getBackground());
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[0][0].getText());
+
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]+1].setBackground(_dominoGraphRotation[0][1].getBackground());
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]+1].setText(_dominoGraphRotation[0][1].getText());
+            } else if(_window._game.isXYDomino(_indexDominoClicked)){
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[0][0].getBackground());
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[0][0].getText());
+
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]+1][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[1][0].getBackground());
+                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]+1][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[1][0].getText());
+            }
+            _waitPlayerPutDomino = false;
+        } else {
+            setTextInformation(msgError);
+            _waitPlayerPutDomino = true;
+        }
+    }
+
     public void setCrownRotation(int x, int y)
     {
         int numberCrown = _window._game.getActualDominoes().get(_indexDominoClicked).getTile()[x][y].getCrowns();
@@ -544,8 +574,8 @@ public class KingDominoGame implements Observer {
             {
                 for(int l=0; l<5; l++)
                 {
-                    _btnOnGraph[k][l] = new JButton(Integer.toString(k+l));
-                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 8));
+                    _btnOnGraph[k][l] = new JButton();
+                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 5));
                     _btnOnGraph[k][l].setPreferredSize(new Dimension(42, 42));
                     _btnOnGraph[k][l].setBackground(Color.decode("#CECECE"));
                     _btnOnGraph[k][l].setRolloverEnabled(false);
@@ -554,6 +584,7 @@ public class KingDominoGame implements Observer {
                     int finalK = k;
                     int finalL = l;
                     _mapGraphPlayer.get(i)[k][l].addActionListener(actionEvent -> {
+                        _indexGraphClicked = finalI;
                         System.out.println(finalI + " " + finalK + " " + finalL);
                         if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
                         {
@@ -570,7 +601,13 @@ public class KingDominoGame implements Observer {
                         {
                             //TODO : put the domino on the graph
                             _allDominoesAreSet[_indexDominoClicked] = true;
-                            letPlayerSetDomino();
+                            _tabCoordinateClicked[0] = finalK;
+                            _tabCoordinateClicked[1] = finalL;
+                            _window._controller.setDominoOnGraph(_indexDominoClicked, finalI, finalK, finalL);
+                            if(!_waitPlayerPutDomino)
+                            {
+                                letPlayerSetDomino();
+                            }
                         }
                     });
                 }
@@ -819,4 +856,6 @@ public class KingDominoGame implements Observer {
             }
         }
     }
+
+
 }

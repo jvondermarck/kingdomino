@@ -132,6 +132,19 @@ public class Game {
         notifyObserversRotation();
     }
 
+    public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y)
+    {
+        Domino domino = _actualDominoes.get(indexDomino);
+        _listPlayers.get(indexPlayer).getGraph().setDomino(domino, x, y);
+        notifyObserverDominoGraph();
+    }
+
+    public String getErrorMessageSetDomino(int indexPlayer)
+    {
+        return _listPlayers.get(indexPlayer).getGraph().get_errorMessage();
+    }
+
+
     public boolean isXXDomino(int index)
     {
         return  _actualDominoes.get(index).isXX();
@@ -162,6 +175,13 @@ public class Game {
         for(Observer observer : _observer){
             observer.rotationDomino(this);
         }
+    }
+
+    public void notifyObserverDominoGraph()
+    {for(Observer observer : _observer){
+        observer.dominoGraph(this);
+    }
+
     }
 
 }

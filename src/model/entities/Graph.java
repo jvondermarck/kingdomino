@@ -4,14 +4,17 @@ import java.util.NoSuchElementException;
 
 public class Graph {
     private final Tile[][] _arrayTiles;
+    private String _errorMessage;
 
     public Graph(){
         _arrayTiles = new Tile[5][5];
     }
 
     public void setDomino(Domino domino, int x, int y){
+        _errorMessage = "";
         if(!isPlaceAvailable(x,y)){
-            throw new NoSuchElementException("Placement occupied !");
+            _errorMessage = "Placement occupied !";
+            //throw new NoSuchElementException("Placement occupied !");
         }
 
         //Check if it is near a castle
@@ -83,7 +86,8 @@ public class Graph {
         }
 
         else{
-            throw new NoSuchElementException("cant place it because not near a castle or a same tile !");
+            _errorMessage = "Not near a castle or a same tile !";
+            //throw new NoSuchElementException("cant place it because not near a castle or a same tile !");
         }
     }
 
@@ -100,6 +104,10 @@ public class Graph {
 
     public void setCastle(int x, int y, Castle castle){
         this._arrayTiles[x][y] = castle;
+    }
+
+    public String get_errorMessage() {
+        return _errorMessage;
     }
 
     public Tile[][] getTiles(){
