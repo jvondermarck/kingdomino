@@ -323,19 +323,13 @@ public class KingDominoGame implements Observer {
 
         if(Objects.equals(msgError, ""))
         {
-            if(_window._game.isXXDomino(_indexDominoClicked))
-            {
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[0][0].getBackground());
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[0][0].getText());
-
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]+1].setBackground(_dominoGraphRotation[0][1].getBackground());
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]+1].setText(_dominoGraphRotation[0][1].getText());
-            } else if(_window._game.isXYDomino(_indexDominoClicked)){
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[0][0].getBackground());
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[0][0].getText());
-
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]+1][_tabCoordinateClicked[1]].setBackground(_dominoGraphRotation[1][0].getBackground());
-                _mapGraphPlayer.get(_indexGraphClicked)[_tabCoordinateClicked[0]+1][_tabCoordinateClicked[1]].setText(_dominoGraphRotation[1][0].getText());
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j<5; j++){
+                    if(!game.getPlayer(_indexGraphClicked).getGraph().isPlaceAvailable(i,j) && !game.getPlayer(_indexGraphClicked).getGraph().isOnCastle(i,j)){
+                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexGraphClicked).getGraph().getTiles()[i][j].getColor()));
+                        //_mapGraphPlayer.get(_indexGraphClicked)[i]][j].setText(_dominoGraphRotation[0][0].getText());
+                    }
+                }
             }
             _waitPlayerPutDomino = false;
         } else {
@@ -575,7 +569,8 @@ public class KingDominoGame implements Observer {
                 for(int l=0; l<5; l++)
                 {
                     _btnOnGraph[k][l] = new JButton();
-                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 5));
+                    _btnOnGraph[k][l].setMargin(new Insets(1, 1, 1, 1));
+                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 15));
                     _btnOnGraph[k][l].setPreferredSize(new Dimension(42, 42));
                     _btnOnGraph[k][l].setBackground(Color.decode("#CECECE"));
                     _btnOnGraph[k][l].setRolloverEnabled(false);
