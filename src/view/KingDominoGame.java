@@ -362,26 +362,25 @@ public class KingDominoGame implements Observer {
 
         for(int i=0; i<_numberDomino; i++)
         {
-            _lblKingPicture[i] = new JLabel("     ");
-            //_lblKingPicture[i].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("kingtry.png")).readAllBytes()));
+            _lblKingPicture[i] = new JLabel();
             constraints.gridy = _gridY;
             _lblKingPicture[i].setOpaque(false);
-            _lblKingPicture[i].setBackground(Color.BLUE);
-            _lblKingPicture[i].setMinimumSize(new Dimension(25,25));
-            _lblKingPicture[i].setMaximumSize(new Dimension(25,25));
+            _lblKingPicture[i].setMinimumSize(new Dimension(30,41));
+            _lblKingPicture[i].setMaximumSize(new Dimension(30,41));
+            _lblKingPicture[i].setPreferredSize(new Dimension(30,41));
 
             if(i==0)
             {
-                constraints.insets = new Insets(-123,0,60,0);
+                constraints.insets = new Insets(-40,0,60,0);
             } else if(i==1) {
                 constraints.insets = new Insets(-5,0,0,0);
             } else if (i==2)
             {
-                constraints.insets = new Insets(80,0,0,0);
+                constraints.insets = new Insets(50,0,0,0);
             }
             else if(i==3)
             {
-                constraints.insets = new Insets(77,0,0,0);
+                constraints.insets = new Insets(60,0,0,0);
             }
 
             _panelLabelKing.add(_lblKingPicture[i], constraints);
@@ -390,19 +389,15 @@ public class KingDominoGame implements Observer {
         }
     }
 
-    public void changeLabelKing()
-    {
-        // TODO : CECI EST TEMPORAIRE JUSTE UN TEST, NOUS ALLONS METTRE DES IMAGES PAR LA SUITE (ca ne respecte pas MVC)
+    public void changeLabelKing() throws IOException {
         switch (_window._game.getPlayer(_orderPlayerPrevious.get(0)).getKing()) {
-            case PINK -> _lblKingPicture[_indexDominoClicked].setBackground(Color.PINK);
-            case YELLOW -> _lblKingPicture[_indexDominoClicked].setBackground(Color.YELLOW);
-            case GREEN -> _lblKingPicture[_indexDominoClicked].setBackground(Color.RED);
-            case BLUE -> _lblKingPicture[_indexDominoClicked].setBackground(Color.BLUE);
+            case PINK -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("PinkKing.png")).readAllBytes()));
+            case YELLOW -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("YellowKing.png")).readAllBytes()));
+            case GREEN -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("GreenKing.png")).readAllBytes()));
+            case BLUE -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("BlueKing.png")).readAllBytes()));
             default -> {
             }
         }
-
-        _lblKingPicture[_indexDominoClicked].setOpaque(true);
     }
 
     public void createDominoes() throws IOException {
@@ -477,7 +472,11 @@ public class KingDominoGame implements Observer {
                 System.out.println("Tile [" + finalI + "][0]");
                 if(!_dominoesAreChoosen)
                 {
-                    addPlayerPlaceDomino();
+                    try {
+                        addPlayerPlaceDomino();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             // When we click of the right tile :
@@ -488,7 +487,11 @@ public class KingDominoGame implements Observer {
                 System.out.println("Tile [" + finalI + "][1]");
                 if(!_dominoesAreChoosen)
                 {
-                    addPlayerPlaceDomino();
+                    try {
+                        addPlayerPlaceDomino();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -748,8 +751,7 @@ public class KingDominoGame implements Observer {
     }
 
     // We add a player in our array of the actual round
-    public void addPlayerPlaceDomino()
-    {
+    public void addPlayerPlaceDomino() throws IOException {
         if(_orderPlayerActual[_indexDominoClicked] != -1) // if the value not equal to -1, it means that someboby already choose the domino
         {
             setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose another domino !");
@@ -816,7 +818,7 @@ public class KingDominoGame implements Observer {
             _window._controller.putDominoOnTable(); // we put again new dominoes;
             for(int i=0; i<_numberDomino; i++)
             {
-                _lblKingPicture[i].setOpaque(false);
+                _lblKingPicture[i].setIcon(null);
                 _btnTiles[i][0].setEnabled(true);
                 _btnTiles[i][1].setEnabled(true);
             }
