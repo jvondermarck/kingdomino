@@ -631,7 +631,7 @@ public class KingDominoGame implements Observer {
                     int finalL = l;
                     _mapGraphPlayer.get(i)[k][l].addActionListener(actionEvent -> {
                         _indexGraphClicked = finalI;
-                        System.out.println(finalI + " " + finalK + " " + finalL);
+                        //System.out.println(finalI + " " + finalK + " " + finalL);
                         if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
                         {
                             try {
@@ -641,8 +641,9 @@ public class KingDominoGame implements Observer {
                             }
                             _castleIsSet[finalI] = true;
                             _window._controller.setCastle(finalI, finalK, finalL);
+                            allCastleSet();
                         }
-                        allCastleSet();
+
                         if(_dominoesAreChoosen) // if castles are all set
                         {
                             //TODO : put the domino on the graph
