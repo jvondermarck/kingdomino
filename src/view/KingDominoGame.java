@@ -401,7 +401,13 @@ public class KingDominoGame implements Observer {
                 for(int j = 0; j<5; j++){
                     if(!game.getPlayer(_indexGraphClicked).getGraph().isPlaceAvailable(i,j) && !game.getPlayer(_indexGraphClicked).getGraph().isCastleHere(i,j)){
                         _mapGraphPlayer.get(_indexGraphClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexGraphClicked).getGraph().getTiles()[i][j].getColor()));
-                        //_mapGraphPlayer.get(_indexGraphClicked)[i]][j].setText(_dominoGraphRotation[0][0].getText());
+
+                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText("");
+                        int numberCrown = game.getPlayer(_indexGraphClicked).getGraph().getTiles()[i][j].getCrowns();
+                        for(int k=0; k<numberCrown; k++)
+                        {
+                            _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText(_mapGraphPlayer.get(_indexGraphClicked)[i][j].getText() + _unicodeCrown);
+                        }
                     }
                 }
             }
