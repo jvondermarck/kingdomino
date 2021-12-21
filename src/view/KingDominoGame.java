@@ -42,6 +42,7 @@ public class KingDominoGame implements Observer {
     private final JButton[][] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
     private JButton[] _switchDomino; // Left, right, up or down to put the domino on the grap is the correct way
     private JButton[][] _btnOnGraph; // We will have 5*5 lines and columns that we will instantiate for each player
+    private JButton _nextPlayer; // if a player can't play, he can pass his turn to another player
 
     private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
@@ -238,6 +239,9 @@ public class KingDominoGame implements Observer {
         _subPanelSwitchRotate.add(_switchDomino[0]);
         _subPanelSwitchRotate.add(_switchDomino[1]);
 
+        _nextPlayer = new JButton("Next player");
+        _nextPlayer.setVisible(false);
+
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
@@ -249,6 +253,13 @@ public class KingDominoGame implements Observer {
         constraints.gridy = 1;
         constraints.insets = new Insets(20,0,0,20);
         _panelMainInfoRight.add(_subPanelSwitchRotate, constraints);
+
+        constraints.gridy = 2;
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(20,0,0,20);
+        _panelMainInfoRight.add(_nextPlayer, constraints);
+        _subPanelRotation.setVisible(false);
+        _subPanelSwitchRotate.setVisible(false);
 
         // We add the 3 subPanels (_panelMainInfo TOP, LEFT, RIGHT) to the _panelMainInfo
         constraints.gridx = 0;
@@ -335,6 +346,21 @@ public class KingDominoGame implements Observer {
                 _switchDomino[1].setForeground(Color.WHITE);
                 _switchDomino[0].setForeground(Color.BLACK);
             }
+        });
+        _nextPlayer.addActionListener(actionEvent -> {
+            int _numberDomino = 4;
+            if(_window.numberPlayer == 3)
+                _numberDomino = 3;
+
+            for(int i=0; i<_numberDomino; i++)
+            {
+                if(!_allDominoesAreSet[i])
+                {
+                    _allDominoesAreSet[i] = true;
+                    break;
+                }
+            }
+            letPlayerSetDomino();
         });
     }
 
@@ -797,6 +823,8 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setEnabled(false);
         Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
         _allDominoesAreSet = new boolean[_numberDomino];
+        _nextPlayer.setVisible(false);
+        _subPanelSwitchRotate.setVisible(false);
         nextPlayerToChooseDomino(); // we put at the screen game, the first player who will have to choose his domino for the game
     }
 
@@ -819,6 +847,8 @@ public class KingDominoGame implements Observer {
         Arrays.fill(_orderPlayerActual, -1); // we set the value to -1
         nextPlayerToChooseDomino();
         _btnShowDomino.setEnabled(false);
+        _nextPlayer.setVisible(false);
+        _subPanelSwitchRotate.setVisible(false);
     }
 
     // We add a player in our array of the actual round
@@ -840,6 +870,9 @@ public class KingDominoGame implements Observer {
         if(_orderPlayerPrevious.isEmpty())
         {
             _dominoesAreChoosen = true;
+            _nextPlayer.setVisible(true);
+            _subPanelRotation.setVisible(true);
+            _subPanelSwitchRotate.setVisible(true);
             letPlayerSetDomino();
         } else {
             setTextInformation(_textNamePlayer[_orderPlayerPrevious.get(0)], "choose your domino !");
@@ -905,6 +938,10 @@ public class KingDominoGame implements Observer {
             _btnShowDomino.setEnabled(true);
             _roundNumber += 1;
             _labelRound.setText("ROUND " + _roundNumber);
+            setTextInformation("Players, unhide the dominoes");
+            _nextPlayer.setVisible(false);
+            _subPanelSwitchRotate.setVisible(false);
+            _subPanelRotation.setVisible(false);
 
             for(int i=0; i<cardLayout.length; i++)
             {
