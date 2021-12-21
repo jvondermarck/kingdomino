@@ -23,6 +23,7 @@ public class Game {
 
     private final GameModeFactory _factoryGameMode;
     private final List<GameMode> _listGameMode;
+    private boolean _dominoesLeft;
 
     private Game()
     {
@@ -30,6 +31,7 @@ public class Game {
         this._numberplayer = new NumberPlayer();
         this._listGameMode = new ArrayList<>();
         this._factoryGameMode = new GameModeFactory();
+        this._dominoesLeft = false;
     }
 
     public static Game getInstance()
@@ -92,11 +94,15 @@ public class Game {
             numberDominoes = 3;
         }
 
-        for(int i = 0; i < numberDominoes; i++){
-            _actualDominoes.add(_deck.giveADomino());
+        if((_deck.get_listdominoes().size() < 3 && numberDominoes == 3) || (_deck.get_listdominoes().size() < 4))
+        {
+            this._dominoesLeft = true; // there are not enoigh dominoes to play
+        } else {
+            for(int i = 0; i < numberDominoes; i++){
+                _actualDominoes.add(_deck.giveADomino());
+                sortDominoTable(_actualDominoes.size());
+            }
         }
-
-        sortDominoTable(_actualDominoes.size());
         notifyObservers();
     }
 
@@ -189,10 +195,14 @@ public class Game {
     }
 
     public void notifyObserverDominoGraph()
-    {for(Observer observer : _observer){
-        observer.dominoGraph(this);
+    {
+        for(Observer observer : _observer)
+        {
+            observer.dominoGraph(this);
+        }
     }
 
+    public boolean is_dominoesLeft() {
+        return _dominoesLeft;
     }
-
 }

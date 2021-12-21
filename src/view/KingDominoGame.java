@@ -16,7 +16,7 @@ public class KingDominoGame implements Observer {
     private final Window _window; // our window that we get thanks to his static method and singleton variable
 
     private final JPanel _panelMain; // Our main panel which will contains two panels inside : _panelMainInfo &
-    private final JPanel _panelMainInfo; // it will contain 3 panels (_panelMainInfoTop, LEFT, RIGHT) to show the titles, the 4 dominoes, a button to show it, and a system to rotate a domino. It will be showed at the left of the window
+    private JPanel _panelMainInfo; // it will contain 3 panels (_panelMainInfoTop, LEFT, RIGHT) to show the titles, the 4 dominoes, a button to show it, and a system to rotate a domino. It will be showed at the left of the window
     private final JPanel _panelMainInfoTop; // Contains labels
     private final JPanel _panelMainInfoLeft; // Contains the OverLayout to put OVER of each domino the player who selected the domino AND contains the : _panelLeftDominoes
     private final JPanel _panelLeftDominoes; // It will contain the _panelGridDominoes AND _panelLabelKing
@@ -370,18 +370,27 @@ public class KingDominoGame implements Observer {
         if(_window.numberPlayer == 3)
             numberDominoes = 3;
 
-        for(int i = 0; i < numberDominoes; i++){
-            _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
-            System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
-            for(int j=0; j<2; j++)
-            {
-                _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
-                _btnTiles[i][j].setText(""); // we put the counter at 0 to remove all the previous crowns
-                // We get all the crowns of the title
-                for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
+        if(!game.is_dominoesLeft()) // if there is still enough dominoes
+        {
+            for(int i = 0; i < numberDominoes; i++){
+                _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
+                System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
+                for(int j=0; j<2; j++)
                 {
-                    _btnTiles[i][j].setText(_btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
+                    _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
+                    _btnTiles[i][j].setText(""); // we put the counter at 0 to remove all the previous crowns
+                    // We get all the crowns of the title
+                    for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
+                    {
+                        _btnTiles[i][j].setText(_btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
+                    }
                 }
+            }
+        } else {
+            try {
+                endGame();
+            } catch(IOException ignored)
+            {
             }
         }
     }
@@ -966,6 +975,38 @@ public class KingDominoGame implements Observer {
                 _mapGraphPlayer.get(index)[i][j].setEnabled(condition);
             }
         }
+    }
+
+    public void endGame() throws IOException {
+        _panelMainInfo.removeAll();
+        _panelMainInfo.repaint();
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen.png")).readAllBytes());
+        _panelMainInfo = new JPanel() // display in this panel a background image to get a beautiful game
+        {
+            final Image img = icon.getImage();
+            // instance initializer
+            {setOpaque(false);}
+            public void paintComponent(Graphics graphics)
+            {
+                graphics.drawImage(img, 0, 0, this);
+                super.paintComponent(graphics);
+            }
+        };
+        _panelMainInfo.setLayout(new GridLayout(2,1));
+        JLabel _lblTextEnd = new JLabel("THE GAME IS OVER");
+        _lblTextEnd.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 50));
+
+        for(int i=0; i< _window.numberPlayer; i++)
+        {
+            graphEnabled(true, i);
+        }
+
+        JButton _btnShowRanking = new JButton("Show ranking");
+        _btnShowRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 30));
+
+        _panelMainInfo.add(_lblTextEnd);
+        _panelMainInfo.add(_btnShowRanking);
+        _panelMain.add(_panelMainInfo);
     }
 
 

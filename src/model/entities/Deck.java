@@ -65,6 +65,7 @@ public class Deck {
         return domino;
     }
 
-
-
+    public List<Domino> get_listdominoes() {
+        return _listdominoes;
+    }
 }
