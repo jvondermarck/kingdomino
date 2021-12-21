@@ -40,9 +40,9 @@ public class KingDominoGame implements Observer {
     private final JButton _btnShowDomino; // a button to return the 4 dominoes (it will be in the _panelMainInfoLeft panel)
     private final JButton[] _rotateDomino; // an array of button, the index 0 = button to reverse and index = 1 to inverse the domino (it will be in the _panelMainInfoRight panel)
     private final JButton[][] _dominoGraphRotation; // a graph of 2*2 to put a domino inside and when the player will rotate it or inverser, it will be showed in this graph (it will be in the _panelMainInfoRight panel)
-    private JButton[] _switchDomino; // Left, right, up or down to put the domino on the grap is the correct way
+    private final JButton[] _switchDomino; // Left, right, up or down to put the domino on the grap is the correct way
     private JButton[][] _btnOnGraph; // We will have 5*5 lines and columns that we will instantiate for each player
-    private JButton _nextPlayer; // if a player can't play, he can pass his turn to another player
+    private final JButton _nextPlayer; // if a player can't play, he can pass his turn to another player
 
     private CardLayout[] cardLayout; // cardlayout to show first the hidden dominoes and after the two tiles of each domino when we return them
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
@@ -158,11 +158,10 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setFocusable(false);
         _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
         _btnShowDomino.setForeground(Color.WHITE);
-        //_btnShowDomino.setBackground(Color.decode("#DDAB40"));
-        _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _btnShowDomino.setOpaque(false);
         _btnShowDomino.setContentAreaFilled(false);
         _btnShowDomino.setBorderPainted(false);
+        _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelLeftDominoes.add(_btnShowDomino, constraints);
         _panelMainInfoLeft.add(_panelLeftDominoes, constraints);
 
@@ -241,6 +240,7 @@ public class KingDominoGame implements Observer {
 
         _nextPlayer = new JButton("Next player");
         _nextPlayer.setVisible(false);
+        _nextPlayer.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
         constraints.gridwidth = 1;
@@ -256,7 +256,7 @@ public class KingDominoGame implements Observer {
 
         constraints.gridy = 2;
         constraints.gridwidth = 2;
-        constraints.insets = new Insets(20,0,0,20);
+        constraints.insets = new Insets(10,0,0,20);
         _panelMainInfoRight.add(_nextPlayer, constraints);
         _subPanelRotation.setVisible(false);
         _subPanelSwitchRotate.setVisible(false);
@@ -426,7 +426,7 @@ public class KingDominoGame implements Observer {
         }
     }
 
-    public void labelKingONDominoes() throws IOException {
+    public void labelKingONDominoes() {
         int _numberDomino = 4; // we will have 4 dominoes
         if(_window.numberPlayer == 3)
             _numberDomino = 3;
