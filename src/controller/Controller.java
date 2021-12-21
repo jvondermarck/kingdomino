@@ -35,6 +35,7 @@ public class Controller {
 
     public void callRotationDomino(int index) { _game.rotateDomino(index); }
     public void callReverseDomino(int index) { _game.reverseDomino(index); }
+    public void callSetDirectionDomino(int index, int direction) { _game.setDirectionDomino(index, direction);}
 
     public void setCastle(int index, int x, int y) { _game.setCastlePlayer(index, x, y); }
     public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y) { _game.setDominoOnGraph(indexDomino, indexPlayer, x,y); ;}

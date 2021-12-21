@@ -132,6 +132,17 @@ public class Game {
         notifyObserversRotation();
     }
 
+    public void setDirectionDomino(int index, int direction){
+        if(direction == 1) // UP
+            _actualDominoes.get(index).setUpSide();
+        if(direction == -1) // DOWN
+            _actualDominoes.get(index).setDownSide();
+        if(direction == 2) // RIGHT
+            _actualDominoes.get(index).setRightSide();
+        if(direction == -2) // LEFT
+            _actualDominoes.get(index).setLeftSide();
+    }
+
     public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y)
     {
         Domino domino = _actualDominoes.get(indexDomino);

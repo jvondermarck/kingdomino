@@ -13,46 +13,45 @@ public class Graph {
     public void setDomino(Domino domino, int x, int y){
         _errorMessage = "";
 
-        if(x - 1 < 0 || y - 1 < 0 || x + 1 > _arrayTiles.length - 1 || y + 1 > _arrayTiles.length - 1){
-            if(domino.isXX() && y - 1 < 0){
-                _errorMessage = "Placement occupied !";
-                return;
-            }
-            else if (domino.isXX() && y + 1 > _arrayTiles.length - 1){
-                _errorMessage = "Placement occupied !";
-                return;
-            }
-            else if(domino.isXY() && x - 1 < 0){
-                _errorMessage = "Placement occupied !";
-                return;
-            }
-            else if (domino.isXY() && x + 1 > _arrayTiles.length - 1){
-                _errorMessage = "Placement occupied !";
-                return;
-            }
-        }
-
         if(!isPlaceAvailable(x,y)){
             _errorMessage = "Placement occupied !";
             return;
             //throw new NoSuchElementException("Placement occupied !");
         }
 
-        if(isPlaceAvailable(x,y) && !isPlaceAvailable(x-1, y) && !isPlaceAvailable(x+1, y) && !isPlaceAvailable(x,y+1) && !isPlaceAvailable(x,y-1)){
-            _errorMessage = "Dead end !";
+        else if(isPlaceAvailable(x,y) && !isPlaceAvailable(x-1, y) && !isPlaceAvailable(x+1, y) && !isPlaceAvailable(x,y+1) && !isPlaceAvailable(x,y-1)){
+            _errorMessage = "Dead end ! Pass your turn.";
             return;
             //throw new NoSuchElementException("Placement occupied !");
         }
 
-        if(isCastleHere(x,y)){
+        else if(isCastleHere(x,y)){
             _errorMessage = "Castle is here !";
             return;
             //throw new NoSuchElementException("Placement occupied !");
         }
 
+        else if((x == 0 && y == 0 && (domino.isUpSide() || domino.isLeftSide())) // Up left corner
+                || (x == _arrayTiles.length - 1 && y == 0 && (domino.isDownSide() || domino.isLeftSide())) // Down left corner
+                    || (y == _arrayTiles.length - 1 && x == 0 && (domino.isUpSide() || domino.isRightSide()))// Up right corner
+                        || (y == _arrayTiles.length - 1 && x == _arrayTiles.length-1 && (domino.isDownSide() || domino.isRightSide()))){ // Down right corner
+
+            System.out.println(x+"|"+y);
+            _errorMessage = "Impossible, out of the board!";
+            return;
+        }
+
+        else if((x == 0 && 0 < y && y < _arrayTiles.length && (domino.isUpSide() || domino.isDownSide() && isCastleHere(x+1,y)))
+                || (x == _arrayTiles.length - 1 && 0 < y && y < _arrayTiles.length && (domino.isDownSide() || domino.isUpSide() && isCastleHere(x-1,y)))
+                  || (y == 0 && 0 < x && x < _arrayTiles.length && (domino.isLeftSide() || domino.isRightSide() && isCastleHere(x,y+1)))
+                     || (y == _arrayTiles.length - 1 && 0 < x && x < _arrayTiles.length && (domino.isRightSide() || domino.isLeftSide() && isCastleHere(x,y-1)))){
+
+            _errorMessage = "Impossible, out of the board!";
+            return;
+        }
 
         //Check if it is near a castle
-        if(isCastleHere(x+1,y)|| isCastleHere(x-1,y) || isCastleHere(x, y+1)|| isCastleHere(x,y-1)){
+        else if(isCastleHere(x+1,y)|| isCastleHere(x-1,y) || isCastleHere(x, y+1)|| isCastleHere(x,y-1)){
             //If the domino is like that :
             // O O
             // X X
@@ -74,16 +73,28 @@ public class Graph {
                 //     | ? |   X   | ?
                 // |.. | ..| CASTLE| ..
                 // |...|...| ..... | ..
-                else if(isCastleHere(x+1,y) && isPlaceAvailable(x,y) && isPlaceAvailable(x,y-1) || isPlaceAvailable(x,y+1)){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                else if(isCastleHere(x+1,y) && isPlaceAvailable(x,y)){
+                    if(domino.isLeftSide() && isPlaceAvailable(x,y-1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y-1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
+                    else if(domino.isRightSide() && isPlaceAvailable(x,y+1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
                 }
                 //     | ..|  ...  |
                 // |.. | ..| CASTLE| ..
                 // |...| ? |    X  | ?
-                else if(isCastleHere(x-1,y) && isPlaceAvailable(x,y) && isPlaceAvailable(x,y-1) || isPlaceAvailable(x,y+1)){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                else if(isCastleHere(x-1,y) && isPlaceAvailable(x,y)){
+                    if(domino.isLeftSide() && isPlaceAvailable(x,y-1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y-1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
+                    else if(domino.isRightSide() && isPlaceAvailable(x,y+1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
                 }
             }
 
@@ -101,61 +112,89 @@ public class Graph {
                     _arrayTiles[Math.max(x - 1 , 0)][y] = domino.getTile()[1][0];
                 }
 
-                else if(isCastleHere(x,y+1) && isPlaceAvailable(x,y) && isPlaceAvailable(x+1,y) || isPlaceAvailable(x-1,y)){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                else if(isCastleHere(x,y+1) && isPlaceAvailable(x,y)){
+                    if(domino.isDownSide() && isPlaceAvailable(x+1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                    }
+                    else if(domino.isUpSide() && isPlaceAvailable(x-1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                    }
                 }
 
-                else if(isCastleHere(x,y-1) && isPlaceAvailable(x,y) && isPlaceAvailable(x+1,y) || isPlaceAvailable(x-1,y)){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                else if(isCastleHere(x,y-1) && isPlaceAvailable(x,y)){
+                    if(domino.isDownSide() && isPlaceAvailable(x+1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                    }
+                    else if(domino.isUpSide() && isPlaceAvailable(x-1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                    }
                 }
             }
         }
 
         //Check if a compatible Tile is available near pos x y
-        //TODO : a upddate dans le left right sera up
-        else if(isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y], domino.getTile()[0][0]) ||  isSameTile(_arrayTiles[Math.max(x-1, 0)][y], domino.getTile()[0][0]) ||
-                isSameTile(_arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[0][0]) || isSameTile(_arrayTiles[x][Math.max(y-1, 0)], domino.getTile()[0][0])){
+        else if(isSameTile(_arrayTiles[Math.max(x-1, 0)][y], domino.getTile()[0][0]) || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y], domino.getTile()[0][0])
+        || isSameTile(_arrayTiles[x][Math.max(y-1, 0)], domino.getTile()[0][0]) || isSameTile(_arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[0][0])){
 
-            if(domino.isXX()){
-                if(isPlaceAvailable(x,y) && isPlaceAvailable(x, Math.min(y+1, _arrayTiles.length-1))){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[x][Math.min(y + 1 , _arrayTiles.length-1)] = domino.getTile()[0][1];
+            if(domino.isXX() && (isSameTile(_arrayTiles[x][Math.max(y-1, 0)], domino.getTile()[0][0])
+                    || isSameTile(_arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[0][0])
+                         || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y], domino.getTile()[0][0])
+                            || isSameTile(_arrayTiles[Math.max(x-1, 0)][y], domino.getTile()[0][0]))){
+
+                if(domino.isRightSide()){
+                    if(isPlaceAvailable(x,y+1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
+                    }
                 }
-                else if(isPlaceAvailable(x,y) && isPlaceAvailable(x, Math.max(y-1, 0))){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[x][Math.max(y - 1 , 0)] = domino.getTile()[0][1];
+                else if(domino.isLeftSide()){
+                    if(isPlaceAvailable(x,y-1)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x][Math.min(y-1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
+                    }
                 }
             }
+            else if(domino.isXY() && (isSameTile(_arrayTiles[x][Math.max(y-1, 0)], domino.getTile()[0][0])
+                    || isSameTile(_arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[0][0])
+                         || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y], domino.getTile()[0][0])
+                             || isSameTile(_arrayTiles[Math.max(x-1, 0)][y], domino.getTile()[0][0]))){
 
-            else if(domino.isXY()){
-                if(isPlaceAvailable(x,y) && isPlaceAvailable(Math.max(x-1, 0), y) && x-1 >=0 ){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[Math.max(x - 1 , 0)][y] = domino.getTile()[1][0];
+                if(domino.isUpSide()){
+                    if(isPlaceAvailable(x-1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x-1][y] = domino.getTile()[1][0];
+                    }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
+                    }
                 }
-                else if(isPlaceAvailable(x,y) && isPlaceAvailable(Math.min(x+1, _arrayTiles.length-1), y)){
-                    _arrayTiles[x][y] = domino.getTile()[0][0];
-                    _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                else if(domino.isDownSide()){
+                    if(isPlaceAvailable(x+1,y)){
+                        _arrayTiles[x][y] = domino.getTile()[0][0];
+                        _arrayTiles[x+1][y] = domino.getTile()[1][0];
+                    }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
+                    }
                 }
             }
         }
+
+
 
         else{
             _errorMessage = "Not near a castle or a same tile !";
             //throw new NoSuchElementException("cant place it because not near a castle or a same tile !");
-        }
-
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j<5; j++){
-                if(!this.isPlaceAvailable(i,j)){
-                    System.out.print(" "+ this.getTiles()[i][j].getColor().substring(this.getTiles()[i][j].getColor().length() - 1) + " ");
-                }
-                else{
-                    System.out.print(" - ");
-                }
-            }
-            System.out.println("");
         }
     }
 

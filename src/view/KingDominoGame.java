@@ -651,20 +651,24 @@ public class KingDominoGame implements Observer {
                             if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
                             {
                                 if(_switchDomino[0].getForeground() == Color.WHITE){ // if LEFT activated
-                                    y -= 1;
+                                    //left
+                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, -2);
                                 } else {
-                                    y += 1;
+                                    //right
+                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, 2);
                                 }
-                            } else { // if XY
-                                if(_switchDomino[0].getForeground() == Color.WHITE){ // if RIGHT activated
-                                    x -= 1;
+                            }
+                            else if(Objects.equals(_switchDomino[0].getText(), "U")){
+                                if(_switchDomino[0].getForeground() == Color.WHITE){
+                                    //up
+                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, 1);
                                 } else {
-                                    x += 1;
+                                    //down
+                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, -1);
                                 }
                             }
 
                             _window._controller.setDominoOnGraph(_indexDominoClicked, finalI, x, y);
-
                             if(!_waitPlayerPutDomino)
                             {
                                 letPlayerSetDomino();
