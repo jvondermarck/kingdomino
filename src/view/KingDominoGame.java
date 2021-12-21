@@ -4,6 +4,7 @@ import model.Game;
 import model.Observer;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -980,7 +981,7 @@ public class KingDominoGame implements Observer {
     public void endGame() throws IOException {
         _panelMainInfo.removeAll();
         _panelMainInfo.repaint();
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen.png")).readAllBytes());
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen2.png")).readAllBytes());
         _panelMainInfo = new JPanel() // display in this panel a background image to get a beautiful game
         {
             final Image img = icon.getImage();
@@ -996,17 +997,28 @@ public class KingDominoGame implements Observer {
         JLabel _lblTextEnd = new JLabel("THE GAME IS OVER");
         _lblTextEnd.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 50));
 
-        for(int i=0; i< _window.numberPlayer; i++)
-        {
+        for(int i=0; i< _window.numberPlayer; i++) {
             graphEnabled(true, i);
+            for (int k = 0; k < 5; k++) {
+                for (int l = 0; l < 5; l++) {
+                    _btnOnGraph[k][l] = new JButton();
+                    for( ActionListener al : _btnOnGraph[k][l].getActionListeners() ) {
+                        _mapGraphPlayer.get(i)[k][l].removeActionListener(al);
+                    }
+                }
+            }
         }
 
         JButton _btnShowRanking = new JButton("Show ranking");
         _btnShowRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 30));
+        _btnShowRanking.setPreferredSize(new Dimension(50,50));
 
         _panelMainInfo.add(_lblTextEnd);
         _panelMainInfo.add(_btnShowRanking);
-        _panelMain.add(_panelMainInfo);
+        _panelMain.add(_panelMainInfo, BorderLayout.WEST);
+        // We show the _panelMain on our window
+        _window.frame.setContentPane( _panelMain);
+        _window.frame.setVisible( true );
     }
 
 
