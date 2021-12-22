@@ -111,7 +111,7 @@ public class KingDominoGame implements Observer {
         constraints.gridwidth = 2;
         constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND " + _roundNumber);
-        _labelRound.setFont(_window._fontAugusta.deriveFont(Font.PLAIN, 48));
+        _labelRound.setFont(_window._fontAugusta.deriveFont(Font.BOLD, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
@@ -156,13 +156,13 @@ public class KingDominoGame implements Observer {
         constraints.gridy = 2;
         constraints.insets = new Insets(10,0,0,0);
         _btnShowDomino = new JButton("Show dominoes");
+        _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _btnShowDomino.setFocusable(false);
         _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
         _btnShowDomino.setForeground(Color.WHITE);
         _btnShowDomino.setOpaque(false);
         _btnShowDomino.setContentAreaFilled(false);
         _btnShowDomino.setBorderPainted(false);
-        _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _panelLeftDominoes.add(_btnShowDomino, constraints);
         _panelMainInfoLeft.add(_panelLeftDominoes, constraints);
 
@@ -468,22 +468,34 @@ public class KingDominoGame implements Observer {
             _lblKingPicture[i].setMaximumSize(new Dimension(30,41));
             _lblKingPicture[i].setPreferredSize(new Dimension(30,41));
 
-            if(i==0)
+            if(_numberDomino==3)
             {
-                constraints.insets = new Insets(-40,0,60,0);
-            } else if(i==1) {
-                constraints.insets = new Insets(-5,0,0,0);
-            } else if (i==2)
-            {
-                constraints.insets = new Insets(50,0,0,0);
-            }
-            else if(i==3)
-            {
-                constraints.insets = new Insets(60,0,0,0);
+                if(i==0)
+                {
+                    constraints.insets = new Insets(-200,0,30,0);
+                } else if(i==1) {
+                    constraints.insets = new Insets(-30,0,0,0);
+                } else
+                {
+                    constraints.insets = new Insets(50,0,0,0);
+                }
+            } else {
+                if(i==0)
+                {
+                    constraints.insets = new Insets(-40,0,60,0);
+                } else if(i==1) {
+                    constraints.insets = new Insets(-5,0,0,0);
+                } else if (i==2)
+                {
+                    constraints.insets = new Insets(50,0,0,0);
+                }
+                else
+                {
+                    constraints.insets = new Insets(60,0,0,0);
+                }
             }
 
             _panelLabelKing.add(_lblKingPicture[i], constraints);
-
             _gridY++;
         }
     }
