@@ -1,5 +1,8 @@
 package model.entities;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Graph {
@@ -82,6 +85,10 @@ public class Graph {
                         _arrayTiles[x][y] = domino.getTile()[0][0];
                         _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
                     }
+                    else{
+                        //TODO : more convinient message to print
+                        _errorMessage = "ok";
+                    }
                 }
                 //     | ..|  ...  |
                 // |.. | ..| CASTLE| ..
@@ -94,6 +101,10 @@ public class Graph {
                     else if(domino.isRightSide() && isPlaceAvailable(x,y+1)){
                         _arrayTiles[x][y] = domino.getTile()[0][0];
                         _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+                    }
+                    else{
+                        //TODO : more convinient message to print
+                        _errorMessage = "ok";
                     }
                 }
             }
@@ -251,6 +262,70 @@ public class Graph {
 
     public Tile[][] getTiles(){
         return this._arrayTiles;
+    }
+
+    private  int countCells(int[][] matrix, int i, int j) {
+        if (i < 0 || j < 0 || i >= matrix.length || j >= matrix[0].length) return 0;
+        if (matrix[i][j] == 0) return 0;
+        matrix[i][j] = 0;
+        int count = 1;
+        count += countCells(matrix, i + 1, j);
+        count += countCells(matrix, i - 1, j);
+        count += countCells(matrix, i, j + 1);
+        count += countCells(matrix, i, j - 1);
+        return count;
+    }
+
+    private int countCrowns(int[][] matrix, Tile[][] graph, int i, int j, int v) {
+        if (i < 0 || j < 0 || i >= matrix.length || j >= matrix[0].length) return 0;
+        if (matrix[i][j] == 0) return 0;
+        matrix[i][j] = 0;
+        v = graph[i][j].getCrowns();
+        v += countCrowns(matrix, graph,i + 1, j,  graph[i][j].getCrowns());
+        v += countCrowns(matrix, graph,i - 1, j, graph[i][j].getCrowns());
+        v += countCrowns(matrix, graph, i, j + 1, graph[i][j].getCrowns());
+        v += countCrowns(matrix, graph, i, j - 1, graph[i][j].getCrowns());
+        return v;
+    }
+
+
+    public List<List<Integer>> getSizeOfADomain(String type){
+        List<List<Integer>> domainsSize = new ArrayList<>();
+
+        int[][] visitedTile = new int[this._arrayTiles.length][this._arrayTiles.length];
+        int[][] visitedTileCrown = new int[this._arrayTiles.length][this._arrayTiles.length];
+
+        //Make an array where 1 represent our Tile Type
+        // and 0 something else
+        for(int i = 0; i < visitedTile.length; i++){
+            for(int j = 0; j < visitedTile.length; j++){
+                if(this._arrayTiles[i][j] != null && this._arrayTiles[i][j].getColor().equals(type)){
+                    visitedTile[i][j] = 1;
+                    visitedTileCrown[i][j] = 1;
+                }
+                else{
+                    visitedTile[i][j] = 0;
+                    visitedTileCrown[i][j] = 0;
+                }
+            }
+        }
+
+
+        for(int i = 0; i < this._arrayTiles.length;i++){
+            for(int j = 0; j < this._arrayTiles.length; j++){
+                    List<Integer> temp = new ArrayList<>();
+                    int size = countCells(visitedTile, i, j);
+                    int crown = countCrowns(visitedTileCrown, this._arrayTiles, i, j, 0);
+                    if(size > 1){
+                        temp.add(size);
+                        temp.add(crown);
+                    }
+                    if(temp.size() > 0){
+                        domainsSize.add(temp);
+                    }
+            }
+        }
+        return domainsSize;
     }
 
 }

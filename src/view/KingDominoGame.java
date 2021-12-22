@@ -1107,6 +1107,14 @@ public class KingDominoGame implements Observer {
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
         _window.frame.setContentPane( _panelMain);
+        /*
+        System.out.println("Jaune : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#FDCA40"));
+        System.out.println("dark green : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#0A9396"));
+        System.out.println("blue : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#2176FF"));
+        System.out.println("black : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#31393C"));
+        System.out.println("brown : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#7F4F24"));
+        System.out.println("light green : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#B5E48C"));
+         */
     }
 
 
