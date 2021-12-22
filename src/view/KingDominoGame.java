@@ -538,8 +538,8 @@ public class KingDominoGame implements Observer {
 
             _btnHideDominoes[i].setPreferredSize(new Dimension(170, 85));
             _btnHideDominoes[i].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("domino1.png")).readAllBytes()));
-            _btnHideDominoes[i].setForeground(Color.WHITE);
-            _btnHideDominoes[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 25));
+            _btnHideDominoes[i].setForeground(Color.decode("#E0B78B"));
+            _btnHideDominoes[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
             _btnHideDominoes[i].setHorizontalTextPosition(SwingConstants.CENTER);
             _btnHideDominoes[i].setFocusable(false);
 
