@@ -17,6 +17,7 @@ public class Window extends JFrame implements Observer {
     protected ImageIcon img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("ico.png")).readAllBytes());
     protected Font _fontGermania;
     protected Font _fontTimeless;
+    protected Font _fontAugusta;
     protected int numberPlayer = 0;
 
     private Window(Game game, Controller controller) throws IOException {
@@ -34,6 +35,7 @@ public class Window extends JFrame implements Observer {
         frame.setResizable(false); // make impossible to resize the window to avoid error or whatever
         _fontGermania = FontUtilities.setFont("Germania.otf"); // We use this for the user to access to our custom font
         _fontTimeless = FontUtilities.setFont("Timeless.ttf");
+        _fontAugusta = FontUtilities.setFont("Augusta.ttf");
     }
 
     public static Window getInstance(Game game, Controller controller) throws IOException {

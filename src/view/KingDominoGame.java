@@ -111,13 +111,13 @@ public class KingDominoGame implements Observer {
         constraints.gridwidth = 2;
         constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND " + _roundNumber);
-        _labelRound.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 48));
+        _labelRound.setFont(_window._fontAugusta.deriveFont(Font.PLAIN, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
         constraints.gridy = 1;
-        constraints.insets = new Insets(10,0,0,0);
+        constraints.insets = new Insets(5,0,0,0);
         _textInformationToDo = new JLabel("Players... put your castle !");
         _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
         _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
@@ -239,16 +239,25 @@ public class KingDominoGame implements Observer {
         _subPanelSwitchRotate.add(_switchDomino[0]);
         _subPanelSwitchRotate.add(_switchDomino[1]);
 
-        _nextPlayer = new JButton("Next player");
+        _nextPlayer = new JButton(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("roundBorder.png")).readAllBytes()));
+        _nextPlayer.setText("Pass my turn");
         _nextPlayer.setVisible(false);
         _nextPlayer.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _nextPlayer.setForeground(Color.WHITE);
+        _nextPlayer.setOpaque(false);
+        _nextPlayer.setFocusPainted(false);
+        _nextPlayer.setBorderPainted(false);
+        _nextPlayer.setContentAreaFilled(false);
+        _nextPlayer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        _nextPlayer.setVerticalTextPosition(AbstractButton.CENTER);
+        _nextPlayer.setHorizontalTextPosition(AbstractButton.CENTER);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
         constraints.gridy = 0;
         constraints.gridx = 0;
-        constraints.insets = new Insets(30,0,0,0);
+        constraints.insets = new Insets(30,0,0,10);
         _panelMainInfoRight.add(_subPanelRotation, constraints);
 
         constraints.gridy = 1;
@@ -256,7 +265,7 @@ public class KingDominoGame implements Observer {
         _panelMainInfoRight.add(_subPanelSwitchRotate, constraints);
 
         constraints.gridy = 2;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
         constraints.insets = new Insets(10,0,0,20);
         _panelMainInfoRight.add(_nextPlayer, constraints);
         _subPanelRotation.setVisible(false);
@@ -622,13 +631,45 @@ public class KingDominoGame implements Observer {
         {
             _btnOnGraph = new JButton[5][5]; // We will have 5*5 lines and columns that we will instantiate for each player
             _mapGraphPlayer.put(i, _btnOnGraph); // we put in the key the number of the player and his graph of 5*5
-            // NAME OF EACH PLAYER
+
+            JPanel _panelOverlayGraph; // we create a JPanel OverLayout just to put an image of the king on the graph of each player
+            _panelOverlayGraph = new JPanel() {
+                public boolean isOptimizedDrawingEnabled() {
+                    return false;
+                }
+            };
+            LayoutManager overlay = new OverlayLayout(_panelOverlayGraph);
+            _panelOverlayGraph.setLayout(overlay);
+            _panelOverlayGraph.setOpaque(false);
+            JLabel _lblKingGraph = new JLabel();
+            _lblKingGraph.setOpaque(false);
+            _lblKingGraph.setMinimumSize(new Dimension(30,41));
+            _lblKingGraph.setMaximumSize(new Dimension(30,41));
+            _lblKingGraph.setPreferredSize(new Dimension(30,41));
+            JPanel _subPanelKingOnGraph = new JPanel(new FlowLayout());
+            _subPanelKingOnGraph.setOpaque(false);
+            try {
+                switch (_window._game.getPlayer(i).getKing()) {
+                    case PINK -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("PinkKing.png")).readAllBytes()));
+                    case YELLOW -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("YellowKing.png")).readAllBytes()));
+                    case GREEN -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("GreenKing.png")).readAllBytes()));
+                    case BLUE -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("BlueKing.png")).readAllBytes()));
+                    default -> {
+                    }
+                }
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            _subPanelKingOnGraph.add(_lblKingGraph);
+
             _panelAllGraphText[i] = new JPanel( new GridBagLayout());
             _panelAllGraphText[i].setBackground(Color.WHITE);
             _panelAllGraphText[i].setOpaque(false);
 
             _textNamePlayer[i] = new JTextField("Kingdom " + (i+1));
             _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
+            _textNamePlayer[i].setForeground(Color.WHITE);
             _textNamePlayer[i].setOpaque(false);
             _textNamePlayer[i].setBorder(null);
             _textNamePlayer[i].setHorizontalAlignment(JTextField.CENTER);
@@ -740,7 +781,10 @@ public class KingDominoGame implements Observer {
             constraints.gridwidth = 1;
             constraints.insets = new Insets(10,0,10,0);
             _panelAllGraphText[i].add(_panelGraph[i], constraints);
-            _panelMainGraph.add(_panelAllGraphText[i]);
+
+            _panelOverlayGraph.add(_panelAllGraphText[i]);
+            _panelOverlayGraph.add(_subPanelKingOnGraph);
+            _panelMainGraph.add(_panelOverlayGraph);
         }
     }
 

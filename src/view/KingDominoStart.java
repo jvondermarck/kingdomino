@@ -59,7 +59,7 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 3;
         constraints.insets = new Insets(0,0,10,0); //top padding
         _labelTitle =  new JLabel("Welcome to Kingdomino", SwingConstants.CENTER);
-        _labelTitle.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 45));
+        _labelTitle.setFont(_window._fontAugusta.deriveFont(Font.PLAIN, 48));
         _labelTitle.setVisible(true);
         _labelTitle.setForeground(Color.decode("#FEBB13"));
         _panelMain.add(_labelTitle, constraints);
