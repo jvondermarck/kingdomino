@@ -316,7 +316,7 @@ public class Graph {
                     List<Integer> temp = new ArrayList<>();
                     int size = countCells(visitedTile, i, j);
                     int crown = countCrowns(visitedTileCrown, this._arrayTiles, i, j, 0);
-                    if(size > 1){
+                    if(size > 1 || size == 1 && crown >= 1){
                         temp.add(size);
                         temp.add(crown);
                     }
