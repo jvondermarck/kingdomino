@@ -3,6 +3,9 @@ package view;
 import model.Game;
 import model.Observer;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -293,7 +296,7 @@ public class KingDominoGame implements Observer {
         // GRAPH PANEL : panels which will contains 2,3 or 4 panels depending on how many players will play
         _panelMainGraph = new JPanel(new GridLayout(2,2)) // display in this panel a background image to get a beautiful game
         {
-            final Image img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("backGraph.png")).readAllBytes()).getImage();
+            final Image img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("backGraph2.png")).readAllBytes()).getImage();
             // instance initializer
             {setOpaque(false);}
             public void paintComponent(Graphics graphics)
@@ -1056,7 +1059,7 @@ public class KingDominoGame implements Observer {
 
         // we instantiate a second time the _panelMainInfo to restart everything
         _panelMainInfo = new JPanel();
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreen2.png")).readAllBytes());
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("MainScreenGameover.png")).readAllBytes());
         _panelMainInfo = new JPanel() // display in this panel a background image to get a beautiful game
         {
             final Image img = icon.getImage();
@@ -1068,19 +1071,39 @@ public class KingDominoGame implements Observer {
                 super.paintComponent(graphics);
             }
         };
-        _panelMainInfo.setLayout(new GridBagLayout());
+        _panelMainInfo.setLayout(new BorderLayout());
         _panelMainInfo.setPreferredSize(new Dimension(430, 600));
 
         // label of GAME OVER
-        JLabel _lblTextEnd = new JLabel("Finished !");
-        _lblTextEnd.setFont(_window._fontAugusta.deriveFont(Font.PLAIN, 85));
-        _lblTextEnd.setPreferredSize(new Dimension(430, 190));
+        JPanel _panelGameOver = new JPanel(new GridLayout(2, 1));
+        _panelGameOver.setOpaque(false);
+        _panelGameOver.setPreferredSize(new Dimension(430, 104));
+        JLabel _lblTextEnd = new JLabel("Leaderboard");
+        _lblTextEnd.setFont(_window._fontAugusta.deriveFont(Font.BOLD, 50));
+        _lblTextEnd.setPreferredSize(new Dimension(430, 104));
         _lblTextEnd.setForeground(Color.WHITE);
+        _lblTextEnd.setHorizontalAlignment(SwingConstants.CENTER);
+        _lblTextEnd.setVerticalAlignment(SwingConstants.CENTER);
+        Border border = _lblTextEnd.getBorder();
+        Border margin = new EmptyBorder(20,0,0,0);
+        _lblTextEnd.setBorder(new CompoundBorder(border, margin));
+
+        JLabel _lblGameModeTitle = new JLabel();
+        _lblGameModeTitle.setText("Gamemode : Harmony, The MiddleKingdom");
+        _lblGameModeTitle.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _lblGameModeTitle.setForeground(Color.WHITE);
+        _lblGameModeTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        _lblGameModeTitle.setVerticalAlignment(SwingConstants.CENTER);
+        _panelGameOver.add(_lblTextEnd);
+        _panelGameOver.add(_lblGameModeTitle);
 
         // Button to display a new window to show the ramkings and the player's scores
+        JPanel _panelEnd = new JPanel(new GridLayout(1,1));
+        _panelEnd.setOpaque(false);
+        _panelEnd.setPreferredSize(new Dimension(430,50));
         JButton _btnShowRanking = new JButton(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("roundBorder2.png")).readAllBytes()));
-        _btnShowRanking.setText("Show ranking");
-        _btnShowRanking.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+        _btnShowRanking.setText("Leave");
+        _btnShowRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 13));
         _btnShowRanking.setForeground(Color.decode("#FDCA40"));
         _btnShowRanking.setOpaque(false);
         _btnShowRanking.setFocusPainted(false);
@@ -1089,20 +1112,17 @@ public class KingDominoGame implements Observer {
         _btnShowRanking.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _btnShowRanking.setVerticalTextPosition(AbstractButton.CENTER);
         _btnShowRanking.setHorizontalTextPosition(AbstractButton.CENTER);
-        _btnShowRanking.setPreferredSize(new Dimension(249,57));
-        _btnShowRanking.setMaximumSize(new Dimension(249,57));
-        _btnShowRanking.setMinimumSize(new Dimension(249,57));
+        _btnShowRanking.setPreferredSize(new Dimension(121,27));
+        _btnShowRanking.setMaximumSize(new Dimension(121,27));
+        _btnShowRanking.setMinimumSize(new Dimension(121,27));
+        _panelEnd.add(_btnShowRanking);
 
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.insets = new Insets(50,10,0,0);
-        _panelMainInfo.add(_lblTextEnd, constraints);
+        _panelMainInfo.add(_panelGameOver, BorderLayout.NORTH);
 
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.insets = new Insets(20,0,0,0);
-        _panelMainInfo.add(_btnShowRanking, constraints);
+        // We create the player score
+        createScorePlayer();
+
+        _panelMainInfo.add(_panelEnd,  BorderLayout.SOUTH);
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
@@ -1117,5 +1137,150 @@ public class KingDominoGame implements Observer {
          */
     }
 
+    public void createScorePlayer() throws IOException {
+        JPanel _allPanels = new JPanel(new GridBagLayout());
+        _allPanels.setOpaque(false);
+        _allPanels.setPreferredSize(new Dimension(430,428));
 
+        for(int i=0; i< _window.numberPlayer; i++)
+        {
+            ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rectangleScore.png")).readAllBytes());
+            JPanel _allPanelScore = new JPanel() // display in this panel a background image to get a beautiful game
+            {
+                final Image img = icon.getImage();
+                // instance initializer
+                {setOpaque(false);}
+                public void paintComponent(Graphics graphics)
+                {
+                    graphics.drawImage(img, 0, 0, this);
+                    super.paintComponent(graphics);
+                }
+            };
+            _allPanelScore.setLayout(new BorderLayout());
+            _allPanelScore.setPreferredSize(new Dimension(368,98));
+            _allPanelScore.setMinimumSize(new Dimension(368,98));
+            _allPanelScore.setMaximumSize(new Dimension(368,98));
+
+            // LEFT : the number of the first to the last player
+            JPanel _panelLeft = new JPanel(new GridLayout(1, 1));
+            _panelLeft.setOpaque(false);
+            _panelLeft.setPreferredSize(new Dimension(77,97));
+            JLabel _lblRanking = new JLabel(Integer.toString(i+1));
+            _lblRanking.setForeground(Color.WHITE);
+            _lblRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 48));
+            _lblRanking.setPreferredSize(new Dimension(77,97));
+            _lblRanking.setHorizontalAlignment(SwingConstants.CENTER);
+            _lblRanking.setVerticalAlignment(SwingConstants.CENTER);
+            _panelLeft.add(_lblRanking);
+
+            // PANEL OF THE CENTER
+            JPanel _panelCenter = new JPanel(new GridLayout(2,1));
+            _panelCenter.setOpaque(false);
+            _panelCenter.setPreferredSize(new Dimension(169,97));
+            JPanel _panelPlayerName = new JPanel(new GridLayout(1, 1));
+            _panelPlayerName.setOpaque(false);
+            _panelPlayerName.setPreferredSize(new Dimension(169,48));
+            JLabel _lblPlayerName = new JLabel();
+            _lblPlayerName.setText(_textNamePlayer[i].getText());
+            _lblPlayerName.setForeground(Color.WHITE);
+            _lblPlayerName.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 24));
+            _lblPlayerName.setPreferredSize(new Dimension(169,48));
+            _lblPlayerName.setHorizontalAlignment(SwingConstants.LEFT);
+            _lblPlayerName.setVerticalAlignment(SwingConstants.BOTTOM);
+            _panelPlayerName.add(_lblPlayerName);
+
+            FlowLayout flow = new FlowLayout(FlowLayout.LEFT);
+            JPanel _panelAllColor = new JPanel(flow);
+            _panelAllColor.setOpaque(false);
+            _panelAllColor.setPreferredSize(new Dimension(169,48));
+            _panelAllColor.setMaximumSize(new Dimension(169,48));
+            _panelAllColor.setMinimumSize(new Dimension(169,48));
+            JPanel _panelColor = new JPanel(new GridLayout(1,6));
+            _panelColor.setPreferredSize(new Dimension(120,20));
+            _panelColor.setMaximumSize(new Dimension(120,20));
+            _panelColor.setMinimumSize(new Dimension(120,20));
+            _panelColor.setOpaque(false);
+            for(int j=0; j<6; j++)
+            {
+                JLabel _lblColor = new JLabel(Integer.toString(12));
+                _lblColor.setForeground(Color.WHITE);
+                _lblColor.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 10));
+                _lblColor.setPreferredSize(new Dimension(20,20));
+                _lblColor.setMaximumSize(new Dimension(20,20));
+                _lblColor.setMinimumSize(new Dimension(20,20));
+                _lblColor.setHorizontalAlignment(SwingConstants.CENTER);
+                _lblColor.setVerticalAlignment(SwingConstants.CENTER);
+                _lblColor.setOpaque(true);
+                switch (j) {
+                    case 0 -> _lblColor.setBackground(Color.decode("#FDCA40"));
+                    case 1 -> _lblColor.setBackground(Color.decode("#b5e48c"));
+                    case 2 -> _lblColor.setBackground(Color.decode("#0A9396"));
+                    case 3 -> _lblColor.setBackground(Color.decode("#2176FF"));
+                    case 4 -> _lblColor.setBackground(Color.decode("#31393C"));
+                    case 5 -> _lblColor.setBackground(Color.decode("#7f4f24"));
+                    default -> {
+                    }
+                }
+                _panelColor.add(_lblColor);
+            }
+            _panelAllColor.add(_panelColor);
+
+            _panelCenter.add(_panelPlayerName);
+            _panelCenter.add(_panelAllColor);
+
+            // PANEL OF THE RIGHT
+            JPanel _panelRight = new JPanel(new GridLayout(2,1));
+            _panelRight.setOpaque(false);
+            _panelRight.setPreferredSize(new Dimension(121,97));
+
+            JPanel _panelGameMode = new JPanel(new GridLayout(2,1));
+            _panelGameMode.setOpaque(false);
+            _panelGameMode.setPreferredSize(new Dimension(121,48));
+            JLabel[] _lblGameMode = new JLabel[2];
+            _lblGameMode[0] = new JLabel("Harmony : +0");
+            _lblGameMode[0].setForeground(Color.WHITE);
+            _lblGameMode[0].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
+            _lblGameMode[0].setHorizontalAlignment(SwingConstants.RIGHT);
+            Border border = _lblGameMode[0].getBorder();
+            Border margin = new EmptyBorder(10,0,0,10);
+            _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
+
+            _lblGameMode[1] = new JLabel("Middle Kingdom : +10");
+            _lblGameMode[1].setForeground(Color.WHITE);
+            _lblGameMode[1].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
+            _lblGameMode[1].setHorizontalAlignment(SwingConstants.RIGHT);
+            border = _lblGameMode[1].getBorder();
+            margin = new EmptyBorder(0,0,0,10);
+            _lblGameMode[1].setBorder(new CompoundBorder(border, margin));
+
+            _panelGameMode.add(_lblGameMode[0]);
+            _panelGameMode.add(_lblGameMode[1]);
+
+            JPanel _panelScore = new JPanel();
+            _panelScore.setOpaque(false);
+            _panelScore.setPreferredSize(new Dimension(121,49));
+            JLabel _lblScore = new JLabel(Integer.toString(48));
+            _lblScore.setForeground(Color.WHITE);
+            _lblScore.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 44));
+            _lblScore.setPreferredSize(new Dimension(121,49));
+            _lblScore.setHorizontalAlignment(SwingConstants.CENTER);
+            _lblScore.setVerticalAlignment(SwingConstants.CENTER);
+            border = _lblScore.getBorder();
+            margin = new EmptyBorder(0,20,0,10);
+            _lblScore.setBorder(new CompoundBorder(border, margin));
+
+            _panelRight.add(_panelGameMode);
+            _panelRight.add(_lblScore);
+
+            _allPanelScore.add(_panelLeft, BorderLayout.WEST);
+            _allPanelScore.add(_panelCenter, BorderLayout.CENTER);
+            _allPanelScore.add(_panelRight, BorderLayout.EAST);
+
+            constraints.gridy = i;
+            constraints.gridx = 0;
+            constraints.insets = new Insets(5,0,0,0);
+            _allPanels.add(_allPanelScore, constraints);
+        }
+        _panelMainInfo.add(_allPanels,  BorderLayout.CENTER);
+    }
 }
