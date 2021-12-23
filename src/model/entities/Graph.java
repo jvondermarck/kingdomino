@@ -86,8 +86,7 @@ public class Graph {
                         _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
                     }
                     else{
-                        //TODO : more convinient message to print
-                        _errorMessage = "ok";
+                        _errorMessage = "Not near a castle or a same tile !";
                     }
                 }
                 //     | ..|  ...  |
@@ -103,8 +102,7 @@ public class Graph {
                         _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
                     }
                     else{
-                        //TODO : more convinient message to print
-                        _errorMessage = "ok";
+                        _errorMessage = "Not near a castle or a same tile !";
                     }
                 }
             }
@@ -132,6 +130,9 @@ public class Graph {
                         _arrayTiles[x][y] = domino.getTile()[0][0];
                         _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
                     }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
+                    }
                 }
 
                 else if(isCastleHere(x,y-1) && isPlaceAvailable(x,y)){
@@ -142,6 +143,9 @@ public class Graph {
                     else if(domino.isUpSide() && isPlaceAvailable(x-1,y)){
                         _arrayTiles[x][y] = domino.getTile()[0][0];
                         _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+                    }
+                    else{
+                        _errorMessage = "Not near a castle or a same tile !";
                     }
                 }
             }
