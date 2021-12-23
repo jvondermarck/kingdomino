@@ -9,6 +9,8 @@ import model.set.NumberPlayer;
 import model.set.NumberPlayerStrategy;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -18,6 +20,7 @@ public class Game {
     private Deck _deck;
     private List<Player> _listPlayers;
     private List<Domino> _actualDominoes;
+    private List<Player> _listPlayerRanking;
     private final NumberPlayer _numberplayer;
 
     private final GameModeFactory _factoryGameMode;

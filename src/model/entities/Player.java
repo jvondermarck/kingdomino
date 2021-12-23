@@ -118,24 +118,28 @@ public class Player {
         this.lightGreenTilesScoreList = lightGreenTilesScoreList;
     }
 
-    public List<List<Integer>> getDarkGreenTilesScoreList(){
-        return this.darkGreenTilesScoreList;
+    public int getYellowTilesScore() {
+        return yellowTilesScore;
     }
 
-    public List<List<Integer>> getBlueTilesScoreList(){
-        return this.blueTilesScoreList;
+    public int getDarkGreenTilesScore() {
+        return darkGreenTilesScore;
     }
 
-    public List<List<Integer>> getBlackTilesScoreList(){
-        return this.blackTilesScoreList;
+    public int getBlueTilesScore() {
+        return blueTilesScore;
     }
 
-    public List<List<Integer>> getBrownTilesScoreList(){
-        return this.brownTilesScoreList;
+    public int getBlackTilesScore() {
+        return blackTilesScore;
     }
 
-    public List<List<Integer>> getLightGreenTilesScoreList(){
-        return this.lightGreenTilesScoreList;
+    public int getBrownTilesScore() {
+        return brownTilesScore;
+    }
+
+    public int getLightGreenTilesScore() {
+        return lightGreenTilesScore;
     }
 
     public void addBonus(GameMode gameMode){

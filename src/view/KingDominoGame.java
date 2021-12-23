@@ -1127,23 +1127,21 @@ public class KingDominoGame implements Observer {
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
         _window.frame.setContentPane( _panelMain);
-        /*
-        System.out.println("Jaune : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#FDCA40"));
-        System.out.println("dark green : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#0A9396"));
-        System.out.println("blue : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#2176FF"));
-        System.out.println("black : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#31393C"));
-        System.out.println("brown : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#7F4F24"));
-        System.out.println("light green : " + _window._game.getPlayer(0).getGraph().getSizeOfADomain("#B5E48C"));
-         */
     }
 
     public void createScorePlayer() throws IOException {
+        _window._controller.calculScorePlayer();
+        Map<Integer,Integer> _arrayPlayerRanked = createRanking();
+
         JPanel _allPanels = new JPanel(new GridBagLayout());
         _allPanels.setOpaque(false);
         _allPanels.setPreferredSize(new Dimension(430,428));
 
-        for(int i=0; i< _window.numberPlayer; i++)
+        int indexScore = 1;
+        for (Map.Entry<Integer,Integer> entry : _arrayPlayerRanked.entrySet())
         {
+            int _totalScore =  _window._controller.getTotalScorePlayer(entry.getKey());
+
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rectangleScore.png")).readAllBytes());
             JPanel _allPanelScore = new JPanel() // display in this panel a background image to get a beautiful game
             {
@@ -1165,7 +1163,8 @@ public class KingDominoGame implements Observer {
             JPanel _panelLeft = new JPanel(new GridLayout(1, 1));
             _panelLeft.setOpaque(false);
             _panelLeft.setPreferredSize(new Dimension(77,97));
-            JLabel _lblRanking = new JLabel(Integer.toString(i+1));
+            JLabel _lblRanking = new JLabel(Integer.toString(indexScore));
+            indexScore += 1;
             _lblRanking.setForeground(Color.WHITE);
             _lblRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 48));
             _lblRanking.setPreferredSize(new Dimension(77,97));
@@ -1181,7 +1180,7 @@ public class KingDominoGame implements Observer {
             _panelPlayerName.setOpaque(false);
             _panelPlayerName.setPreferredSize(new Dimension(169,48));
             JLabel _lblPlayerName = new JLabel();
-            _lblPlayerName.setText(_textNamePlayer[i].getText());
+            _lblPlayerName.setText(_textNamePlayer[entry.getKey()].getText());
             _lblPlayerName.setForeground(Color.WHITE);
             _lblPlayerName.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 24));
             _lblPlayerName.setPreferredSize(new Dimension(169,48));
@@ -1196,28 +1195,46 @@ public class KingDominoGame implements Observer {
             _panelAllColor.setMaximumSize(new Dimension(169,48));
             _panelAllColor.setMinimumSize(new Dimension(169,48));
             JPanel _panelColor = new JPanel(new GridLayout(1,6));
-            _panelColor.setPreferredSize(new Dimension(120,20));
-            _panelColor.setMaximumSize(new Dimension(120,20));
-            _panelColor.setMinimumSize(new Dimension(120,20));
+            _panelColor.setPreferredSize(new Dimension(160,25));
+            _panelColor.setMaximumSize(new Dimension(160,25));
+            _panelColor.setMinimumSize(new Dimension(160,25));
             _panelColor.setOpaque(false);
             for(int j=0; j<6; j++)
             {
                 JLabel _lblColor = new JLabel(Integer.toString(12));
                 _lblColor.setForeground(Color.WHITE);
                 _lblColor.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 10));
-                _lblColor.setPreferredSize(new Dimension(20,20));
-                _lblColor.setMaximumSize(new Dimension(20,20));
-                _lblColor.setMinimumSize(new Dimension(20,20));
+                _lblColor.setPreferredSize(new Dimension(30,25));
+                _lblColor.setMaximumSize(new Dimension(30,25));
+                _lblColor.setMinimumSize(new Dimension(30,25));
                 _lblColor.setHorizontalAlignment(SwingConstants.CENTER);
                 _lblColor.setVerticalAlignment(SwingConstants.CENTER);
                 _lblColor.setOpaque(true);
                 switch (j) {
-                    case 0 -> _lblColor.setBackground(Color.decode("#FDCA40"));
-                    case 1 -> _lblColor.setBackground(Color.decode("#b5e48c"));
-                    case 2 -> _lblColor.setBackground(Color.decode("#0A9396"));
-                    case 3 -> _lblColor.setBackground(Color.decode("#2176FF"));
-                    case 4 -> _lblColor.setBackground(Color.decode("#31393C"));
-                    case 5 -> _lblColor.setBackground(Color.decode("#7f4f24"));
+                    case 0 -> {
+                        _lblColor.setBackground(Color.decode("#FDCA40"));
+                        _lblColor.setText(Integer.toString(_window._controller.getYellowTilesScore(entry.getKey())));
+                    }
+                    case 1 -> {
+                        _lblColor.setBackground(Color.decode("#b5e48c"));
+                        _lblColor.setText(Integer.toString(_window._controller.getLightGreenTilesScore(entry.getKey())));
+                    }
+                    case 2 -> {
+                        _lblColor.setBackground(Color.decode("#0A9396"));
+                        _lblColor.setText(Integer.toString(_window._controller.getDarkGreenTilesScore(entry.getKey())));
+                    }
+                    case 3 -> {
+                        _lblColor.setBackground(Color.decode("#2176FF"));
+                        _lblColor.setText(Integer.toString(_window._controller.getBlueTilesScore(entry.getKey())));
+                    }
+                    case 4 -> {
+                        _lblColor.setBackground(Color.decode("#31393C"));
+                        _lblColor.setText(Integer.toString(_window._controller.getBlackTilesScore(entry.getKey())));
+                    }
+                    case 5 -> {
+                        _lblColor.setBackground(Color.decode("#7f4f24"));
+                        _lblColor.setText(Integer.toString(_window._controller.getBrownTilesScore(entry.getKey())));
+                    }
                     default -> {
                     }
                 }
@@ -1237,7 +1254,7 @@ public class KingDominoGame implements Observer {
             _panelGameMode.setOpaque(false);
             _panelGameMode.setPreferredSize(new Dimension(121,48));
             JLabel[] _lblGameMode = new JLabel[2];
-            _lblGameMode[0] = new JLabel("Harmony : +0");
+            _lblGameMode[0] = new JLabel("Harmony: +");
             _lblGameMode[0].setForeground(Color.WHITE);
             _lblGameMode[0].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[0].setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1245,7 +1262,7 @@ public class KingDominoGame implements Observer {
             Border margin = new EmptyBorder(10,0,0,10);
             _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
 
-            _lblGameMode[1] = new JLabel("Middle Kingdom : +10");
+            _lblGameMode[1] = new JLabel("Middle Kingdom: +");
             _lblGameMode[1].setForeground(Color.WHITE);
             _lblGameMode[1].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[1].setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1259,7 +1276,7 @@ public class KingDominoGame implements Observer {
             JPanel _panelScore = new JPanel();
             _panelScore.setOpaque(false);
             _panelScore.setPreferredSize(new Dimension(121,49));
-            JLabel _lblScore = new JLabel(Integer.toString(48));
+            JLabel _lblScore = new JLabel(Integer.toString(_totalScore));
             _lblScore.setForeground(Color.WHITE);
             _lblScore.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 44));
             _lblScore.setPreferredSize(new Dimension(121,49));
@@ -1276,11 +1293,28 @@ public class KingDominoGame implements Observer {
             _allPanelScore.add(_panelCenter, BorderLayout.CENTER);
             _allPanelScore.add(_panelRight, BorderLayout.EAST);
 
-            constraints.gridy = i;
+            constraints.gridy = indexScore-1;
             constraints.gridx = 0;
             constraints.insets = new Insets(5,0,0,0);
             _allPanels.add(_allPanelScore, constraints);
         }
         _panelMainInfo.add(_allPanels,  BorderLayout.CENTER);
+    }
+
+    public Map<Integer, Integer> createRanking()
+    {
+        Map<Integer, Integer> _arrayRankingnotsorted = new LinkedHashMap<>();
+        for(int i=0; i< _window.numberPlayer; i++)
+        {
+            _arrayRankingnotsorted.put(i, _window._controller.getTotalScorePlayer(i));
+        }
+
+        Map<Integer, Integer> _arrayRanking = new LinkedHashMap<>();
+        _arrayRankingnotsorted.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(x -> _arrayRanking.put(x.getKey(), x.getValue()));
+
+        return _arrayRanking;
     }
 }

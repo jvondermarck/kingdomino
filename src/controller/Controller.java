@@ -38,12 +38,22 @@ public class Controller {
     public void callSetDirectionDomino(int index, int direction) { _game.setDirectionDomino(index, direction);}
 
     public void setCastle(int index, int x, int y) { _game.setCastlePlayer(index, x, y); }
-    public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y) { _game.setDominoOnGraph(indexDomino, indexPlayer, x,y); ;}
+    public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y) { _game.setDominoOnGraph(indexDomino, indexPlayer, x,y);}
 
     public void addObserver(Observer observer){
         _game.addObservers(observer);
     }
     public void instantiateKingdominoGame() throws IOException { addObserver(new KingDominoGame()) ;}
 
+    public void calculScorePlayer () { _game.calculateScores(); }
+
+    public int getTotalScorePlayer(int index) { return _game.getPlayer(index).getTotalScore(); }
+
+    public int getYellowTilesScore(int index) { return _game.getPlayer(index).getYellowTilesScore(); }
+    public int getDarkGreenTilesScore(int index) { return _game.getPlayer(index).getDarkGreenTilesScore(); }
+    public int getBlueTilesScore(int index) { return _game.getPlayer(index).getBlueTilesScore(); }
+    public int getBlackTilesScore(int index) { return _game.getPlayer(index).getBlackTilesScore(); }
+    public int getBrownTilesScore(int index) { return _game.getPlayer(index).getBrownTilesScore(); }
+    public int getLightGreenTilesScore(int index) { return _game.getPlayer(index).getLightGreenTilesScore(); }
 }
 
