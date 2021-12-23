@@ -151,32 +151,23 @@ public class KingDominoStart implements Observer{
         // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
         _btnValidate.addActionListener(actionEvent -> {
             if(_rdbGameModeHarmony.isSelected())
-            {
                 _window._controller.callHarmony();
-                _window._isHarmony = true;
-            }
 
-            if(_rdbGameModeMiddle.isSelected()){
+            if(_rdbGameModeMiddle.isSelected())
                 _window._controller.callMiddleKingdom();
-                _window._isMiddleKingdom = true;
-            }
 
             if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
                 System.out.println("No game mode");
 
             if(_cboStrategys.getSelectedIndex() == 0) // If we selected in the combobox the "Duo"
-            {
                 _window._controller.switchToDuo();
-                _window.numberPlayer = 2;
-            }
-            else if(_cboStrategys.getSelectedIndex() == 1) { // If we selected in the combobox the "Trio"
+            else if(_cboStrategys.getSelectedIndex() == 1) // If we selected in the combobox the "Trio"
                 _window._controller.switchToTrio();
-                _window.numberPlayer = 3;
-            }
-            else { // If we selected in the combobox the "Quatro"
+            else // If we selected in the combobox the "Quatro"
                 _window._controller.switchToQuatro();
-                _window.numberPlayer = 4;
-            }
+
+            _window.numberPlayer = _window._controller.getNumberPlayer();
+
             try {
                 //new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !
                 _window._controller.instantiateKingdominoGame();

@@ -18,6 +18,7 @@ public class Game {
     private List<Player> _listPlayers;
     private List<Domino> _actualDominoes;
     private final NumberPlayer _numberplayer;
+    private int _intPlayer;
 
     private final GameModeFactory _factoryGameMode;
     private final List<GameMode> _listGameMode;
@@ -53,8 +54,11 @@ public class Game {
 
     public void setNumberPlayer(NumberPlayerStrategy strategy){
         this._numberplayer.setStrategy(strategy);
+        _intPlayer = this._numberplayer.getNumberPlayers();
         createPlayers(this._numberplayer.getNumberPlayers());
     }
+
+    public int getNumberPlayer(){ return _intPlayer;}
 
     public void setTwoPlayers() {  setNumberPlayer( this._numberplayer.getTwoPlayers()); }
 
