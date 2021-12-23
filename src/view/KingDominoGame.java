@@ -52,6 +52,7 @@ public class KingDominoGame implements Observer {
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
     private Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
+    private final List<String> _listGameModeString; // We will store in the key the string of the game mode choosen and if the player can get the bonus
     private List<Integer> _orderPlayerPrevious; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
 
     private boolean _firstGame; // condition to check if it's the beginning of the game (because rules are different for the first round, like we shuffle under the table which player will start first)
@@ -82,6 +83,7 @@ public class KingDominoGame implements Observer {
         _indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
         _roundNumber = 0;
         _firstGame = true;
+        _listGameModeString = _window._controller.getGameMode();
 
         // Constraints
         constraints = new GridBagConstraints();
@@ -405,8 +407,9 @@ public class KingDominoGame implements Observer {
         } else {
             try {
                 endGame();
-            } catch(IOException ignored)
+            } catch(IOException e)
             {
+                e.printStackTrace();
             }
         }
     }
@@ -722,11 +725,12 @@ public class KingDominoGame implements Observer {
                 {
                     _btnOnGraph[k][l] = new JButton();
                     _btnOnGraph[k][l].setMargin(new Insets(1, 1, 1, 1));
-                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 15));
+                    _btnOnGraph[k][l].setFont(new Font("Serif", Font.PLAIN, 10));
                     _btnOnGraph[k][l].setPreferredSize(new Dimension(42, 42));
                     _btnOnGraph[k][l].setBackground(Color.decode("#CECECE"));
                     _btnOnGraph[k][l].setRolloverEnabled(false);
                     _btnOnGraph[k][l].setFocusable(false);
+                    _btnOnGraph[k][l].setForeground(Color.WHITE);
                     _panelGraph[i].add(_btnOnGraph[k][l]);
 
                     int finalK = k;
@@ -1015,7 +1019,7 @@ public class KingDominoGame implements Observer {
             _btnShowDomino.setEnabled(true);
             _roundNumber += 1;
             _labelRound.setText("ROUND " + _roundNumber);
-            setTextInformation("Players, unhide the dominoes");
+            setTextInformation("Players, unhide the dominoes.");
             _nextPlayer.setVisible(false);
             _subPanelSwitchRotate.setVisible(false);
             _subPanelRotation.setVisible(false);
@@ -1089,7 +1093,17 @@ public class KingDominoGame implements Observer {
         _lblTextEnd.setBorder(new CompoundBorder(border, margin));
 
         JLabel _lblGameModeTitle = new JLabel();
-        _lblGameModeTitle.setText("Gamemode : Harmony, The MiddleKingdom");
+        if(_listGameModeString.size()>0)
+        {
+            _lblGameModeTitle.setText("Game Mode :");
+            for (String s : _listGameModeString) {
+                _lblGameModeTitle.setText(_lblGameModeTitle.getText() + " " + s + ",");
+            }
+            _lblGameModeTitle.setText(_lblGameModeTitle.getText().substring(0,_lblGameModeTitle.getText().length()-1));
+        } else {
+            _lblGameModeTitle.setText("No game mode has been choosen.");
+        }
+
         _lblGameModeTitle.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
         _lblGameModeTitle.setForeground(Color.WHITE);
         _lblGameModeTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1254,7 +1268,9 @@ public class KingDominoGame implements Observer {
             _panelGameMode.setOpaque(false);
             _panelGameMode.setPreferredSize(new Dimension(121,48));
             JLabel[] _lblGameMode = new JLabel[2];
-            _lblGameMode[0] = new JLabel("Harmony: +");
+            _lblGameMode[0] = new JLabel();
+            _lblGameMode[0].setText("Harmony: +" + _window._controller.getHarmonyBonus(entry.getKey()));
+
             _lblGameMode[0].setForeground(Color.WHITE);
             _lblGameMode[0].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[0].setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1262,7 +1278,9 @@ public class KingDominoGame implements Observer {
             Border margin = new EmptyBorder(10,0,0,10);
             _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
 
-            _lblGameMode[1] = new JLabel("Middle Kingdom: +");
+            _lblGameMode[1] = new JLabel();
+            _lblGameMode[1].setText("Middle Kingdom: +" + _window._controller.getMiddleKingdom(entry.getKey()));
+
             _lblGameMode[1].setForeground(Color.WHITE);
             _lblGameMode[1].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[1].setHorizontalAlignment(SwingConstants.RIGHT);

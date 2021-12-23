@@ -8,10 +8,7 @@ import model.set.GameModeFactory;
 import model.set.NumberPlayer;
 import model.set.NumberPlayerStrategy;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private static Game instance;
@@ -20,18 +17,19 @@ public class Game {
     private Deck _deck;
     private List<Player> _listPlayers;
     private List<Domino> _actualDominoes;
-    private List<Player> _listPlayerRanking;
     private final NumberPlayer _numberplayer;
 
     private final GameModeFactory _factoryGameMode;
     private final List<GameMode> _listGameMode;
-    private boolean _dominoesLeft;
+    private final List<String> _listGameModeString;
+    private boolean _dominoesLeft; // to check if there are enough dominoes on the table to play, if no we stop the game
 
     private Game()
     {
         this._observer = new ArrayList<>();
         this._numberplayer = new NumberPlayer();
         this._listGameMode = new ArrayList<>();
+        this._listGameModeString = new ArrayList<>();
         this._factoryGameMode = new GameModeFactory();
         this._dominoesLeft = false;
     }
@@ -46,7 +44,8 @@ public class Game {
 
     public void addGameMode(GameMode gameMode){
         this._listGameMode.add(gameMode); // We add all game mode in a list
-        System.out.println("Game Mode : " + gameMode.toString());
+        this._listGameModeString.add(gameMode.toString());
+        System.out.println("Game Mode : " + gameMode);
     }
 
     public void factorHarmonyMode(){ addGameMode(this._factoryGameMode.createHarmony()); } // we create the Harmony mode, and we add it in our list of GameMode
@@ -225,6 +224,9 @@ public class Game {
 
             p.calculateTotalScore();
         }
-        //notifyObserverjspquoi
+    }
+
+    public List<String> get_listGameModeString() {
+        return _listGameModeString;
     }
 }

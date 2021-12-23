@@ -1,13 +1,15 @@
 package model.entities;
 
 import model.set.GameMode;
+import model.set.mode.Harmony;
+import model.set.mode.MiddleKingdom;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
 
-    private King _king;
+    private final King _king;
     private Graph _graph;
     private Castle _castle;
     private Integer totalScore;
@@ -88,8 +90,8 @@ public class Player {
 
     private int calculateTotalScoreDomain(List<List<Integer>> list){
         int score = 0;
-        for(int i = 0; i < list.size(); i++){
-            score += list.get(i).get(0) * list.get(i).get(1);
+        for (List<Integer> integers : list) {
+            score += integers.get(0) * integers.get(1);
         }
         return score;
     }
@@ -146,8 +148,26 @@ public class Player {
         this._bonus.add(gameMode);
     }
 
-    public List<GameMode> getBonus(){
-        return this._bonus;
+    public int getHarmonyBonus()
+    {
+        int bonus = 0;
+        for (GameMode gameMode : _bonus) {
+            if (gameMode instanceof Harmony) {
+                bonus = gameMode.numberBonus();
+            }
+        }
+        return bonus;
+    }
+
+    public int getMiddleKingdom()
+    {
+        int bonus = 0;
+        for (GameMode gameMode : _bonus) {
+            if (gameMode instanceof MiddleKingdom) {
+                bonus = gameMode.numberBonus();
+            }
+        }
+        return bonus;
     }
 
 }

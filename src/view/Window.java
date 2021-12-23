@@ -19,6 +19,8 @@ public class Window extends JFrame implements Observer {
     protected Font _fontTimeless;
     protected Font _fontAugusta;
     protected int numberPlayer = 0;
+    protected boolean _isHarmony;
+    protected boolean _isMiddleKingdom;
 
     private Window(Game game, Controller controller) throws IOException {
         _game = game;

@@ -25,6 +25,7 @@ public class KingDominoStart implements Observer{
     private final JLabel _labelTitlePlayer;
     private final JLabel _labelTitleMode;
 
+
     private final JButton _btnValidate; // btn to validate all our the information to start the game
 
     public KingDominoStart() throws IOException {
@@ -150,9 +151,16 @@ public class KingDominoStart implements Observer{
         // PLAYERS COMBOBOX LISTENER : we put the strategy about the amount of players
         _btnValidate.addActionListener(actionEvent -> {
             if(_rdbGameModeHarmony.isSelected())
+            {
                 _window._controller.callHarmony();
-            if(_rdbGameModeMiddle.isSelected())
+                _window._isHarmony = true;
+            }
+
+            if(_rdbGameModeMiddle.isSelected()){
                 _window._controller.callMiddleKingdom();
+                _window._isMiddleKingdom = true;
+            }
+
             if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
                 System.out.println("No game mode");
 

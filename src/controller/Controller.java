@@ -2,8 +2,8 @@ package controller;
 import model.Game;
 import model.Observer;
 import view.KingDominoGame;
-
 import java.io.IOException;
+import java.util.List;
 
 public class Controller {
     private final Game _game;
@@ -43,7 +43,7 @@ public class Controller {
     public void addObserver(Observer observer){
         _game.addObservers(observer);
     }
-    public void instantiateKingdominoGame() throws IOException { addObserver(new KingDominoGame()) ;}
+    public void instantiateKingdominoGame() throws IOException { new KingDominoGame() ;}
 
     public void calculScorePlayer () { _game.calculateScores(); }
 
@@ -55,5 +55,9 @@ public class Controller {
     public int getBlackTilesScore(int index) { return _game.getPlayer(index).getBlackTilesScore(); }
     public int getBrownTilesScore(int index) { return _game.getPlayer(index).getBrownTilesScore(); }
     public int getLightGreenTilesScore(int index) { return _game.getPlayer(index).getLightGreenTilesScore(); }
+
+    public List<String> getGameMode() { return _game.get_listGameModeString(); }
+    public int getHarmonyBonus(int index) { return _game.getPlayer(index).getHarmonyBonus(); }
+    public int getMiddleKingdom(int index) { return _game.getPlayer(index).getMiddleKingdom(); }
 }
 
