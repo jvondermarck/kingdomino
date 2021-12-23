@@ -1,6 +1,5 @@
 package model.entities;
 
-import model.Game;
 import model.set.GameMode;
 
 import java.util.ArrayList;
@@ -12,13 +11,22 @@ public class Player {
     private Graph _graph;
     private Castle _castle;
     private Integer totalScore;
-    private List<List<Integer>> yellowTilesScore = new ArrayList<>();
-    private List<List<Integer>> darkGreenTilesScore = new ArrayList<>();
-    private List<List<Integer>> blueTilesScore = new ArrayList<>();
-    private List<List<Integer>> blackTilesScore = new ArrayList<>();
-    private List<List<Integer>> brownTilesScore = new ArrayList<>();
-    private List<List<Integer>> lightGreenTilesScore = new ArrayList<>();
-    private final List<List<List<Integer>>> totalTilesScore = new ArrayList<>();
+    private List<List<Integer>> yellowTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> darkGreenTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> blueTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> blackTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> brownTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> lightGreenTilesScoreList = new ArrayList<>();
+    private final List<List<List<Integer>>> totalTilesScoreList = new ArrayList<>();
+
+    private int yellowTilesScore = 0;
+    private int darkGreenTilesScore = 0;
+    private int blueTilesScore = 0;
+    private int blackTilesScore = 0;
+    private int brownTilesScore = 0;
+    private int lightGreenTilesScore = 0;
+
+
     private final List<GameMode> _bonus = new ArrayList<>();
 
     public Player()
@@ -27,12 +35,12 @@ public class Player {
         initialiseCastle();
         initialiseGraph();
         totalScore = 0;
-        totalTilesScore.add(yellowTilesScore);
-        totalTilesScore.add(darkGreenTilesScore);
-        totalTilesScore.add(blueTilesScore);
-        totalTilesScore.add(blackTilesScore);
-        totalTilesScore.add(brownTilesScore);
-        totalTilesScore.add(lightGreenTilesScore);
+        totalTilesScoreList.add(yellowTilesScoreList);
+        totalTilesScoreList.add(darkGreenTilesScoreList);
+        totalTilesScoreList.add(blueTilesScoreList);
+        totalTilesScoreList.add(blackTilesScoreList);
+        totalTilesScoreList.add(brownTilesScoreList);
+        totalTilesScoreList.add(lightGreenTilesScoreList);
     }
 
     // Le player est sensé faire ça ou ça serai de l'over engineering de passer par une classe intermédiaire ?
@@ -61,61 +69,73 @@ public class Player {
     }
 
     public void calculateTotalScore(){
-        totalScore = 0;
+        this.totalScore = 0;
 
-        for(int i = 0; i < totalTilesScore.size(); i++){
-            for(int j = 0; j < totalTilesScore.get(i).size(); j++){
-                totalScore += totalTilesScore.get(i).get(j).get(0) *  totalTilesScore.get(i).get(j).get(1);
-            }
-        }
+        this.yellowTilesScore = calculateTotalScoreDomain(this.yellowTilesScoreList);
+        this.darkGreenTilesScore = calculateTotalScoreDomain(this.darkGreenTilesScoreList);
+        this.blueTilesScore = calculateTotalScoreDomain(this.blueTilesScoreList);
+        this.blackTilesScore = calculateTotalScoreDomain(this.blackTilesScoreList);
+        this.brownTilesScore = calculateTotalScoreDomain(this.brownTilesScoreList);
+        this.lightGreenTilesScore = calculateTotalScoreDomain(this.lightGreenTilesScoreList);
+
+        this.totalScore = this.yellowTilesScore + this.darkGreenTilesScore + this.blueTilesScore + this.blackTilesScore + this.brownTilesScore + this.lightGreenTilesScore;
 
         for(GameMode g : _bonus){
             totalScore += g.numberBonus();
         }
+
     }
 
-    public void setYellowTilesScore(List<List<Integer>> yellowTilesScore){
-        this.yellowTilesScore = yellowTilesScore;
+    private int calculateTotalScoreDomain(List<List<Integer>> list){
+        int score = 0;
+        for(int i = 0; i < list.size(); i++){
+            score += list.get(i).get(0) * list.get(i).get(1);
+        }
+        return score;
     }
 
-    public void setDarkGreenTilesScore(List<List<Integer>> darkGreenTilesScore){
-        this.darkGreenTilesScore = darkGreenTilesScore;
+    public void setYellowTilesScoreList(List<List<Integer>> yellowTilesScoreList){
+        this.yellowTilesScoreList = yellowTilesScoreList;
     }
 
-    public void setBlueTilesScore(List<List<Integer>> blueTilesScore){
-        this.blueTilesScore = blueTilesScore;
+    public void setDarkGreenTilesScoreList(List<List<Integer>> darkGreenTilesScoreList){
+        this.darkGreenTilesScoreList = darkGreenTilesScoreList;
     }
 
-    public void setBlackTilesScore(List<List<Integer>> blackTilesScore){
-        this.blackTilesScore = blackTilesScore;
+    public void setBlueTilesScoreList(List<List<Integer>> blueTilesScoreList){
+        this.blueTilesScoreList = blueTilesScoreList;
     }
 
-    public void setBrownTilesScore(List<List<Integer>> brownTilesScore){
-        this.brownTilesScore = brownTilesScore;
+    public void setBlackTilesScoreList(List<List<Integer>> blackTilesScoreList){
+        this.blackTilesScoreList = blackTilesScoreList;
     }
 
-    public void setLightGreenTilesScore(List<List<Integer>> lightGreenTilesScore){
-        this.lightGreenTilesScore = lightGreenTilesScore;
+    public void setBrownTilesScoreList(List<List<Integer>> brownTilesScoreList){
+        this.brownTilesScoreList = brownTilesScoreList;
     }
 
-    public List<List<Integer>> getDarkGreenTilesScore(){
-        return this.darkGreenTilesScore;
+    public void setLightGreenTilesScoreList(List<List<Integer>> lightGreenTilesScoreList){
+        this.lightGreenTilesScoreList = lightGreenTilesScoreList;
     }
 
-    public List<List<Integer>> getBlueTilesScore(){
-        return this.blueTilesScore;
+    public List<List<Integer>> getDarkGreenTilesScoreList(){
+        return this.darkGreenTilesScoreList;
     }
 
-    public List<List<Integer>> getBlackTilesScore(){
-        return this.blackTilesScore;
+    public List<List<Integer>> getBlueTilesScoreList(){
+        return this.blueTilesScoreList;
     }
 
-    public List<List<Integer>> getBrownTilesScore(){
-        return this.brownTilesScore;
+    public List<List<Integer>> getBlackTilesScoreList(){
+        return this.blackTilesScoreList;
     }
 
-    public List<List<Integer>> getLightGreenTilesScore(){
-        return this.lightGreenTilesScore;
+    public List<List<Integer>> getBrownTilesScoreList(){
+        return this.brownTilesScoreList;
+    }
+
+    public List<List<Integer>> getLightGreenTilesScoreList(){
+        return this.lightGreenTilesScoreList;
     }
 
     public void addBonus(GameMode gameMode){

@@ -10,7 +10,6 @@ import model.set.NumberPlayerStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Game {
     private static Game instance;
@@ -208,12 +207,12 @@ public class Game {
 
     public void calculateScores(){
         for(Player p : _listPlayers){
-            p.setYellowTilesScore(p.getGraph().getSizeOfADomain("#FDCA40")); // YELLOW TILE
-            p.setDarkGreenTilesScore(p.getGraph().getSizeOfADomain("#0A9396")); // DARK GREEN TILE
-            p.setBlueTilesScore(p.getGraph().getSizeOfADomain("#2176FF")); // BLUE TILE
-            p.setBlackTilesScore(p.getGraph().getSizeOfADomain("#31393C")); // BLACK TILE
-            p.setBrownTilesScore(p.getGraph().getSizeOfADomain("#7F4F24")); // BROWN TILE
-            p.setLightGreenTilesScore(p.getGraph().getSizeOfADomain("#B5E48C")); // LIGHT GREEN TILE
+            p.setYellowTilesScoreList(p.getGraph().getSizeOfADomain("#FDCA40")); // YELLOW TILE
+            p.setDarkGreenTilesScoreList(p.getGraph().getSizeOfADomain("#0A9396")); // DARK GREEN TILE
+            p.setBlueTilesScoreList(p.getGraph().getSizeOfADomain("#2176FF")); // BLUE TILE
+            p.setBlackTilesScoreList(p.getGraph().getSizeOfADomain("#31393C")); // BLACK TILE
+            p.setBrownTilesScoreList(p.getGraph().getSizeOfADomain("#7F4F24")); // BROWN TILE
+            p.setLightGreenTilesScoreList(p.getGraph().getSizeOfADomain("#B5E48C")); // LIGHT GREEN TILE
 
             for(GameMode g : _listGameMode){
                 if(g.executeGameMode(p)){
