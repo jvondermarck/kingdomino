@@ -1,4 +1,6 @@
 package model.set;
+import model.Game;
+import model.entities.Player;
 import model.set.mode.*;
 
 public abstract class GameMode {
@@ -11,10 +13,7 @@ public abstract class GameMode {
         this._isSevenSize = false;
     }
 
-    public void executeGameMode()
-    {
-
-    }
+    public abstract boolean executeGameMode(Player player);
 
     public abstract int numberBonus();
     public abstract boolean sizeGraph();

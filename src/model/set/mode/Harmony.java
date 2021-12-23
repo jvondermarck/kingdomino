@@ -1,8 +1,14 @@
 package model.set.mode;
 
+import model.entities.Player;
 import model.set.GameMode;
 
 public class Harmony extends GameMode {
+
+    @Override
+    public boolean executeGameMode(Player player) {
+        return player.getGraph().isCompleted();
+    }
 
     @Override
     public int numberBonus() {

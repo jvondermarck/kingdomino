@@ -205,4 +205,24 @@ public class Game {
     public boolean is_dominoesLeft() {
         return _dominoesLeft;
     }
+
+    public void calculateScores(){
+        for(Player p : _listPlayers){
+            p.setYellowTilesScore(p.getGraph().getSizeOfADomain("#FDCA40")); // YELLOW TILE
+            p.setDarkGreenTilesScore(p.getGraph().getSizeOfADomain("#0A9396")); // DARK GREEN TILE
+            p.setBlueTilesScore(p.getGraph().getSizeOfADomain("#2176FF")); // BLUE TILE
+            p.setBlackTilesScore(p.getGraph().getSizeOfADomain("#31393C")); // BLACK TILE
+            p.setBrownTilesScore(p.getGraph().getSizeOfADomain("#7F4F24")); // BROWN TILE
+            p.setLightGreenTilesScore(p.getGraph().getSizeOfADomain("#B5E48C")); // LIGHT GREEN TILE
+
+            for(GameMode g : _listGameMode){
+                if(g.executeGameMode(p)){
+                    p.addBonus(g);
+                }
+            }
+
+            p.calculateTotalScore();
+        }
+        //notifyObserverjspquoi
+    }
 }

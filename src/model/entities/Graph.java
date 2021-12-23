@@ -264,6 +264,21 @@ public class Graph {
         return this._arrayTiles;
     }
 
+    public boolean isCompleted(){
+        for(int i = 0; i < _arrayTiles.length; i++){
+            for(int j = 0; j < _arrayTiles.length; j++){
+                if(!isPlaceAvailable(i,j)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isCastleOnMiddle(){
+        return isCastleHere(_arrayTiles.length / 2, _arrayTiles.length / 2);
+    }
+
     private  int countCells(int[][] matrix, int i, int j) {
         if (i < 0 || j < 0 || i >= matrix.length || j >= matrix[0].length) return 0;
         if (matrix[i][j] == 0) return 0;
