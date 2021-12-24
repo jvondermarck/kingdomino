@@ -379,6 +379,7 @@ public class KingDominoGame implements Observer {
                 }
             }
             letPlayerSetDomino();
+            _window.frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
         });
     }
 
