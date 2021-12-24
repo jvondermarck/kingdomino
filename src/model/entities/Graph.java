@@ -271,7 +271,7 @@ public class Graph {
     public boolean isCompleted(){
         for(int i = 0; i < _arrayTiles.length; i++){
             for(int j = 0; j < _arrayTiles.length; j++){
-                if(!isPlaceAvailable(i,j)){
+                if(isPlaceAvailable(i,j)){
                     return false;
                 }
             }
