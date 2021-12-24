@@ -1130,6 +1130,7 @@ public class KingDominoGame implements Observer {
         _btnShowRanking.setMaximumSize(new Dimension(121,27));
         _btnShowRanking.setMinimumSize(new Dimension(121,27));
         _panelEnd.add(_btnShowRanking);
+        _btnShowRanking.addActionListener(actionEvent -> _window.frame.dispose());
 
         _panelMainInfo.add(_panelGameOver, BorderLayout.NORTH);
 
