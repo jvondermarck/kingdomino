@@ -7,7 +7,7 @@ import view.Window;
 
 import java.io.IOException;
 
-public class LauncherKingdomino {
+public class LauncherKingdominoRendu1 {
     public static void main(String[] args) throws IOException {
         Game game = Game.getInstance();
         Controller controller = new Controller(game);
