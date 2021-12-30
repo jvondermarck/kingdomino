@@ -784,27 +784,29 @@ public class KingDominoGame implements Observer {
 
                     _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled())
+                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
-                                _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
-                                if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
+                                if(Objects.equals(_switchDomino[0].getText(), "L") && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL)) // if XX
                                 {
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length)){ // if LEFT activated
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
                                         _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
-                                    } else if(finalL+1 < _mapGraphPlayer.get(finalI).length) {
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                    } else if(finalL+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
-                                        _window._controller.callSetDirectionDomino(_indexDominoClicked, 2);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
                                     }
                                 }
-                                else if(Objects.equals(_switchDomino[0].getText(), "U")){
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length)){
+                                else if(Objects.equals(_switchDomino[0].getText(), "U") && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL)){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
-                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length){
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
                                     }
                                 }
                             }
