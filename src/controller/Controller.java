@@ -1,6 +1,7 @@
 package controller;
 import model.Game;
 import model.Observer;
+import model.entities.Player;
 import view.KingDominoGame;
 import java.io.IOException;
 import java.util.List;
@@ -58,5 +59,7 @@ public class Controller {
     public List<String> getGameMode() { return _game.get_listGameModeString(); }
     public int getHarmonyBonus(int index) { return _game.getPlayer(index).getHarmonyBonus(); }
     public int getMiddleKingdom(int index) { return _game.getPlayer(index).getMiddleKingdom(); }
+
+    public Player getPlayer(int index) { return _game.getPlayer(index); }
 }
 

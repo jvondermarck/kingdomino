@@ -781,6 +781,56 @@ public class KingDominoGame implements Observer {
                             }
                         }
                     });
+
+                    _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled())
+                            {
+                                _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
+                                {
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length)){ // if LEFT activated
+                                        //left
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
+                                    } else if(finalL+1 < _mapGraphPlayer.get(finalI).length) {
+                                        //right
+                                        _window._controller.callSetDirectionDomino(_indexDominoClicked, 2);
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
+                                    }
+                                }
+                                else if(Objects.equals(_switchDomino[0].getText(), "U")){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length)){
+                                        //up
+                                        _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
+                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length){
+                                        //down
+                                        _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
+                                    }
+                                }
+                            }
+                        }
+
+                        public void mouseExited(java.awt.event.MouseEvent evt) {
+                            if(is_dominoesAreChoosen()){
+                                for(int i = 0; i < 5; i++){
+                                    for(int j = 0; j<5; j++){
+                                        if(!_window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_window._controller.getPlayer(finalI).getGraph().isCastleHere(i,j)){
+                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_window._controller.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
+
+                                            _mapGraphPlayer.get(finalI)[i][j].setText("");
+                                            int numberCrown = _window._game.getPlayer(finalI).getGraph().getTiles()[i][j].getCrowns();
+                                            for(int k=0; k<numberCrown; k++)
+                                            {
+                                                _mapGraphPlayer.get(finalI)[i][j].setText(_mapGraphPlayer.get(finalI)[i][j].getText() + _unicodeCrown);
+                                            }
+                                        } else {
+                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode("#CECECE"));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             }
 
@@ -1021,6 +1071,7 @@ public class KingDominoGame implements Observer {
             _roundNumber += 1;
             _labelRound.setText("ROUND " + _roundNumber);
             setTextInformation("Players, unhide the dominoes.");
+            _dominoesAreChoosen = false;
             _nextPlayer.setVisible(false);
             _subPanelSwitchRotate.setVisible(false);
             _subPanelRotation.setVisible(false);
@@ -1336,5 +1387,9 @@ public class KingDominoGame implements Observer {
                 .forEachOrdered(x -> _arrayRanking.put(x.getKey(), x.getValue()));
 
         return _arrayRanking;
+    }
+
+    public boolean is_dominoesAreChoosen() {
+        return _dominoesAreChoosen;
     }
 }
