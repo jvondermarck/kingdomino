@@ -803,7 +803,7 @@ public class KingDominoGame implements Observer {
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
-                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
