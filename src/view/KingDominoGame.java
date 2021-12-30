@@ -787,27 +787,46 @@ public class KingDominoGame implements Observer {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
+                                float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
                                 {
+                                    Color horizontalColorTile0 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0));
+                                    Color horizontalColorTile1 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1));
+
+                                    float[] hsbTile1 = Color.RGBtoHSB(horizontalColorTile1.getRed(), horizontalColorTile1.getGreen(), horizontalColorTile1.getBlue(), null);
+                                    horizontalColorTile1 = Color.getHSBColor(hsbTile1[0], saturation, hsbTile1[2]);
+
+                                    float[] hsbTile0 = Color.RGBtoHSB(horizontalColorTile0.getRed(), horizontalColorTile0.getGreen(), horizontalColorTile0.getBlue(), null);
+                                    horizontalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
+
                                     if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
                                     } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
                                     }
                                 }
                                 else if(Objects.equals(_switchDomino[0].getText(), "U")){
+                                    Color verticalColorTile1 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0));
+                                    Color verticalColorTile0 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0));
+
+                                    float[] hsbTile1 = Color.RGBtoHSB(verticalColorTile1.getRed(), verticalColorTile1.getGreen(), verticalColorTile1.getBlue(), null);
+                                    verticalColorTile1 = Color.getHSBColor(hsbTile1[0], saturation, hsbTile1[2]);
+
+                                    float[] hsbTile0 = Color.RGBtoHSB(verticalColorTile0.getRed(), verticalColorTile0.getGreen(), verticalColorTile0.getBlue(), null);
+                                    verticalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
+
                                     if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
                                         //up
-                                        _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                        _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
                                     } else if (finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
-                                        _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+                                        _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
+                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
                                     }
                                 }
                             }
