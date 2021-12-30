@@ -81,6 +81,7 @@ public class KingDominoGame implements Observer {
         _window.frame.setLocationRelativeTo(null);
         _unicodeCrown = "\uD83D\uDC51";
         _indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
+        _window.frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
         _roundNumber = 0;
         _firstGame = true;
         _listGameModeString = _window._controller.getGameMode();
