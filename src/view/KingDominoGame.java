@@ -786,24 +786,24 @@ public class KingDominoGame implements Observer {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
                             if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
-                                if(Objects.equals(_switchDomino[0].getText(), "L") && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL)) // if XX
+                                if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
                                 {
                                     if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
                                         _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
-                                    } else if(finalL+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
+                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
                                         _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
                                     }
                                 }
-                                else if(Objects.equals(_switchDomino[0].getText(), "U") && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL)){
+                                else if(Objects.equals(_switchDomino[0].getText(), "U")){
                                     if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
-                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
