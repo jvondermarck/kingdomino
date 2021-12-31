@@ -17,10 +17,6 @@ public class Controller {
         this._game.createDeck(numberPlayer);
     }
 
-    public void instanciatePlayer(int numberPlayer){
-        _game.createPlayers(numberPlayer);
-    }
-
     public void putDominoOnTable(){ _game.putDominoOnTable(); }
 
     // Methods for the strategy about the number of players

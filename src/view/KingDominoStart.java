@@ -13,7 +13,7 @@ public class KingDominoStart implements Observer{
     private final JPanel _panelMain; // our main panel
     private final Window _window; // our window that we get thanks to his static method and singleton variable
 
-    private final String[] strategyPlayers; // array of strings which contains duo, trio, quatro about the amount of players
+    private final String[] _strategyPlayers; // array of strings which contains duo, trio, quatro about the amount of players
     private final JComboBox<String> _cboStrategys; // our combobox to select the strategy
     private final DefaultListCellRenderer listRenderer; // to make a horizontal alignement in our cbo
 
@@ -81,8 +81,8 @@ public class KingDominoStart implements Observer{
         constraints.weighty = 0.1;
         constraints.gridwidth = 3;
         constraints.insets = new Insets(0,200,30,200);
-        strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
-        _cboStrategys = new JComboBox<>(strategyPlayers);
+        _strategyPlayers = new String[]{"Duo", "Trio", "Quatro"};
+        _cboStrategys = new JComboBox<>(_strategyPlayers);
         _cboStrategys.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 15));
         _cboStrategys.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         listRenderer = new DefaultListCellRenderer();

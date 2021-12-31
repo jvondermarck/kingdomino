@@ -1,0 +1,427 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+hide enum methods
+skinparam roundcorner 20
+skinparam linetype polyline
+skinparam linetype ortho
+skinparam classBackgroundColor #wheat
+skinparam nodesep 100
+skinparam ranksep 200
+
+class LauncherKingdomino{
+    +{static} main( args:String[] )
+}
+
+package Utilities {
+    class CSVReader{
+        +CSVReader()
+        {static}+readCSV(path:String):String[][]
+    }
+
+    class FontUtilities {
+        +FontUtilities()
+        {static}+setFont(path:String): Font
+    }
+
+}
+
+package Model #salmon;line:red{
+
+    class Game {
+        {static}-instance:Game
+        -_intPlayer: Integer
+        -_listGameModeString: Collection<String>
+        -_dominoesLeft: Boolean
+        -Game()
+        {static}+getInstance()
+        +addGameMode(gameMode: GameMode)
+        +factorHarmonyMode()
+        +factorMiddleKingdom()
+        +setNumberPlayer(strategy: NumberPlayerStrategy)
+        +getNumberPlayer(): Integer
+        +setTwoPlayers()
+        +setThreePlayers()
+        +setQuatroPlayers()
+        +createPlayers(numberPlayer: Integer)
+        +setCastlePlayer(index:Integer, x:Integer, y:Integer)
+        +createDeck(numberPlayer: Integer)
+        +getPlayer(index:Integer): Player
+        +getActualDominoes(): Collection<Domino>
+        +putDominoOnTable()
+        +sortDominoTable(n: Integer)
+        +rotateDomino(index:Integer)
+        +reverseDomino(index:Integer)
+        +setDirectionDomino(index:Integer. direction:Integer)
+        +setDominoOnGraph(index:Integer. direction:Integer, x:Integer, y:Integer)
+        +getErrorMessageSetDomino(indexPlayer: Integer)
+        +isXX(index:Integer):Boolean
+        +isXY(index:Integer):Boolean
+        +getColorTile(index:Integer, x:Integer, y:Integer):String
+        +addObservers(observer: Observer)
+        +notifyObservers()
+        +notifyObserversRotation()
+        +notifyObserverDominoGraph()
+        +is_dominoesLeft(): Boolean
+        +calculateScores()
+        +get_listGameModeString(): Collection<String>
+    }
+
+    interface Observer<<interface>>{
+       +update(game:Game)
+       +rotationDomino(game:Game)
+    }
+
+    package Entities #indianred{
+        Graph "0..*\n-_arrayTiles" *-> Tile : <<composed of>> >
+
+        class Graph {
+            -_errorMessage: String
+            +Graph()
+            +setDomino(domino:Domino, x:Integer, y:Integer)
+            +isSameTile(tile1:Tile , tile2:Tile):Boolean
+            +isPlaceAvailable(x:Integer, y:Integer):Boolean
+            +setCastle(x:Integer, y:Integer, castle:Castle)
+            +isCastleHere(x:Integer, y:Integer): Boolean
+            +get_errorMessage(): String
+            +getTiles():Tile[][]
+            +isCompleted(): Boolean
+            +isCastleOnMiddle(): Boolean
+            -countCells(matrix: Integer[], i:Integer, j:Integer)
+            -countCrowns(matrix: Integer[], graph: Tile[][], i:Integer, j:Integer, v:Integer)
+            +getSizeOfADomain(type: String): Collection<Collection<Integer>>
+        }
+
+        class King{
+            {static}-_colorUsed: Collection<KINGCOLOR>
+            {static}-_rand: Integer
+            {static}-_size: Integer
+
+            +King()
+            +randomChose(): KINGCOLOR
+            +getKingColor():KINGCOLOR
+        }
+
+
+        Deck "-_listDominoes\n1..*" *-> Domino : <<composed of>> >
+
+
+        class Deck{
+            {static}-rand:Integer{readOnly}
+            +Deck(numberPlayer: Integer)
+            -removeDomino(iteration: Integer)
+            -generateDomino(i:Integer, dataCSV:String[][])
+            +getStack(): Collection<Domino>
+            +sizeOfDeck(): Integer
+            +shuffle()
+            +giveADomino(): Domino
+            +get_listdominoes(): Collection<Domino>
+        }
+
+        Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
+        class Domino {
+           -id:Integer
+           -rightSide: Boolean
+           -leftSide: Boolean
+           -upSide: Boolean
+           -downSide: Boolean
+           +Domino(id:Integer, tile1:Tile, tile2:Tile)
+           -setTile(tile1:Tile, tile2:Tile)
+           +isXX():Boolean
+           +isXY():Boolean
+           +getTile():Tile[][]
+           +getId(): Integer
+           +rotate()
+           +reverse()
+           +setRightSide()
+           +setLeftSide()
+           +setUpSide()
+           +setDownSide()
+           +isRightSide(): Boolean
+           +isLeftSide: Boolean
+           +isUpSide: Boolean
+           +isDownSide: Boolean
+           +getColor(x:Integer, y:Integer):String
+        }
+
+        class Tile{
+           -_color:String
+           -_crowns:Integer
+           +Tile(suitColor, crownsSuit)
+           +Tile()
+           +setColorTile(color: String)
+           +getCrowns() Integer
+           +getColor(): String
+        }
+
+        Player "1\n-_graph" *--> Graph : > <<has>>
+        Player "1\n-_king"*-> King : > <<has>>
+        Player "1\n-_castle" *-l-> Castle : > <<has>>
+        Player "1\n-_bonus" o--> GameMode : > <<has>>
+        class Player {
+            -yellowTilesScoreList: Collection<Collection<Integer>>
+            -darkGreenTilesScoreList: Collection<Collection<Integer>>
+            -blueTilesScoreList: Collection<Collection<Integer>>
+            -blackTilesScoreList: Collection<Collection<Integer>>
+            -brownTilesScoreList: Collection<Collection<Integer>>
+            -lightGreenTilesScoreList: Collection<Collection<Integer>>
+            -totalTilesScoreList: Collection<Collection<Collection<Integer>>>
+            -totalScore: Integer
+            -yellowTilesScore: Integer
+            -darkGreenTilesScore: Integer
+            -blueTilesScore: Integer
+            -blackTilesScore: Integer
+            -brownTilesScore: Integer
+            -lightGreenTilesScore: Integer
+            +Player()
+            -initialiseGraph()
+            -initialiseCastle()
+            +setCastle(x:Integer, y:Integer)
+            +getGraph():Graph
+            +getKing():King
+            +getTotalScore(): Integer
+            +calculateTotalScore()
+            +calculateTotalScoreDomain(list: Collection<Collection<Integer>>): Integer
+            +addBonus(gameMode: GameMode)
+            +getHarmonyBonus(): Integer
+            +getMiddleKingdom(): Integer
+        }
+
+        class Castle extends Tile{
+            +Castle(color: String)
+        }
+
+        enum KINGCOLOR {
+            +PINK
+            +YELLOW
+            +GREEN
+            +BLUE
+        }
+        Player "1\n{static}_colorUsed" *--> KINGCOLOR: > <<has>>
+
+
+    }
+
+
+    package Set #indianred {
+
+        class NumberPlayer{
+            -_numberPlayers: Integer
+            +NumberPlayer()
+            +setStrategyPlayer(strategy: NumberPlayerStrategy)
+            +setNumberPlayers(players: Integer)
+            +getNumberPlayers(): Integer
+            +getTwoPlayers(): Duo
+            +getThreePlayers(): Trio
+            +getQuatroPlayers(): Quatro
+         }
+
+        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<choose>>
+
+        package Number{
+            class Duo implements NumberPlayerStrategy
+            {
+                {override}+setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
+            }
+
+            class Trio implements NumberPlayerStrategy
+            {
+                {override}+setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
+            }
+
+            class Quatro implements NumberPlayerStrategy
+            {
+                {override}+setNumberPlayers(player: NumberPlayer)
+                {override}+toString():String
+            }
+        }
+
+        GameModeFactory ..> GameMode : <<use>> >
+
+        class GameModeFactory{
+            +GameModeFactory()
+            +createMiddleKingdom(): GameMode
+            +createHarmony(): GameMode
+            +createMightyDuel(): GameMode
+        }
+
+        abstract GameMode<<abstract>>{
+            +GameMode()
+            {abstract}+executeGameMode() <<abstract>>: Boolean
+            {abstract}+numberBonus() <<abstract>>: Integer
+        }
+
+
+            package mode{
+                class MiddleKingdom extends GameMode{
+                    {override}+executeGameMode(player: Player): Boolean
+                    {override}+numberBonus(): Integer
+                    {override}+toString():String
+                }
+
+                class Harmony extends GameMode{
+                    {override}+executeGameMode(player: Player): Boolean
+                    {override}+numberBonus(): Integer
+                    {override}+toString():String
+                }
+
+                GameModeFactory ..> MiddleKingdom: <<use>> >
+                GameModeFactory ..> Harmony: <<use>> >
+            }
+
+    }
+
+    interface NumberPlayerStrategy<<interface>>{
+        +strategyPlayer()
+    }
+}
+
+package View #lightgreen;line:green{
+    Window ..> KingDominoStart : <<use>> >
+    KingDominoStart ..> KingDominoGame : <<use>> >
+    KingDominoGame ..> KingDominoEnd: <<use>> >
+
+    class Window implements Observer
+    {
+        #numberPlayer: Integer
+        {static}#instance:Window
+        -Window(game:Game, controller:Controller)
+        #setWindow()
+        {static}+getInstance(game:Game, controller:Game):Window
+        {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
+        {override}+dominoGraph(game:Game)
+    }
+
+    class KingDominoStart implements Observer
+    {
+        -_strategyPlayers: String[]
+        +KingDominoStart()
+        {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
+        {override}+dominoGraph(game:Game)
+    }
+
+    class KingDominoGame implements Observer
+    {
+        -_indexDominoClicked: Integer
+        -_unicodeCrown: String
+        -_castleIsSet: Boolean[]
+        -_mapGraphPlayer: Dictionnary<Integer, Button[][]>
+        -_listGameModeString: Collection<String>
+        -_orderPlayerPrevious: Collection<Integer>
+        -_firstGame: Boolean
+        -_dominoesAreChoosen: Boolean
+        -_waitPlayerPutDomino: Boolean
+        -_allDominoesAreSet: Boolean[]
+        -_castleIsSet: Boolean[]
+        -_roundNumber: Integer
+        -_indexGraphClicked: Integer
+        -_indexDominoClicked: Integer
+        -_orderPlayerActual: Integer[]
+        -_unicodeCrown: String
+
+        +KingDominoGame()
+        {override}+update(game:Game)
+        {override}+rotationDomino(game:Game)
+        {override}+dominoGraph(game:Game)
+        +setCrownRotation()
+        +labelKingONDominoes()
+        changeLabelKing()
+        +createDominoes()
+        +createGraph()
+        +setBackgroudDominoGraph(x:Integer, y:Integer, condition:Boolean)
+        +putDominoRotate()
+        +setTextInformation(text: String)
+        +allCastleSet()
+        +firstLaunchGame()
+        +otherLaunchGame()
+        +addPlayerPlaceDomino()
+        +nextPlayerToChooseDomino()
+        +letPlayerSetDomino()
+        +graphEnabled()
+        +endGame()
+        +createScorePlayer()
+        +createRanking(): Dictionnary<Integer, Integer>
+        +is_dominoesAreChoosen(): Boolean
+    }
+}
+
+package Controller #gold;line:goldenrod {
+
+    class Controller{
+        +Controller(game: Game)
+        +instanciateDeck(numberPlayer: Integer)
+        +instanciatePlayer(numberPlayer: Integer)
+        +putDominoOnTable()
+        +switchToDuo()
+        +switchToTrio()
+        +switchToQuatro()
+        +getNumberPlayer(): Integer
+        +callHarmony()
+        +callMiddleKingdom()
+        +callRotationDomino(index: Integer)
+        +callReverseDomino(index: Integer)
+        +callSetDirectionDomino(index: Integer, direction:Integer)
+        +setCastle(index:Integer, x:Integer, y:Integer)
+        +setDominoOnGraph(index:Integer, indexPlayer:Integer, x:Integer, y:Integer)
+        +addObserver(observer: Observer)
+        +instantiateKingdominoGame()
+        +calculScorePlayer()
+        +getTotalScorePlayer(index:Integer): Integer
+        +getYellowTilesScore(index: Integer): Integer
+        +getDarkGreenTilesScore(index: Integer): Integer
+        +getBlueTilesScore(index: Integer): Integer
+        +getBlackTilesScore(index: Integer): Integer
+        +getBrownTilesScore(index: Integer): Integer
+        +getLightGreenTilesScore(index: Integer): Integer
+        +getGameMode(): Collection<String>
+        +getHarmonyBonus(index: Integer): Integer
+        +getMiddleKingdom(index: Integer): Integer
+        +getPlayer(index: Integer): Player
+    }
+
+}
+
+Window -> "1\n{static}#instance"Window
+Window .> "1\n #_controller\t"Controller : <<use>> >
+Window .> Game : "1\n #_game" <<use>> >
+Window  .> "1\n #_fontGermania"FontUtilities : <<use>>
+Window  .> "1\n #_fontTimeless"FontUtilities : <<use>>
+
+KingDominoStart "1\n-_window"*--> Window
+KingDominoGame "1\n-_window"*-> Window
+KingDominoEnd "1\n-_window"*-> Window
+
+LauncherKingdomino ..> Window : <<create>> >
+LauncherKingdomino ..> Controller : <<create>> >
+LauncherKingdomino .> Game : <<create>> >
+
+Game "1\n{static}instance" --> Game
+Game  *--> "1\n-_listGameMode"GameMode : <<has>> >
+Game  *--> "1\n-_numberplayer"NumberPlayer : <<has>> >
+Game  *-> "1\n-_deck"Deck : <<has>> >
+Game "2..4\n-_listPlayers" *--> Player : <<has>> >
+Game o..> NumberPlayerStrategy : <<set>> >
+Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
+Game *--> "1..2\n_factoryGameMode"GameModeFactory : <<has>> >
+Game *--> "3..4\n_actualDominoes"Domino : <<has>> >
+
+NumberPlayer ..> Duo : <<use>> >
+NumberPlayer ..> Trio : <<use>> >
+NumberPlayer ..> Quatro : <<use>> >
+
+
+Controller ..> "1\n-_game"Game : <<use>> >
+Controller o..> Observer : <<use>> >
+Controller .> Player : <<use>> >
+Controller .> KingDominoGame : <<use>> >
+
+King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >
+
+Deck .d.> CSVReader : <<use>> >
+
+@enduml
