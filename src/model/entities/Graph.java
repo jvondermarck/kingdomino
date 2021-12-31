@@ -39,7 +39,6 @@ public class Graph {
                     || (y == _arrayTiles.length - 1 && x == 0 && (domino.isUpSide() || domino.isRightSide()))// Up right corner
                         || (y == _arrayTiles.length - 1 && x == _arrayTiles.length-1 && (domino.isDownSide() || domino.isRightSide()))){ // Down right corner
 
-            System.out.println(x+"|"+y);
             _errorMessage = "Impossible, out of the board!";
             return;
         }
@@ -53,8 +52,11 @@ public class Graph {
             return;
         }
 
+
+
         //Check if it is near a castle
-        else if(isCastleHere(x+1,y)|| isCastleHere(x-1,y) || isCastleHere(x, y+1)|| isCastleHere(x,y-1)){
+        else if(isCastleHere(x+1,y) || isCastleHere(x-1,y)
+                || isCastleHere(x, y+1) || isCastleHere(x,y-1)){
             //If the domino is like that :
             // O O
             // X X
@@ -89,6 +91,8 @@ public class Graph {
                         _errorMessage = "Not near a castle or a same tile !";
                     }
                 }
+
+
                 //     | ..|  ...  |
                 // |.. | ..| CASTLE| ..
                 // |...| ? |    X  | ?
@@ -115,6 +119,7 @@ public class Graph {
                     _arrayTiles[x][y] = domino.getTile()[0][0];
                     _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
                 }
+
 
                 else if(isCastleHere(x+1,y) && isPlaceAvailable(x,y) && isPlaceAvailable(x-1,y)){
                     _arrayTiles[x][y] = domino.getTile()[0][0];
@@ -149,6 +154,31 @@ public class Graph {
                     }
                 }
             }
+        }
+
+        else if((isCastleHere(x, y-2) || isCastleHere(x-1, y-1) || isCastleHere(x+1,y-1))
+                && isPlaceAvailable(x,y) && domino.isLeftSide()){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[x][Math.max(y-1, 0)] = domino.getTile()[0][1];
+        }
+        else if((isCastleHere(x, y+2) || isCastleHere(x-1, y+1) || isCastleHere(x+1,y+1))
+                && isPlaceAvailable(x,y) && domino.isRightSide()){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+        }
+        else if((isCastleHere(x+2, y) || isCastleHere(x+1, y-1) || isCastleHere(x+1,y+1))
+                && isPlaceAvailable(x,y) && domino.isDownSide()){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+        }
+        else if((isCastleHere(x-2, y) || isCastleHere(x-1, y-1) || isCastleHere(x-1,y+1))
+                && isPlaceAvailable(x,y) && domino.isUpSide()){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
         }
 
         //Check if a compatible Tile is available near pos x y
@@ -205,6 +235,37 @@ public class Graph {
             }
         }
 
+        else if(isPlaceAvailable(x,y) && isPlaceAvailable(x,Math.min(y+1, _arrayTiles.length-1)) && domino.isRightSide() &&
+                domino.isXX() && (isSameTile(_arrayTiles[x][Math.min(Math.max(y+2,0), _arrayTiles.length - 1)], domino.getTile()[0][1])
+                || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length - 1)][Math.max(y+1, 0)], domino.getTile()[0][1])
+                || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length - 1)][Math.max(y+1, 0)], domino.getTile()[0][1]))){
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+        }
+        else if(isPlaceAvailable(x,y) && isPlaceAvailable(x, Math.min(y-1, _arrayTiles.length-1))&& domino.isLeftSide() && domino.isXX() &&
+                (isSameTile(_arrayTiles[x][Math.max(y-2, 0)], domino.getTile()[0][1]) && isPlaceAvailable(x, Math.max(y-2, 0))
+                || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length - 1)][Math.max(y-1, 0)], domino.getTile()[0][1])
+                || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length - 1)][Math.max(y-1, 0)], domino.getTile()[0][1]))){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[x][Math.min(y-1, _arrayTiles.length-1)] = domino.getTile()[0][1];
+        }
+        else if (isPlaceAvailable(x, y) && isPlaceAvailable(Math.min(x+1, _arrayTiles.length - 1), y) && domino.isDownSide() && domino.isXY() &&
+                (isSameTile(_arrayTiles[Math.min(x+2, _arrayTiles.length-1)][y], domino.getTile()[1][0])
+                || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length -1)][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[1][0])
+                || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length -1)][Math.max(y-1,0)], domino.getTile()[1][0]))){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[Math.max(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+        }
+        else if (isPlaceAvailable(x, y) && isPlaceAvailable(Math.min(Math.max(x-1,0), _arrayTiles.length - 1), y) && domino.isUpSide() && domino.isXY() &&
+                (isSameTile(_arrayTiles[Math.min(Math.max(x-2, 0), _arrayTiles.length-1)][y], domino.getTile()[1][0])
+                || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length -1)][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[1][0])
+                || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length -1)][Math.max(y-1,0)], domino.getTile()[1][0]))){
+
+            _arrayTiles[x][y] = domino.getTile()[0][0];
+            _arrayTiles[Math.max(x-1,0)][y] = domino.getTile()[1][0];
+        }
 
 
         else{
@@ -229,10 +290,10 @@ public class Graph {
         else if(yTemp < 0){
             yTemp = 0;
         }
-        else if(xTemp > _arrayTiles.length - 1){
+        else if(xTemp >= _arrayTiles.length){
             xTemp = _arrayTiles.length - 1;
         }
-        else if(yTemp > _arrayTiles.length - 1){
+        else if(yTemp >= _arrayTiles.length){
             yTemp = _arrayTiles.length - 1;
         }
         return _arrayTiles[xTemp][yTemp] == null;
@@ -243,21 +304,7 @@ public class Graph {
     }
 
     public boolean isCastleHere(int x, int y){
-        int xTemp = x;
-        int yTemp = y;
-        if(xTemp < 0){
-            xTemp = 0;
-        }
-        else if(yTemp < 0){
-            yTemp = 0;
-        }
-        else if(xTemp > _arrayTiles.length - 1){
-            xTemp = _arrayTiles.length - 1;
-        }
-        else if(yTemp > _arrayTiles.length - 1){
-            yTemp = _arrayTiles.length - 1;
-        }
-        return _arrayTiles[xTemp][yTemp] instanceof Castle;
+        return _arrayTiles[Math.min(Math.max(x, 0), _arrayTiles.length - 1)][Math.min(Math.max(y, 0), _arrayTiles.length - 1)] instanceof Castle;
     }
 
     public String get_errorMessage() {
