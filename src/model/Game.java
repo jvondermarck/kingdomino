@@ -46,7 +46,7 @@ public class Game {
     public void addGameMode(GameMode gameMode){
         this._listGameMode.add(gameMode); // We add all game mode in a list
         this._listGameModeString.add(gameMode.toString());
-        System.out.println("Game Mode : " + gameMode);
+        //System.out.println("Game Mode : " + gameMode);
     }
 
     public void factorHarmonyMode(){ addGameMode(this._factoryGameMode.createHarmony()); } // we create the Harmony mode, and we add it in our list of GameMode

@@ -157,7 +157,7 @@ public class KingDominoStart implements Observer{
                 _window._controller.callMiddleKingdom();
 
             if(_rdbGameNothing.isSelected() && !(_rdbGameModeMiddle.isSelected() || _rdbGameModeHarmony.isSelected()))
-                System.out.println("No game mode");
+                //System.out.println("No game mode");
 
             if(_cboStrategys.getSelectedIndex() == 0) // If we selected in the combobox the "Duo"
                 _window._controller.switchToDuo();

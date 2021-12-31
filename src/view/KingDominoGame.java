@@ -394,7 +394,7 @@ public class KingDominoGame implements Observer {
         {
             for(int i = 0; i < numberDominoes; i++){
                 _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
-                System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
+                //System.out.println("Domino °" + game.getActualDominoes().get(i).getId().toString());
                 for(int j=0; j<2; j++)
                 {
                     _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
@@ -823,7 +823,7 @@ public class KingDominoGame implements Observer {
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
-                                    } else if (finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
