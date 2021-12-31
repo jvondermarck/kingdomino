@@ -157,25 +157,25 @@ public class Graph {
         }
 
         else if((isCastleHere(x, y-2) || isCastleHere(x-1, y-1) || isCastleHere(x+1,y-1))
-                && isPlaceAvailable(x,y) && domino.isLeftSide()){
+                && isPlaceAvailable(x,y) && isPlaceAvailable(x, Math.max(y-1, 0))&& domino.isLeftSide()){
 
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[x][Math.max(y-1, 0)] = domino.getTile()[0][1];
         }
         else if((isCastleHere(x, y+2) || isCastleHere(x-1, y+1) || isCastleHere(x+1,y+1))
-                && isPlaceAvailable(x,y) && domino.isRightSide()){
+                && isPlaceAvailable(x,y) && isPlaceAvailable(x, Math.min(y+1, _arrayTiles.length-1)) && domino.isRightSide()){
 
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
         }
         else if((isCastleHere(x+2, y) || isCastleHere(x+1, y-1) || isCastleHere(x+1,y+1))
-                && isPlaceAvailable(x,y) && domino.isDownSide()){
+                && isPlaceAvailable(x,y)  && isPlaceAvailable(Math.min(x+1, _arrayTiles.length-1),y) && domino.isDownSide()){
 
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
         }
         else if((isCastleHere(x-2, y) || isCastleHere(x-1, y-1) || isCastleHere(x-1,y+1))
-                && isPlaceAvailable(x,y) && domino.isUpSide()){
+                && isPlaceAvailable(x,y) && isPlaceAvailable(Math.min(x-1, _arrayTiles.length-1),y) && domino.isUpSide()){
 
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[Math.min(x-1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
@@ -239,6 +239,8 @@ public class Graph {
                 domino.isXX() && (isSameTile(_arrayTiles[x][Math.min(Math.max(y+2,0), _arrayTiles.length - 1)], domino.getTile()[0][1])
                 || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length - 1)][Math.max(y+1, 0)], domino.getTile()[0][1])
                 || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length - 1)][Math.max(y+1, 0)], domino.getTile()[0][1]))){
+
+            //System.out.println("right");
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[x][Math.min(y+1, _arrayTiles.length-1)] = domino.getTile()[0][1];
         }
@@ -247,6 +249,7 @@ public class Graph {
                 || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length - 1)][Math.max(y-1, 0)], domino.getTile()[0][1])
                 || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length - 1)][Math.max(y-1, 0)], domino.getTile()[0][1]))){
 
+            //System.out.println("left");
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[x][Math.min(y-1, _arrayTiles.length-1)] = domino.getTile()[0][1];
         }
@@ -255,14 +258,16 @@ public class Graph {
                 || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length -1)][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[1][0])
                 || isSameTile(_arrayTiles[Math.min(x+1, _arrayTiles.length -1)][Math.max(y-1,0)], domino.getTile()[1][0]))){
 
+            //System.out.println("down");
             _arrayTiles[x][y] = domino.getTile()[0][0];
-            _arrayTiles[Math.max(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
+            _arrayTiles[Math.min(x+1, _arrayTiles.length-1)][y] = domino.getTile()[1][0];
         }
         else if (isPlaceAvailable(x, y) && isPlaceAvailable(Math.min(Math.max(x-1,0), _arrayTiles.length - 1), y) && domino.isUpSide() && domino.isXY() &&
                 (isSameTile(_arrayTiles[Math.min(Math.max(x-2, 0), _arrayTiles.length-1)][y], domino.getTile()[1][0])
                 || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length -1)][Math.min(y+1, _arrayTiles.length-1)], domino.getTile()[1][0])
                 || isSameTile(_arrayTiles[Math.min(Math.max(x-1,0), _arrayTiles.length -1)][Math.max(y-1,0)], domino.getTile()[1][0]))){
 
+            //System.out.println("up");
             _arrayTiles[x][y] = domino.getTile()[0][0];
             _arrayTiles[Math.max(x-1,0)][y] = domino.getTile()[1][0];
         }
