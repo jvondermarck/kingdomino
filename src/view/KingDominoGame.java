@@ -127,7 +127,7 @@ public class KingDominoGame implements Observer {
 
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
         constraints.gridy = 1;
-        constraints.insets = new Insets(5,0,0,0);
+        constraints.insets = new Insets(0,0,0,0);
         _textInformationToDo = new JLabel("Players... put your castle !");
         _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
         _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
@@ -830,6 +830,15 @@ public class KingDominoGame implements Observer {
                                     }
                                 }
                             }
+
+                            if(!_castleIsSet[finalI])
+                            {
+                                try {
+                                    _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -850,6 +859,11 @@ public class KingDominoGame implements Observer {
                                         }
                                     }
                                 }
+                            }
+
+                            if(!_castleIsSet[finalI])
+                            {
+                                _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(null);
                             }
                         }
                     });
@@ -1414,4 +1428,5 @@ public class KingDominoGame implements Observer {
     public boolean is_dominoesAreChoosen() {
         return _dominoesAreChoosen;
     }
+
 }
