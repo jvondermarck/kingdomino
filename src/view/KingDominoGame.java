@@ -211,6 +211,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino[0].setFocusPainted(false);
         _rotateDomino[0].setOpaque(false);
         _rotateDomino[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        _rotateDomino[0].setToolTipText("<html>Rotate the domino either <br> vertically or horizontally.</html>");
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create a bouton to inverse the domino
         _rotateDomino[1] = new JButton();
@@ -221,6 +222,7 @@ public class KingDominoGame implements Observer {
         _rotateDomino[1].setFocusPainted(false);
         _rotateDomino[1].setOpaque(false);
         _rotateDomino[1].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        _rotateDomino[1].setToolTipText("<html>Reverse the direction <br> of the domino.</html>");
 
         // SWITCH DOMINO
         _switchDomino = new JButton[2];
@@ -733,6 +735,7 @@ public class KingDominoGame implements Observer {
                     _btnOnGraph[k][l].setRolloverEnabled(false);
                     _btnOnGraph[k][l].setFocusable(false);
                     _btnOnGraph[k][l].setForeground(Color.WHITE);
+                    _btnOnGraph[k][l].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     _panelGraph[i].add(_btnOnGraph[k][l]);
 
                     int finalK = k;
@@ -921,6 +924,8 @@ public class KingDominoGame implements Observer {
             setCrownRotation(0,1);
             _switchDomino[0].setText("L");
             _switchDomino[1].setText("R");
+            _switchDomino[0].setToolTipText("<html>Left.</html>");
+            _switchDomino[1].setToolTipText("<html>Right.</html>");
         } else if(_window._game.isXYDomino(_indexDominoClicked)){
             setBackgroudDominoGraph(1,0,true);
             setBackgroudDominoGraph(0,1,false);
@@ -928,6 +933,8 @@ public class KingDominoGame implements Observer {
             setCrownRotation(1,0);
             _switchDomino[0].setText("U");
             _switchDomino[1].setText("D");
+            _switchDomino[0].setToolTipText("<html>Up.</html>");
+            _switchDomino[1].setToolTipText("<html>Down.<html>");
         }
     }
 
