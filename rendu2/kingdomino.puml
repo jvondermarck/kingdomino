@@ -279,12 +279,10 @@ package Model #salmon;line:red{
 
 package View #lightgreen;line:green{
     Window ..> KingDominoStart : <<use>> >
-    KingDominoStart ..> KingDominoGame : <<use>> >
-    KingDominoGame ..> KingDominoEnd: <<use>> >
 
     class Window implements Observer
     {
-        #numberPlayer: Integer
+        -_numberPlayer: Integer
         {static}#instance:Window
         -Window(game:Game, controller:Controller)
         #setWindow()
@@ -292,12 +290,23 @@ package View #lightgreen;line:green{
         {override}+update(game:Game)
         {override}+rotationDomino(game:Game)
         {override}+dominoGraph(game:Game)
+        +getGame(): Game
+        +getController(): Controller
+        +getFrame(): Frame
+        +getInstance(): Window
+        +getFontGermania(): Font
+        +getFontTimeless(): Font
+        +getFontAugusta(): Font
+        +getNumberPlayer(): Integer
+        +setNumberPlayer(number: Integer)
     }
 
     class KingDominoStart implements Observer
     {
+        -_numberPlayer: Integer
         -_strategyPlayers: String[]
         +KingDominoStart()
+        +getInstancesWindow()
         {override}+update(game:Game)
         {override}+rotationDomino(game:Game)
         {override}+dominoGraph(game:Game)
@@ -305,6 +314,7 @@ package View #lightgreen;line:green{
 
     class KingDominoGame implements Observer
     {
+        -_numberPlayer: Integer
         -_indexDominoClicked: Integer
         -_unicodeCrown: String
         -_castleIsSet: Boolean[]
@@ -323,6 +333,7 @@ package View #lightgreen;line:green{
         -_unicodeCrown: String
 
         +KingDominoGame()
+        +getInstancesWindow()
         {override}+update(game:Game)
         {override}+rotationDomino(game:Game)
         {override}+dominoGraph(game:Game)
@@ -384,16 +395,18 @@ package Controller #gold;line:goldenrod {
 
 }
 
-Window -> "1\n{static}#instance"Window
-Window .> "1\n #_controller\t"Controller : <<use>> >
-Window .> Game : "1\n #_game" <<use>> >
-Window  .> "1\n #_fontGermania"FontUtilities : <<use>>
-Window  .> "1\n #_fontTimeless"FontUtilities : <<use>>
+Window -> "1\n{static}+instance"Window
+Window .> "1\n -_controller\t"Controller : <<use>> >
+Window .> Game : "1\n -_game" <<use>> >
+Window  .> "1\n -_fontGermania"FontUtilities : <<use>>
+Window  .> "1\n -_fontTimeless"FontUtilities : <<use>>
+Window  .> "1\n -_fontAugusta"FontUtilities : <<use>>
 
 KingDominoStart *--> Window : "1\n-_window"
 KingDominoGame *-> Window : "1\n-_window"
 
 LauncherKingdomino ..> Window : <<create>> >
+LauncherKingdomino ..> KingDominoStart : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
@@ -405,7 +418,7 @@ Game  *--> Player : "2..4\n-_listPlayers" <<has>> >
 Game o..> NumberPlayerStrategy : <<set>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
 Game *--> "1..2\n_factoryGameMode"GameModeFactory : <<has>> >
-Game *--> "3..4\n_actualDominoes"Domino : <<has>> >
+Game *--> Domino : "3..4\n_actualDominoes" <<has>> >
 
 NumberPlayer ..> Duo : <<use>> >
 NumberPlayer ..> Trio : <<use>> >
