@@ -23,7 +23,6 @@ public class Controller {
     public void switchToDuo(){ _game.setTwoPlayers();}
     public void switchToTrio(){ _game.setThreePlayers();}
     public void switchToQuatro(){ _game.setQuatroPlayers();}
-    public int getNumberPlayer() { return _game.getNumberPlayer(); }
 
     // Methods about the game mode
     public void callHarmony(){ _game.factorHarmonyMode();  }
@@ -42,21 +41,5 @@ public class Controller {
     public void instantiateKingdominoGame() throws IOException { new KingDominoGame() ;}
 
     public void calculScorePlayer () { _game.calculateScores(); }
-
-    public int getTotalScorePlayer(int index) { return _game.getPlayer(index).getTotalScore(); }
-
-    public int getYellowTilesScore(int index) { return _game.getPlayer(index).getYellowTilesScore(); }
-    public int getDarkGreenTilesScore(int index) { return _game.getPlayer(index).getDarkGreenTilesScore(); }
-    public int getBlueTilesScore(int index) { return _game.getPlayer(index).getBlueTilesScore(); }
-    public int getBlackTilesScore(int index) { return _game.getPlayer(index).getBlackTilesScore(); }
-    public int getBrownTilesScore(int index) { return _game.getPlayer(index).getBrownTilesScore(); }
-    public int getLightGreenTilesScore(int index) { return _game.getPlayer(index).getLightGreenTilesScore(); }
-
-    public List<String> getGameMode() { return _game.getListGameModeString(); }
-    //public int getHarmonyBonus(int index) { return _game.getPlayer(index).getHarmonyBonus(); }
-    //public int getMiddleKingdom(int index) { return _game.getPlayer(index).getMiddleKingdom(); }
-
-    public Player getPlayer(int index) { return _game.getPlayer(index); }
-
 }
 

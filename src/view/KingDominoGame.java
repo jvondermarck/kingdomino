@@ -105,7 +105,7 @@ public class KingDominoGame implements Observer {
         _frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
         _roundNumber = 0;
         _firstGame = true;
-        _listGameModeString = _controller.getGameMode();
+        _listGameModeString = _game.getListGameModeString();
 
         // Constraints
         constraints = new GridBagConstraints();
@@ -810,7 +810,7 @@ public class KingDominoGame implements Observer {
 
                     _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
+                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
                                 float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
@@ -824,11 +824,11 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(horizontalColorTile0.getRed(), horizontalColorTile0.getGreen(), horizontalColorTile0.getBlue(), null);
                                     horizontalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
                                         _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
-                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
+                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
                                         _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
@@ -844,11 +844,11 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(verticalColorTile0.getRed(), verticalColorTile0.getGreen(), verticalColorTile0.getBlue(), null);
                                     verticalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
-                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
@@ -870,8 +870,8 @@ public class KingDominoGame implements Observer {
                             if(is_dominoesAreChoosen()){
                                 for(int i = 0; i < 5; i++){
                                     for(int j = 0; j<5; j++){
-                                        if(!_controller.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_controller.getPlayer(finalI).getGraph().isCastleHere(i,j)){
-                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_controller.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
+                                        if(!_game.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_game.getPlayer(finalI).getGraph().isCastleHere(i,j)){
+                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_game.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
 
                                             _mapGraphPlayer.get(finalI)[i][j].setText("");
                                             int numberCrown = _game.getPlayer(finalI).getGraph().getTiles()[i][j].getCrowns();
@@ -1272,7 +1272,7 @@ public class KingDominoGame implements Observer {
         int indexScore = 1;
         for (Map.Entry<Integer,Integer> entry : _arrayPlayerRanked.entrySet())
         {
-            int _totalScore =  _controller.getTotalScorePlayer(entry.getKey());
+            int _totalScore =  _game.getPlayer(entry.getKey()).getTotalScore();
 
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rectangleScore.png")).readAllBytes());
             JPanel _allPanelScore = new JPanel() // display in this panel a background image to get a beautiful game
@@ -1345,27 +1345,27 @@ public class KingDominoGame implements Observer {
                 switch (j) {
                     case 0 -> {
                         _lblColor.setBackground(Color.decode("#FDCA40"));
-                        _lblColor.setText(Integer.toString(_controller.getYellowTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getYellowTilesScore()));
                     }
                     case 1 -> {
                         _lblColor.setBackground(Color.decode("#b5e48c"));
-                        _lblColor.setText(Integer.toString(_controller.getLightGreenTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getLightGreenTilesScore()));
                     }
                     case 2 -> {
                         _lblColor.setBackground(Color.decode("#0A9396"));
-                        _lblColor.setText(Integer.toString(_controller.getDarkGreenTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getDarkGreenTilesScore()));
                     }
                     case 3 -> {
                         _lblColor.setBackground(Color.decode("#2176FF"));
-                        _lblColor.setText(Integer.toString(_controller.getBlueTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getBlueTilesScore()));
                     }
                     case 4 -> {
                         _lblColor.setBackground(Color.decode("#31393C"));
-                        _lblColor.setText(Integer.toString(_controller.getBlackTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getBlackTilesScore()));
                     }
                     case 5 -> {
                         _lblColor.setBackground(Color.decode("#7f4f24"));
-                        _lblColor.setText(Integer.toString(_controller.getBrownTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_game.getPlayer(entry.getKey()).getBrownTilesScore()));
                     }
                     default -> {
                     }
@@ -1390,7 +1390,7 @@ public class KingDominoGame implements Observer {
             for(int i = 0; i < _lblGameMode.length; i++){
                 _lblGameMode[i] = new JLabel();
                 _lblGameMode[i].setText(_game.getListGameMode().get(i).toString() +" +"+
-                        (_game.getListGameMode().get(i).executeGameMode(_controller.getPlayer(entry.getKey()))
+                        (_game.getListGameMode().get(i).executeGameMode(_game.getPlayer(entry.getKey()))
                                 ? _game.getListGameMode().get(i).numberBonus() : 0));
                 _lblGameMode[i].setForeground(Color.WHITE);
                 _lblGameMode[i].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
@@ -1439,7 +1439,7 @@ public class KingDominoGame implements Observer {
         Map<Integer, Integer> _arrayRankingnotsorted = new LinkedHashMap<>();
         for(int i=0; i< _numberPlayer; i++)
         {
-            _arrayRankingnotsorted.put(i, _controller.getTotalScorePlayer(i));
+            _arrayRankingnotsorted.put(i, _game.getPlayer(i).getTotalScore());
         }
 
         Map<Integer, Integer> _arrayRanking = new LinkedHashMap<>();

@@ -187,7 +187,7 @@ public class KingDominoStart implements Observer{
             else // If we selected in the combobox the "Quatro"
                 _controller.switchToQuatro();
 
-            _window.setNumberPlayer(_controller.getNumberPlayer());
+            _window.setNumberPlayer(_game.getNumberPlayer());
 
             try {
                 //new KingDominoGame(); // Because we got all we needed of the main player, we can start the game !

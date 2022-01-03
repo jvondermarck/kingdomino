@@ -116,3 +116,8 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ## 4. Annexe
 - Si en voulant tester le Swing, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 30 et enlever la ligne `frame.setLocationRelativeTo(null);`
+
+
+
+V2
+on passe de la vue au model directement quand la vue demande que le model retourne des données au lieu de passer au controller
