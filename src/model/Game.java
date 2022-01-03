@@ -225,7 +225,7 @@ public class Game {
         return this._listGameMode;
     }
 
-    public List<String> get_listGameModeString() {
+    public List<String> getListGameModeString() {
         return _listGameModeString;
     }
 }
