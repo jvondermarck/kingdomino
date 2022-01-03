@@ -11,7 +11,6 @@ import model.set.NumberPlayerStrategy;
 import java.util.*;
 
 public class Game {
-    private static Game instance;
     private final List<Observer> _observer;
 
     private Deck _deck;
@@ -25,7 +24,7 @@ public class Game {
     private final List<String> _listGameModeString;
     private boolean _dominoesLeft; // to check if there are enough dominoes on the table to play, if no we stop the game
 
-    private Game()
+    public Game()
     {
         this._observer = new ArrayList<>();
         this._numberplayer = new NumberPlayer();
@@ -33,14 +32,6 @@ public class Game {
         this._listGameModeString = new ArrayList<>();
         this._factoryGameMode = new GameModeFactory();
         this._dominoesLeft = false;
-    }
-
-    public static Game getInstance()
-    {
-        if(instance == null){
-            instance = new Game();
-        }
-        return instance;
     }
 
     public void addGameMode(GameMode gameMode){
