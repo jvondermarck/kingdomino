@@ -1385,29 +1385,26 @@ public class KingDominoGame implements Observer {
             JPanel _panelGameMode = new JPanel(new GridLayout(2,1));
             _panelGameMode.setOpaque(false);
             _panelGameMode.setPreferredSize(new Dimension(121,48));
-            JLabel[] _lblGameMode = new JLabel[2];
-            _lblGameMode[0] = new JLabel();
-            //_lblGameMode[0].setText("Harmony: +" + _controller.getHarmonyBonus(entry.getKey()));
+            JLabel[] _lblGameMode = new JLabel[_listGameModeString.size()];
 
-            _lblGameMode[0].setForeground(Color.WHITE);
-            _lblGameMode[0].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
-            _lblGameMode[0].setHorizontalAlignment(SwingConstants.RIGHT);
-            Border border = _lblGameMode[0].getBorder();
-            Border margin = new EmptyBorder(10,0,0,10);
-            _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
+            for(int i = 0; i < _lblGameMode.length; i++){
+                _lblGameMode[i] = new JLabel();
+                _lblGameMode[i].setText(_game.getListGameMode().get(i).toString() +" +"+
+                        (_game.getListGameMode().get(i).executeGameMode(_controller.getPlayer(entry.getKey()))
+                                ? _game.getListGameMode().get(i).numberBonus() : 0));
+                _lblGameMode[i].setForeground(Color.WHITE);
+                _lblGameMode[i].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
+                _lblGameMode[i].setHorizontalAlignment(SwingConstants.RIGHT);
+                Border border = _lblGameMode[i].getBorder();
+                Border margin;
+                if(i==0)
+                    margin = new EmptyBorder(10,0,0,10);
+                else
+                    margin = new EmptyBorder(0,0,0,10);
 
-            _lblGameMode[1] = new JLabel();
-            //_lblGameMode[1].setText("Middle Kingdom: +" + _controller.getMiddleKingdom(entry.getKey()));
-
-            _lblGameMode[1].setForeground(Color.WHITE);
-            _lblGameMode[1].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
-            _lblGameMode[1].setHorizontalAlignment(SwingConstants.RIGHT);
-            border = _lblGameMode[1].getBorder();
-            margin = new EmptyBorder(0,0,0,10);
-            _lblGameMode[1].setBorder(new CompoundBorder(border, margin));
-
-            _panelGameMode.add(_lblGameMode[0]);
-            _panelGameMode.add(_lblGameMode[1]);
+                _lblGameMode[i].setBorder(new CompoundBorder(border, margin));
+                _panelGameMode.add(_lblGameMode[i]);
+            }
 
             JPanel _panelScore = new JPanel();
             _panelScore.setOpaque(false);
@@ -1418,8 +1415,8 @@ public class KingDominoGame implements Observer {
             _lblScore.setPreferredSize(new Dimension(121,49));
             _lblScore.setHorizontalAlignment(SwingConstants.CENTER);
             _lblScore.setVerticalAlignment(SwingConstants.CENTER);
-            border = _lblScore.getBorder();
-            margin = new EmptyBorder(0,20,0,10);
+            Border border = _lblScore.getBorder();
+            Border margin = new EmptyBorder(0,20,0,10);
             _lblScore.setBorder(new CompoundBorder(border, margin));
 
             _panelRight.add(_panelGameMode);

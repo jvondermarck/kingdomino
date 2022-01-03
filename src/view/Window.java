@@ -19,10 +19,11 @@ public class Window extends JFrame implements Observer {
     private Font _fontAugusta;
     private int _numberPlayer = 0;
 
-    private Window(Game game, Controller controller) throws IOException {
+    public Window(Game game, Controller controller) throws IOException {
         _game = game;
         _controller = controller;
         this.setWindow();
+        instance = this;
     }
 
     public void setWindow() throws IOException {
@@ -36,13 +37,6 @@ public class Window extends JFrame implements Observer {
         _fontGermania = FontUtilities.setFont("Germania.otf"); // We use this for the user to access to our custom font
         _fontTimeless = FontUtilities.setFont("Timeless.ttf");
         _fontAugusta = FontUtilities.setFont("Augusta.ttf");
-    }
-
-    public static Window getInstance(Game game, Controller controller) throws IOException {
-        if(instance == null){
-            instance = new Window(game, controller);
-        }
-        return instance;
     }
 
     @Override
