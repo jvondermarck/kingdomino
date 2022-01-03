@@ -50,10 +50,6 @@ public class Deck {
         return this._listdominoes;
     }
 
-    public Integer sizeOfDeck(){
-        return this._listdominoes.size();
-    }
-
     public void shuffle(){
         Collections.shuffle(this._listdominoes, _rand);
     }

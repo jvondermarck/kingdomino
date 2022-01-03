@@ -32,7 +32,6 @@ public class KingDominoStart implements Observer{
     private Font _fontGermania;
     private Font _fontTimeless;
     private Font _fontAugusta;
-    private int _numberPlayer;
 
     public void getInstancesWindow()
     {
@@ -42,14 +41,13 @@ public class KingDominoStart implements Observer{
         _fontGermania = _window.getFontGermania();
         _fontTimeless = _window.getFontTimeless();
         _fontAugusta = _window.getFontAugusta();
-        _numberPlayer = _window.getNumberPlayer();
     }
 
     private final JButton _btnValidate; // btn to validate all our the information to start the game
 
     public KingDominoStart() throws IOException {
         // SET UP THE WINDOW
-        _window = Window.instance; // we get our main window to access to its variables
+        _window = Window._instance; // we get our main window to access to its variables
         getInstancesWindow();
         _frame.setTitle("Kingdomino");
         final ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("LaunchScreen.png")).readAllBytes());

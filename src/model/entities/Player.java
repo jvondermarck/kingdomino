@@ -1,9 +1,4 @@
 package model.entities;
-
-import model.set.GameMode;
-import model.set.mode.Harmony;
-import model.set.mode.MiddleKingdom;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,12 +11,12 @@ import model.set.NumberPlayerStrategy;
 import java.util.*;
 
 public class Game {
-    private final List<Observer> _observer;
+    private final List<Observer> _listObserver;
 
     private Deck _deck;
     private List<Player> _listPlayers;
-    private List<Domino> _actualDominoes;
-    private final NumberPlayer _numberplayer;
+    private List<Domino> _listActualDominoes;
+    private final NumberPlayer _numberPlayer;
     private int _intPlayer;
 
     private final GameModeFactory _factoryGameMode;
@@ -26,8 +26,8 @@ public class Game {
 
     public Game()
     {
-        this._observer = new ArrayList<>();
-        this._numberplayer = new NumberPlayer();
+        this._listObserver = new ArrayList<>();
+        this._numberPlayer = new NumberPlayer();
         this._listGameMode = new ArrayList<>();
         this._listGameModeString = new ArrayList<>();
         this._factoryGameMode = new GameModeFactory();
@@ -44,18 +44,18 @@ public class Game {
     public void factorMiddleKingdom(){ addGameMode(this._factoryGameMode.createMiddleKingdom()); }
 
     public void setNumberPlayer(NumberPlayerStrategy strategy){
-        this._numberplayer.setStrategy(strategy);
-        _intPlayer = this._numberplayer.getNumberPlayers();
-        createPlayers(this._numberplayer.getNumberPlayers());
+        this._numberPlayer.setStrategy(strategy);
+        _intPlayer = this._numberPlayer.getNumberPlayers();
+        createPlayers(this._numberPlayer.getNumberPlayers());
     }
 
     public int getNumberPlayer(){ return _intPlayer;}
 
-    public void setTwoPlayers() {  setNumberPlayer( this._numberplayer.getTwoPlayers()); }
+    public void setTwoPlayers() {  setNumberPlayer( this._numberPlayer.getTwoPlayers()); }
 
-    public void setThreePlayers()  {  setNumberPlayer(this._numberplayer.getThreePlayers());  }
+    public void setThreePlayers()  {  setNumberPlayer(this._numberPlayer.getThreePlayers());  }
 
-    public void setQuatroPlayers()  {  setNumberPlayer(this._numberplayer.getQuatroPlayers()); }
+    public void setQuatroPlayers()  {  setNumberPlayer(this._numberPlayer.getQuatroPlayers()); }
 
 
     public void createPlayers(int numberPlayer){
@@ -80,13 +80,13 @@ public class Game {
     }
 
     public List<Domino> getActualDominoes(){
-        return this._actualDominoes;
+        return this._listActualDominoes;
     }
 
     public void putDominoOnTable(){
-        _actualDominoes = new ArrayList<>();
+        _listActualDominoes = new ArrayList<>();
         int numberDominoes = 4;
-        if(_numberplayer.getNumberPlayers() == 3){
+        if(_numberPlayer.getNumberPlayers() == 3){
             numberDominoes = 3;
         }
 
@@ -95,8 +95,8 @@ public class Game {
             this._dominoesLeft = true; // there are not enoigh dominoes to play
         } else {
             for(int i = 0; i < numberDominoes; i++){
-                _actualDominoes.add(_deck.giveADomino());
-                sortDominoTable(_actualDominoes.size());
+                _listActualDominoes.add(_deck.giveADomino());
+                sortDominoTable(_listActualDominoes.size());
             }
         }
         notifyObservers();
@@ -110,11 +110,11 @@ public class Game {
 
         for (int i=0; i<n-1; i++)
         {
-            if (_actualDominoes.get(i).getId() > _actualDominoes.get(i + 1).getId())
+            if (_listActualDominoes.get(i).getId() > _listActualDominoes.get(i + 1).getId())
             {
-                Domino temp = _actualDominoes.get(i);
-                _actualDominoes.set(i, _actualDominoes.get(i+1));
-                _actualDominoes.set(i+1,temp);
+                Domino temp = _listActualDominoes.get(i);
+                _listActualDominoes.set(i, _listActualDominoes.get(i+1));
+                _listActualDominoes.set(i+1,temp);
             }
         }
 
@@ -124,30 +124,30 @@ public class Game {
 
     public void rotateDomino(int index)
     {
-        _actualDominoes.get(index).rotate();
+        _listActualDominoes.get(index).rotate();
         notifyObserversRotation();
     }
 
     public void reverseDomino(int index)
     {
-        _actualDominoes.get(index).reverse();
+        _listActualDominoes.get(index).reverse();
         notifyObserversRotation();
     }
 
     public void setDirectionDomino(int index, int direction){
         if(direction == 1) // UP
-            _actualDominoes.get(index).setUpSide();
+            _listActualDominoes.get(index).setUpSide();
         if(direction == -1) // DOWN
-            _actualDominoes.get(index).setDownSide();
+            _listActualDominoes.get(index).setDownSide();
         if(direction == 2) // RIGHT
-            _actualDominoes.get(index).setRightSide();
+            _listActualDominoes.get(index).setRightSide();
         if(direction == -2) // LEFT
-            _actualDominoes.get(index).setLeftSide();
+            _listActualDominoes.get(index).setLeftSide();
     }
 
     public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y)
     {
-        Domino domino = _actualDominoes.get(indexDomino);
+        Domino domino = _listActualDominoes.get(indexDomino);
         _listPlayers.get(indexPlayer).getGraph().setDomino(domino, x, y);
         notifyObserverDominoGraph();
     }
@@ -160,39 +160,39 @@ public class Game {
 
     public boolean isXXDomino(int index)
     {
-        return  _actualDominoes.get(index).isXX();
+        return  _listActualDominoes.get(index).isXX();
     }
 
     public boolean isXYDomino(int index)
     {
-        return  _actualDominoes.get(index).isXY();
+        return  _listActualDominoes.get(index).isXY();
     }
 
     public String getColorTile(int index, int x, int y)
     {
-        return  _actualDominoes.get(index).getColor(x,y);
+        return  _listActualDominoes.get(index).getColor(x,y);
     }
 
     public void addObservers(Observer observer){
-        this._observer.add(observer);
+        this._listObserver.add(observer);
     }
 
     public void notifyObservers(){
-        for(Observer observer : _observer){
+        for(Observer observer : _listObserver){
             observer.update(this);
         }
     }
 
     public void notifyObserversRotation()
     {
-        for(Observer observer : _observer){
+        for(Observer observer : _listObserver){
             observer.rotationDomino(this);
         }
     }
 
     public void notifyObserverDominoGraph()
     {
-        for(Observer observer : _observer)
+        for(Observer observer : _listObserver)
         {
             observer.dominoGraph(this);
         }

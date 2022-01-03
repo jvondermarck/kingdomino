@@ -68,7 +68,7 @@ public class KingDominoGame implements Observer {
     private int[] _orderPlayerActual; // an array which will contain at the index of the array, the number of the player who selected the domino
 
     private JTextField[] _textNamePlayer; // A textfield to change the name of the players as we want
-    private final GridBagConstraints constraints;
+    private final GridBagConstraints _constraints;
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
 
     private Game _game;
@@ -91,7 +91,7 @@ public class KingDominoGame implements Observer {
     }
 
     public KingDominoGame() throws IOException {
-        _window = Window.instance; // we get our main window to access to its variables
+        _window = Window._instance; // we get our main window to access to its variables
         getInstancesWindow();
         _controller.addObserver(this);
         _frame.setTitle("Game Kingdomino");
@@ -107,9 +107,9 @@ public class KingDominoGame implements Observer {
         _firstGame = true;
         _listGameModeString = _game.getListGameModeString();
 
-        // Constraints
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        // _Constraints
+        _constraints = new GridBagConstraints();
+        _constraints.fill = GridBagConstraints.HORIZONTAL;
 
         // MAIN PANEL : Panel where we'll find the two main panels which is the information about the game, and a panel which contains the graphs
         _panelMain = new JPanel( new BorderLayout());
@@ -137,18 +137,18 @@ public class KingDominoGame implements Observer {
         _panelMainInfoTop.setPreferredSize(new Dimension(430, 110));
 
         // LABEL TITLE WELCOME --> _panelMainInfoTop
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        constraints.insets = new Insets(20,0,0,0);
+        _constraints.gridx = 0;
+        _constraints.gridy = 0;
+        _constraints.gridwidth = 2;
+        _constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND " + _roundNumber);
         _labelRound.setFont(_fontAugusta.deriveFont(Font.BOLD, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
         // LABEL SUB TITLE ABOUT WHAT TO DO --> _panelMainInfoTop
-        constraints.gridy = 1;
-        constraints.insets = new Insets(0,0,0,0);
+        _constraints.gridy = 1;
+        _constraints.insets = new Insets(0,0,0,0);
         _textInformationToDo = new JLabel("Players... put your castle !");
         _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
         _textInformationToDo.setFont(_fontGermania.deriveFont(Font.PLAIN, 20));
@@ -157,7 +157,7 @@ public class KingDominoGame implements Observer {
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the four dominoes
         createDominoes();
         _controller.putDominoOnTable(); // When we start we put the 4 dominoes
-        constraints.insets = new Insets(10,0,0,0);
+        _constraints.insets = new Insets(10,0,0,0);
         _panelMainInfoLeft = new JPanel() {
             public boolean isOptimizedDrawingEnabled() {
                 return false;
@@ -174,9 +174,9 @@ public class KingDominoGame implements Observer {
 
         // _panelLeftDominoes : panel where we put only the 4 dominoes
         _panelLeftDominoes = new JPanel(new GridBagLayout());
-        constraints.gridy = 1;
-        constraints.insets = new Insets(10,0,0,0);
-        _panelLeftDominoes.add(_panelGridDominoes, constraints); // _panelGridDominoes was created in the method createDominoes()
+        _constraints.gridy = 1;
+        _constraints.insets = new Insets(10,0,0,0);
+        _panelLeftDominoes.add(_panelGridDominoes, _constraints); // _panelGridDominoes was created in the method createDominoes()
         _panelLeftDominoes.setOpaque(false);
 
         // _panelMainInfoLeft : we add the 4 labels and the 4 dominoes
@@ -184,8 +184,8 @@ public class KingDominoGame implements Observer {
         _panelMainInfoLeft.add(_panelLeftDominoes);
 
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the button to show all the dominoes
-        constraints.gridy = 2;
-        constraints.insets = new Insets(10,0,0,0);
+        _constraints.gridy = 2;
+        _constraints.insets = new Insets(10,0,0,0);
         _btnShowDomino = new JButton("Show dominoes");
         _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _btnShowDomino.setFocusable(false);
@@ -194,8 +194,8 @@ public class KingDominoGame implements Observer {
         _btnShowDomino.setOpaque(false);
         _btnShowDomino.setContentAreaFilled(false);
         _btnShowDomino.setBorderPainted(false);
-        _panelLeftDominoes.add(_btnShowDomino, constraints);
-        _panelMainInfoLeft.add(_panelLeftDominoes, constraints);
+        _panelLeftDominoes.add(_btnShowDomino, _constraints);
+        _panelMainInfoLeft.add(_panelLeftDominoes, _constraints);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight = we create the graph of 2*2 to rotate a domino
         _panelMainInfoRight = new JPanel( new GridBagLayout());
@@ -286,36 +286,36 @@ public class KingDominoGame implements Observer {
         _nextPlayer.setHorizontalTextPosition(AbstractButton.CENTER);
 
         // PANEL MAIN INFO RIGHT --> _panelMainInfoRight : we display correctly all the elements in this panel
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.gridy = 0;
-        constraints.gridx = 0;
-        constraints.insets = new Insets(30,0,0,10);
-        _panelMainInfoRight.add(_subPanelRotation, constraints);
+        _constraints.gridwidth = 1;
+        _constraints.gridheight = 1;
+        _constraints.gridy = 0;
+        _constraints.gridx = 0;
+        _constraints.insets = new Insets(30,0,0,10);
+        _panelMainInfoRight.add(_subPanelRotation, _constraints);
 
-        constraints.gridy = 1;
-        constraints.insets = new Insets(20,0,0,20);
-        _panelMainInfoRight.add(_subPanelSwitchRotate, constraints);
+        _constraints.gridy = 1;
+        _constraints.insets = new Insets(20,0,0,20);
+        _panelMainInfoRight.add(_subPanelSwitchRotate, _constraints);
 
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        constraints.insets = new Insets(10,0,0,20);
-        _panelMainInfoRight.add(_nextPlayer, constraints);
+        _constraints.gridy = 2;
+        _constraints.gridwidth = 1;
+        _constraints.insets = new Insets(10,0,0,20);
+        _panelMainInfoRight.add(_nextPlayer, _constraints);
         _subPanelRotation.setVisible(false);
         _subPanelSwitchRotate.setVisible(false);
 
         // We add the 3 subPanels (_panelMainInfo TOP, LEFT, RIGHT) to the _panelMainInfo
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
+        _constraints.gridx = 0;
+        _constraints.gridy = 0;
+        _constraints.gridwidth = 2;
         _panelMainInfoTop.setOpaque(false);
         _panelMainInfo.add(_panelMainInfoTop, BorderLayout.NORTH);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
+        _constraints.gridx = 0;
+        _constraints.gridy = 1;
+        _constraints.gridwidth = 1;
         _panelMainInfoLeft.setOpaque(false);
         _panelMainInfo.add(_panelMainInfoLeft, BorderLayout.WEST);
-        constraints.gridx = 1;
+        _constraints.gridx = 1;
         _panelMainInfoRight.setOpaque(false);
         _panelMainInfo.add(_panelMainInfoRight, BorderLayout.EAST);
 
@@ -492,12 +492,12 @@ public class KingDominoGame implements Observer {
             _numberDomino = 3;
         _lblKingPicture = new JLabel[_numberDomino];
         int _gridY = 0;
-        constraints.gridx = 0;
+        _constraints.gridx = 0;
 
         for(int i=0; i<_numberDomino; i++)
         {
             _lblKingPicture[i] = new JLabel();
-            constraints.gridy = _gridY;
+            _constraints.gridy = _gridY;
             _lblKingPicture[i].setOpaque(false);
             _lblKingPicture[i].setMinimumSize(new Dimension(30,41));
             _lblKingPicture[i].setMaximumSize(new Dimension(30,41));
@@ -507,30 +507,30 @@ public class KingDominoGame implements Observer {
             {
                 if(i==0)
                 {
-                    constraints.insets = new Insets(-200,0,30,0);
+                    _constraints.insets = new Insets(-200,0,30,0);
                 } else if(i==1) {
-                    constraints.insets = new Insets(-30,0,0,0);
+                    _constraints.insets = new Insets(-30,0,0,0);
                 } else
                 {
-                    constraints.insets = new Insets(50,0,0,0);
+                    _constraints.insets = new Insets(50,0,0,0);
                 }
             } else {
                 if(i==0)
                 {
-                    constraints.insets = new Insets(-40,0,60,0);
+                    _constraints.insets = new Insets(-40,0,60,0);
                 } else if(i==1) {
-                    constraints.insets = new Insets(-5,0,0,0);
+                    _constraints.insets = new Insets(-5,0,0,0);
                 } else if (i==2)
                 {
-                    constraints.insets = new Insets(50,0,0,0);
+                    _constraints.insets = new Insets(50,0,0,0);
                 }
                 else
                 {
-                    constraints.insets = new Insets(60,0,0,0);
+                    _constraints.insets = new Insets(60,0,0,0);
                 }
             }
 
-            _panelLabelKing.add(_lblKingPicture[i], constraints);
+            _panelLabelKing.add(_lblKingPicture[i], _constraints);
             _gridY++;
         }
     }
@@ -667,9 +667,9 @@ public class KingDominoGame implements Observer {
         _castleIsSet = new boolean[_numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
         _mapGraphPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
-        // Constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        // _Constraints
+        GridBagConstraints _constraints = new GridBagConstraints();
+        _constraints.fill = GridBagConstraints.HORIZONTAL;
 
         int width = 335;
         int height = 300;
@@ -810,7 +810,7 @@ public class KingDominoGame implements Observer {
 
                     _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
+                            if(areDominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
                                 float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
@@ -867,7 +867,7 @@ public class KingDominoGame implements Observer {
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                            if(is_dominoesAreChoosen()){
+                            if(areDominoesAreChoosen()){
                                 for(int i = 0; i < 5; i++){
                                     for(int j = 0; j<5; j++){
                                         if(!_game.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_game.getPlayer(finalI).getGraph().isCastleHere(i,j)){
@@ -905,15 +905,15 @@ public class KingDominoGame implements Observer {
                 _panelAllGraphText[i].setPreferredSize(new Dimension(width, height));
             }
 
-            constraints.gridx = 0;
-            constraints.gridy = 0;
-            constraints.insets = new Insets(10,0,0,0);
-            _panelAllGraphText[i].add(_textNamePlayer[i], constraints);
+            _constraints.gridx = 0;
+            _constraints.gridy = 0;
+            _constraints.insets = new Insets(10,0,0,0);
+            _panelAllGraphText[i].add(_textNamePlayer[i], _constraints);
 
-            constraints.gridy = 1;
-            constraints.gridwidth = 1;
-            constraints.insets = new Insets(10,0,10,0);
-            _panelAllGraphText[i].add(_panelGraph[i], constraints);
+            _constraints.gridy = 1;
+            _constraints.gridwidth = 1;
+            _constraints.insets = new Insets(10,0,10,0);
+            _panelAllGraphText[i].add(_panelGraph[i], _constraints);
 
             _panelOverlayGraph.add(_panelAllGraphText[i]);
             _panelOverlayGraph.add(_subPanelKingOnGraph);
@@ -1426,10 +1426,10 @@ public class KingDominoGame implements Observer {
             _allPanelScore.add(_panelCenter, BorderLayout.CENTER);
             _allPanelScore.add(_panelRight, BorderLayout.EAST);
 
-            constraints.gridy = indexScore-1;
-            constraints.gridx = 0;
-            constraints.insets = new Insets(5,0,0,0);
-            _allPanels.add(_allPanelScore, constraints);
+            _constraints.gridy = indexScore-1;
+            _constraints.gridx = 0;
+            _constraints.insets = new Insets(5,0,0,0);
+            _allPanels.add(_allPanelScore, _constraints);
         }
         _panelMainInfo.add(_allPanels,  BorderLayout.CENTER);
     }
@@ -1451,7 +1451,7 @@ public class KingDominoGame implements Observer {
         return _arrayRanking;
     }
 
-    public boolean is_dominoesAreChoosen() {
+    public boolean areDominoesAreChoosen() {
         return _dominoesAreChoosen;
     }
 

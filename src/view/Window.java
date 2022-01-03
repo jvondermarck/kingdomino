@@ -13,7 +13,7 @@ public class Window extends JFrame implements Observer {
     private final Game _game;
     private final Controller _controller;
     private JFrame _frame;
-    public static Window instance;
+    public static Window _instance;
     private Font _fontGermania;
     private Font _fontTimeless;
     private Font _fontAugusta;
@@ -23,7 +23,7 @@ public class Window extends JFrame implements Observer {
         _game = game;
         _controller = controller;
         this.setWindow();
-        instance = this;
+        _instance = this;
     }
 
     public void setWindow() throws IOException {
@@ -66,7 +66,7 @@ public class Window extends JFrame implements Observer {
     }
 
     public static Window getInstance() {
-        return instance;
+        return _instance;
     }
 
     public Font getFontGermania() {
