@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.Game;
 import model.Observer;
 import javax.swing.*;
@@ -70,21 +71,41 @@ public class KingDominoGame implements Observer {
     private final GridBagConstraints constraints;
     private final String _unicodeCrown; // the unicode crown to show all the crowns of a Tile
 
+    private Game _game;
+    private Controller _controller;
+    private JFrame _frame;
+    private Font _fontGermania;
+    private Font _fontTimeless;
+    private Font _fontAugusta;
+    private int _numberPlayer;
+
+    public void getInstancesWindow()
+    {
+        _game = _window.get_game();
+        _controller = _window.get_controller();
+        _frame = _window.getFrame();
+        _fontGermania = _window.get_fontGermania();
+        _fontTimeless = _window.get_fontTimeless();
+        _fontAugusta = _window.get_fontAugusta();
+        _numberPlayer = _window.getNumberPlayer();
+    }
+
     public KingDominoGame() throws IOException {
         _window = Window.instance; // we get our main window to access to its variables
-        _window._controller.addObserver(this);
-        _window.frame.setTitle("Game Kingdomino");
-        _window.frame.getContentPane().removeAll();
-        _window.frame.repaint();
-        _window.frame.setSize(1100,600);
-        _window._controller.instanciateDeck(_window.numberPlayer); // We instantiate our deck just one time
-        _window.frame.setLocationRelativeTo(null);
+        getInstancesWindow();
+        _controller.addObserver(this);
+        _frame.setTitle("Game Kingdomino");
+        _frame.getContentPane().removeAll();
+        _frame.repaint();
+        _frame.setSize(1100,600);
+        _controller.instanciateDeck(_numberPlayer); // We instantiate our deck just one time
+        _frame.setLocationRelativeTo(null);
         _unicodeCrown = "\uD83D\uDC51";
         _indexDominoClicked = -1; // we initialize this to -1 to avoid some problems if we click too early on the rotation button
-        _window.frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
+        _frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
         _roundNumber = 0;
         _firstGame = true;
-        _listGameModeString = _window._controller.getGameMode();
+        _listGameModeString = _controller.getGameMode();
 
         // Constraints
         constraints = new GridBagConstraints();
@@ -121,7 +142,7 @@ public class KingDominoGame implements Observer {
         constraints.gridwidth = 2;
         constraints.insets = new Insets(20,0,0,0);
         _labelRound = new JLabel("ROUND " + _roundNumber);
-        _labelRound.setFont(_window._fontAugusta.deriveFont(Font.BOLD, 48));
+        _labelRound.setFont(_fontAugusta.deriveFont(Font.BOLD, 48));
         _labelRound.setHorizontalAlignment(JLabel.CENTER);
         _panelMainInfoTop.add(_labelRound, BorderLayout.CENTER);
 
@@ -130,12 +151,12 @@ public class KingDominoGame implements Observer {
         constraints.insets = new Insets(0,0,0,0);
         _textInformationToDo = new JLabel("Players... put your castle !");
         _textInformationToDo.setHorizontalAlignment(JLabel.CENTER);
-        _textInformationToDo.setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
+        _textInformationToDo.setFont(_fontGermania.deriveFont(Font.PLAIN, 20));
         _panelMainInfoTop.add(_textInformationToDo, BorderLayout.SOUTH);
 
         // PANEL MAIN INFO LEFT --> _panelMainInfoLeft = We create the four dominoes
         createDominoes();
-        _window._controller.putDominoOnTable(); // When we start we put the 4 dominoes
+        _controller.putDominoOnTable(); // When we start we put the 4 dominoes
         constraints.insets = new Insets(10,0,0,0);
         _panelMainInfoLeft = new JPanel() {
             public boolean isOptimizedDrawingEnabled() {
@@ -168,7 +189,7 @@ public class KingDominoGame implements Observer {
         _btnShowDomino = new JButton("Show dominoes");
         _btnShowDomino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         _btnShowDomino.setFocusable(false);
-        _btnShowDomino.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _btnShowDomino.setFont(_fontTimeless.deriveFont(Font.PLAIN, 20));
         _btnShowDomino.setForeground(Color.WHITE);
         _btnShowDomino.setOpaque(false);
         _btnShowDomino.setContentAreaFilled(false);
@@ -228,7 +249,7 @@ public class KingDominoGame implements Observer {
         _switchDomino = new JButton[2];
         _switchDomino[0] = new JButton("L");
         _switchDomino[0].setPreferredSize(new Dimension(60, 60));
-        _switchDomino[0].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+        _switchDomino[0].setFont(_fontGermania.deriveFont(Font.PLAIN, 30));
         _switchDomino[0].setForeground(Color.BLACK);
         _switchDomino[0].setOpaque(false);
         _switchDomino[0].setFocusable(false);
@@ -238,7 +259,7 @@ public class KingDominoGame implements Observer {
 
         _switchDomino[1] = new JButton("R");
         _switchDomino[1].setPreferredSize(new Dimension(60, 60));
-        _switchDomino[1].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+        _switchDomino[1].setFont(_fontGermania.deriveFont(Font.PLAIN, 30));
         _switchDomino[1].setForeground(Color.WHITE);
         _switchDomino[1].setOpaque(false);
         _switchDomino[1].setFocusable(false);
@@ -254,7 +275,7 @@ public class KingDominoGame implements Observer {
         _nextPlayer = new JButton(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("roundBorder.png")).readAllBytes()));
         _nextPlayer.setText("Pass my turn");
         _nextPlayer.setVisible(false);
-        _nextPlayer.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _nextPlayer.setFont(_fontTimeless.deriveFont(Font.PLAIN, 20));
         _nextPlayer.setForeground(Color.WHITE);
         _nextPlayer.setOpaque(false);
         _nextPlayer.setFocusPainted(false);
@@ -321,8 +342,8 @@ public class KingDominoGame implements Observer {
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
         // We show the _panelMain on our window
-        _window.frame.setContentPane( _panelMain);
-        _window.frame.setVisible( true );
+        _frame.setContentPane( _panelMain);
+        _frame.setVisible( true );
 
         // SHOW DOMONOES BUTTON LISTENER : we unhidde the four buttons
         _btnShowDomino.addActionListener(actionEvent -> {
@@ -341,11 +362,11 @@ public class KingDominoGame implements Observer {
         // ROTATE A DOMINO
         _rotateDomino[0].addActionListener(actionEvent -> {
             if(_indexDominoClicked!=-1)
-                _window._controller.callRotationDomino(_indexDominoClicked);
+                _controller.callRotationDomino(_indexDominoClicked);
         });
         _rotateDomino[1].addActionListener(actionEvent -> {
             if(_indexDominoClicked!=-1)
-                _window._controller.callReverseDomino(_indexDominoClicked);
+                _controller.callReverseDomino(_indexDominoClicked);
         });
 
         _switchDomino[0].addActionListener(actionEvent -> {
@@ -370,7 +391,7 @@ public class KingDominoGame implements Observer {
         });
         _nextPlayer.addActionListener(actionEvent -> {
             int _numberDomino = 4;
-            if(_window.numberPlayer == 3)
+            if(_numberPlayer == 3)
                 _numberDomino = 3;
 
             for(int i=0; i<_numberDomino; i++)
@@ -382,14 +403,15 @@ public class KingDominoGame implements Observer {
                 }
             }
             letPlayerSetDomino();
-            _window.frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
+            _frame.requestFocusInWindow(); // to avoid when we click on the next turn button the autofocus on a JTextfield
         });
+        _window.setFrame(_frame);
     }
 
     @Override
     public void update(Game game) {
         int numberDominoes = 4;
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             numberDominoes = 3;
 
         if(!game.is_dominoesLeft()) // if there is still enough dominoes
@@ -402,7 +424,7 @@ public class KingDominoGame implements Observer {
                     _btnTiles[i][j].setBackground(Color.decode(game.getActualDominoes().get(i).getTile()[0][j].getColor()));
                     _btnTiles[i][j].setText(""); // we put the counter at 0 to remove all the previous crowns
                     // We get all the crowns of the title
-                    for(int k=0; k<_window._game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
+                    for(int k=0; k<_game.getActualDominoes().get(i).getTile()[0][j].getCrowns(); k++)
                     {
                         _btnTiles[i][j].setText(_btnTiles[i][j].getText() + _unicodeCrown); // it's a unicode string to access to a crown
                     }
@@ -452,7 +474,7 @@ public class KingDominoGame implements Observer {
 
     public void setCrownRotation(int x, int y)
     {
-        int numberCrown = _window._game.getActualDominoes().get(_indexDominoClicked).getTile()[x][y].getCrowns();
+        int numberCrown = _game.getActualDominoes().get(_indexDominoClicked).getTile()[x][y].getCrowns();
         if(numberCrown==0)
         {
             _dominoGraphRotation[x][y].setText("");
@@ -466,7 +488,7 @@ public class KingDominoGame implements Observer {
 
     public void labelKingONDominoes() {
         int _numberDomino = 4; // we will have 4 dominoes
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             _numberDomino = 3;
         _lblKingPicture = new JLabel[_numberDomino];
         int _gridY = 0;
@@ -514,7 +536,7 @@ public class KingDominoGame implements Observer {
     }
 
     public void changeLabelKing() throws IOException {
-        switch (_window._game.getPlayer(_orderPlayerPrevious.get(0)).getKing()) {
+        switch (_game.getPlayer(_orderPlayerPrevious.get(0)).getKing()) {
             case PINK -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("PinkKing.png")).readAllBytes()));
             case YELLOW -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("YellowKing.png")).readAllBytes()));
             case GREEN -> _lblKingPicture[_indexDominoClicked].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("GreenKing.png")).readAllBytes()));
@@ -526,7 +548,7 @@ public class KingDominoGame implements Observer {
 
     public void createDominoes() throws IOException {
         int _numberDomino = 4; // we will have 4 dominoes
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             _numberDomino = 3;
         _cardLayout = new CardLayout[_numberDomino]; // our card layout
         _container = new Container[_numberDomino]; // our container
@@ -552,7 +574,7 @@ public class KingDominoGame implements Observer {
             _btnHideDominoes[i].setPreferredSize(new Dimension(170, 85));
             _btnHideDominoes[i].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("domino1.png")).readAllBytes()));
             _btnHideDominoes[i].setForeground(Color.decode("#E0B78B"));
-            _btnHideDominoes[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 30));
+            _btnHideDominoes[i].setFont(_fontGermania.deriveFont(Font.PLAIN, 30));
             _btnHideDominoes[i].setHorizontalTextPosition(SwingConstants.CENTER);
             _btnHideDominoes[i].setFocusable(false);
 
@@ -637,12 +659,12 @@ public class KingDominoGame implements Observer {
 
     public void createGraph()
     {
-        int numberPlayers = _window.numberPlayer;
+        int numberPlayers = _numberPlayer;
 
         _panelAllGraphText = new JPanel[numberPlayers]; // a panel to show a label about the name of the player AND the graph of 25 buttons (_panelGraph)
         _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
         _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
-        _castleIsSet = new boolean[_window.numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
+        _castleIsSet = new boolean[_numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
         _mapGraphPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
         // Constraints
@@ -674,7 +696,7 @@ public class KingDominoGame implements Observer {
             JPanel _subPanelKingOnGraph = new JPanel(new FlowLayout());
             _subPanelKingOnGraph.setOpaque(false);
             try {
-                switch (_window._game.getPlayer(i).getKing()) {
+                switch (_game.getPlayer(i).getKing()) {
                     case PINK -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("PinkKing.png")).readAllBytes()));
                     case YELLOW -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("YellowKing.png")).readAllBytes()));
                     case GREEN -> _lblKingGraph.setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("GreenKing.png")).readAllBytes()));
@@ -693,7 +715,7 @@ public class KingDominoGame implements Observer {
             _panelAllGraphText[i].setOpaque(false);
 
             _textNamePlayer[i] = new JTextField("Kingdom " + (i+1));
-            _textNamePlayer[i].setFont(_window._fontGermania.deriveFont(Font.PLAIN, 20));
+            _textNamePlayer[i].setFont(_fontGermania.deriveFont(Font.PLAIN, 20));
             _textNamePlayer[i].setForeground(Color.WHITE);
             _textNamePlayer[i].setOpaque(false);
             _textNamePlayer[i].setBorder(null);
@@ -751,7 +773,7 @@ public class KingDominoGame implements Observer {
                                 e.printStackTrace();
                             }
                             _castleIsSet[finalI] = true;
-                            _window._controller.setCastle(finalI, finalK, finalL);
+                            _controller.setCastle(finalI, finalK, finalL);
                             allCastleSet();
                         }
 
@@ -762,23 +784,23 @@ public class KingDominoGame implements Observer {
                             {
                                 if(_switchDomino[0].getForeground() == Color.WHITE){ // if LEFT activated
                                     //left
-                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, -2);
+                                    _controller.callSetDirectionDomino(_indexDominoClicked, -2);
                                 } else {
                                     //right
-                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, 2);
+                                    _controller.callSetDirectionDomino(_indexDominoClicked, 2);
                                 }
                             }
                             else if(Objects.equals(_switchDomino[0].getText(), "U")){
                                 if(_switchDomino[0].getForeground() == Color.WHITE){
                                     //up
-                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, 1);
+                                    _controller.callSetDirectionDomino(_indexDominoClicked, 1);
                                 } else {
                                     //down
-                                    _window._controller.callSetDirectionDomino(_indexDominoClicked, -1);
+                                    _controller.callSetDirectionDomino(_indexDominoClicked, -1);
                                 }
                             }
 
-                            _window._controller.setDominoOnGraph(_indexDominoClicked, finalI, finalK, finalL);
+                            _controller.setDominoOnGraph(_indexDominoClicked, finalI, finalK, finalL);
                             if(!_waitPlayerPutDomino)
                             {
                                 letPlayerSetDomino();
@@ -788,13 +810,13 @@ public class KingDominoGame implements Observer {
 
                     _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
+                            if(is_dominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
                             {
                                 float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
                                 {
-                                    Color horizontalColorTile0 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0));
-                                    Color horizontalColorTile1 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1));
+                                    Color horizontalColorTile0 = Color.decode(_game.getColorTile(_indexDominoClicked, 0,0));
+                                    Color horizontalColorTile1 = Color.decode(_game.getColorTile(_indexDominoClicked, 0,1));
 
                                     float[] hsbTile1 = Color.RGBtoHSB(horizontalColorTile1.getRed(), horizontalColorTile1.getGreen(), horizontalColorTile1.getBlue(), null);
                                     horizontalColorTile1 = Color.getHSBColor(hsbTile1[0], saturation, hsbTile1[2]);
@@ -802,19 +824,19 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(horizontalColorTile0.getRed(), horizontalColorTile0.getGreen(), horizontalColorTile0.getBlue(), null);
                                     horizontalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
                                         _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
-                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
+                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
                                         _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
                                     }
                                 }
                                 else if(Objects.equals(_switchDomino[0].getText(), "U")){
-                                    Color verticalColorTile1 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0));
-                                    Color verticalColorTile0 = Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0));
+                                    Color verticalColorTile1 = Color.decode(_game.getColorTile(_indexDominoClicked, 1,0));
+                                    Color verticalColorTile0 = Color.decode(_game.getColorTile(_indexDominoClicked, 0,0));
 
                                     float[] hsbTile1 = Color.RGBtoHSB(verticalColorTile1.getRed(), verticalColorTile1.getGreen(), verticalColorTile1.getBlue(), null);
                                     verticalColorTile1 = Color.getHSBColor(hsbTile1[0], saturation, hsbTile1[2]);
@@ -822,11 +844,11 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(verticalColorTile0.getRed(), verticalColorTile0.getGreen(), verticalColorTile0.getBlue(), null);
                                     verticalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
-                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _controller.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
@@ -848,11 +870,11 @@ public class KingDominoGame implements Observer {
                             if(is_dominoesAreChoosen()){
                                 for(int i = 0; i < 5; i++){
                                     for(int j = 0; j<5; j++){
-                                        if(!_window._controller.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_window._controller.getPlayer(finalI).getGraph().isCastleHere(i,j)){
-                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_window._controller.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
+                                        if(!_controller.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_controller.getPlayer(finalI).getGraph().isCastleHere(i,j)){
+                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_controller.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
 
                                             _mapGraphPlayer.get(finalI)[i][j].setText("");
-                                            int numberCrown = _window._game.getPlayer(finalI).getGraph().getTiles()[i][j].getCrowns();
+                                            int numberCrown = _game.getPlayer(finalI).getGraph().getTiles()[i][j].getCrowns();
                                             for(int k=0; k<numberCrown; k++)
                                             {
                                                 _mapGraphPlayer.get(finalI)[i][j].setText(_mapGraphPlayer.get(finalI)[i][j].getText() + _unicodeCrown);
@@ -910,26 +932,26 @@ public class KingDominoGame implements Observer {
 
     public void putDominoRotate()
     {
-        _dominoGraphRotation[0][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,0)));
+        _dominoGraphRotation[0][0].setBackground(Color.decode(_game.getColorTile(_indexDominoClicked, 0,0)));
         _dominoGraphRotation[0][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
         _dominoGraphRotation[0][1].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
         _dominoGraphRotation[1][0].setText(""); // We remove all the crowns at the [0][0] coord to avoid any problems
         setCrownRotation(0,0);
 
-        if(_window._game.isXXDomino(_indexDominoClicked))
+        if(_game.isXXDomino(_indexDominoClicked))
         {
             setBackgroudDominoGraph(0,1,true);
             setBackgroudDominoGraph(1,0,false);
-            _dominoGraphRotation[0][1].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 0,1)));
+            _dominoGraphRotation[0][1].setBackground(Color.decode(_game.getColorTile(_indexDominoClicked, 0,1)));
             setCrownRotation(0,1);
             _switchDomino[0].setText("L");
             _switchDomino[1].setText("R");
             _switchDomino[0].setToolTipText("<html>Left.</html>");
             _switchDomino[1].setToolTipText("<html>Right.</html>");
-        } else if(_window._game.isXYDomino(_indexDominoClicked)){
+        } else if(_game.isXYDomino(_indexDominoClicked)){
             setBackgroudDominoGraph(1,0,true);
             setBackgroudDominoGraph(0,1,false);
-            _dominoGraphRotation[1][0].setBackground(Color.decode(_window._game.getColorTile(_indexDominoClicked, 1,0)));
+            _dominoGraphRotation[1][0].setBackground(Color.decode(_game.getColorTile(_indexDominoClicked, 1,0)));
             setCrownRotation(1,0);
             _switchDomino[0].setText("U");
             _switchDomino[1].setText("D");
@@ -978,18 +1000,18 @@ public class KingDominoGame implements Observer {
     public void firstLaunchGame()
     {
         int _numberDomino = 4;
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             _numberDomino = 3;
 
         _orderPlayerPrevious = new ArrayList<>();
         _orderPlayerActual = new int[_numberDomino];
         for(int i=0; i<_numberDomino; i++)
         {
-            if(_window.numberPlayer == 2 && i < 2) // we add in the list the player one and two --> twice = size of 4 then in the list
+            if(_numberPlayer == 2 && i < 2) // we add in the list the player one and two --> twice = size of 4 then in the list
             {
                 _orderPlayerPrevious.add(i);
                 _orderPlayerPrevious.add(i);
-            } else if(_window.numberPlayer >= 3){
+            } else if(_numberPlayer >= 3){
                 _orderPlayerPrevious.add(i);
             }
         }
@@ -1007,7 +1029,7 @@ public class KingDominoGame implements Observer {
     public void otherLaunchGame()
     {
         int _numberDomino = 4;
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             _numberDomino = 3;
 
         _dominoesAreChoosen = false;
@@ -1057,7 +1079,7 @@ public class KingDominoGame implements Observer {
     public void letPlayerSetDomino()
     {
         int _numberDomino = 4;
-        if(_window.numberPlayer == 3)
+        if(_numberPlayer == 3)
             _numberDomino = 3;
 
         for(int i=0; i<_numberDomino; i++)
@@ -1094,7 +1116,7 @@ public class KingDominoGame implements Observer {
 
         if(_dominoesAreSet)
         {
-            _window._controller.putDominoOnTable(); // we put again new dominoes;
+            _controller.putDominoOnTable(); // we put again new dominoes;
             for(int i=0; i<_numberDomino; i++)
             {
                 _lblKingPicture[i].setIcon(null);
@@ -1140,7 +1162,7 @@ public class KingDominoGame implements Observer {
 
     public void endGame() throws IOException {
         // We remove all action listenner on the buttons in the graphs to avoid any problems
-        for(int i=0; i< _window.numberPlayer; i++) {
+        for(int i=0; i< _numberPlayer; i++) {
             graphEnabled(true, i);
             for (int k = 0; k < 5; k++) {
                 for (int l = 0; l < 5; l++) {
@@ -1152,7 +1174,7 @@ public class KingDominoGame implements Observer {
         }
 
         // we remove the two main panel to avoid any problems
-        _window.frame.getContentPane().remove(_panelMainInfo);
+        _frame.getContentPane().remove(_panelMainInfo);
         _panelMainInfo.removeAll();
         _panelMainInfo.repaint();
 
@@ -1178,7 +1200,7 @@ public class KingDominoGame implements Observer {
         _panelGameOver.setOpaque(false);
         _panelGameOver.setPreferredSize(new Dimension(430, 104));
         JLabel _lblTextEnd = new JLabel("Leaderboard");
-        _lblTextEnd.setFont(_window._fontAugusta.deriveFont(Font.BOLD, 50));
+        _lblTextEnd.setFont(_fontAugusta.deriveFont(Font.BOLD, 50));
         _lblTextEnd.setPreferredSize(new Dimension(430, 104));
         _lblTextEnd.setForeground(Color.WHITE);
         _lblTextEnd.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1199,7 +1221,7 @@ public class KingDominoGame implements Observer {
             _lblGameModeTitle.setText("No game mode has been choosen.");
         }
 
-        _lblGameModeTitle.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 20));
+        _lblGameModeTitle.setFont(_fontTimeless.deriveFont(Font.PLAIN, 20));
         _lblGameModeTitle.setForeground(Color.WHITE);
         _lblGameModeTitle.setHorizontalAlignment(SwingConstants.CENTER);
         _lblGameModeTitle.setVerticalAlignment(SwingConstants.CENTER);
@@ -1212,7 +1234,7 @@ public class KingDominoGame implements Observer {
         _panelEnd.setPreferredSize(new Dimension(430,50));
         JButton _btnShowRanking = new JButton(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("roundBorder2.png")).readAllBytes()));
         _btnShowRanking.setText("Leave");
-        _btnShowRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 13));
+        _btnShowRanking.setFont(_fontTimeless.deriveFont(Font.PLAIN, 13));
         _btnShowRanking.setForeground(Color.decode("#FDCA40"));
         _btnShowRanking.setOpaque(false);
         _btnShowRanking.setFocusPainted(false);
@@ -1225,7 +1247,7 @@ public class KingDominoGame implements Observer {
         _btnShowRanking.setMaximumSize(new Dimension(121,27));
         _btnShowRanking.setMinimumSize(new Dimension(121,27));
         _panelEnd.add(_btnShowRanking);
-        _btnShowRanking.addActionListener(actionEvent -> _window.frame.dispose());
+        _btnShowRanking.addActionListener(actionEvent -> _frame.dispose());
 
         _panelMainInfo.add(_panelGameOver, BorderLayout.NORTH);
 
@@ -1236,11 +1258,11 @@ public class KingDominoGame implements Observer {
         _panelMain.add(_panelMainInfo, BorderLayout.WEST);
         _panelMain.add(_panelMainGraph, BorderLayout.EAST);
 
-        _window.frame.setContentPane( _panelMain);
+        _frame.setContentPane( _panelMain);
     }
 
     public void createScorePlayer() throws IOException {
-        _window._controller.calculScorePlayer();
+        _controller.calculScorePlayer();
         Map<Integer,Integer> _arrayPlayerRanked = createRanking();
 
         JPanel _allPanels = new JPanel(new GridBagLayout());
@@ -1250,7 +1272,7 @@ public class KingDominoGame implements Observer {
         int indexScore = 1;
         for (Map.Entry<Integer,Integer> entry : _arrayPlayerRanked.entrySet())
         {
-            int _totalScore =  _window._controller.getTotalScorePlayer(entry.getKey());
+            int _totalScore =  _controller.getTotalScorePlayer(entry.getKey());
 
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("rectangleScore.png")).readAllBytes());
             JPanel _allPanelScore = new JPanel() // display in this panel a background image to get a beautiful game
@@ -1276,7 +1298,7 @@ public class KingDominoGame implements Observer {
             JLabel _lblRanking = new JLabel(Integer.toString(indexScore));
             indexScore += 1;
             _lblRanking.setForeground(Color.WHITE);
-            _lblRanking.setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 48));
+            _lblRanking.setFont(_fontTimeless.deriveFont(Font.PLAIN, 48));
             _lblRanking.setPreferredSize(new Dimension(77,97));
             _lblRanking.setHorizontalAlignment(SwingConstants.CENTER);
             _lblRanking.setVerticalAlignment(SwingConstants.CENTER);
@@ -1292,7 +1314,7 @@ public class KingDominoGame implements Observer {
             JLabel _lblPlayerName = new JLabel();
             _lblPlayerName.setText(_textNamePlayer[entry.getKey()].getText());
             _lblPlayerName.setForeground(Color.WHITE);
-            _lblPlayerName.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 24));
+            _lblPlayerName.setFont(_fontTimeless.deriveFont(Font.BOLD, 24));
             _lblPlayerName.setPreferredSize(new Dimension(169,48));
             _lblPlayerName.setHorizontalAlignment(SwingConstants.LEFT);
             _lblPlayerName.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -1313,7 +1335,7 @@ public class KingDominoGame implements Observer {
             {
                 JLabel _lblColor = new JLabel(Integer.toString(12));
                 _lblColor.setForeground(Color.WHITE);
-                _lblColor.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 10));
+                _lblColor.setFont(_fontTimeless.deriveFont(Font.BOLD, 10));
                 _lblColor.setPreferredSize(new Dimension(30,25));
                 _lblColor.setMaximumSize(new Dimension(30,25));
                 _lblColor.setMinimumSize(new Dimension(30,25));
@@ -1323,27 +1345,27 @@ public class KingDominoGame implements Observer {
                 switch (j) {
                     case 0 -> {
                         _lblColor.setBackground(Color.decode("#FDCA40"));
-                        _lblColor.setText(Integer.toString(_window._controller.getYellowTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getYellowTilesScore(entry.getKey())));
                     }
                     case 1 -> {
                         _lblColor.setBackground(Color.decode("#b5e48c"));
-                        _lblColor.setText(Integer.toString(_window._controller.getLightGreenTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getLightGreenTilesScore(entry.getKey())));
                     }
                     case 2 -> {
                         _lblColor.setBackground(Color.decode("#0A9396"));
-                        _lblColor.setText(Integer.toString(_window._controller.getDarkGreenTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getDarkGreenTilesScore(entry.getKey())));
                     }
                     case 3 -> {
                         _lblColor.setBackground(Color.decode("#2176FF"));
-                        _lblColor.setText(Integer.toString(_window._controller.getBlueTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getBlueTilesScore(entry.getKey())));
                     }
                     case 4 -> {
                         _lblColor.setBackground(Color.decode("#31393C"));
-                        _lblColor.setText(Integer.toString(_window._controller.getBlackTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getBlackTilesScore(entry.getKey())));
                     }
                     case 5 -> {
                         _lblColor.setBackground(Color.decode("#7f4f24"));
-                        _lblColor.setText(Integer.toString(_window._controller.getBrownTilesScore(entry.getKey())));
+                        _lblColor.setText(Integer.toString(_controller.getBrownTilesScore(entry.getKey())));
                     }
                     default -> {
                     }
@@ -1365,20 +1387,20 @@ public class KingDominoGame implements Observer {
             _panelGameMode.setPreferredSize(new Dimension(121,48));
             JLabel[] _lblGameMode = new JLabel[2];
             _lblGameMode[0] = new JLabel();
-            _lblGameMode[0].setText("Harmony: +" + _window._controller.getHarmonyBonus(entry.getKey()));
+            _lblGameMode[0].setText("Harmony: +" + _controller.getHarmonyBonus(entry.getKey()));
 
             _lblGameMode[0].setForeground(Color.WHITE);
-            _lblGameMode[0].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
+            _lblGameMode[0].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[0].setHorizontalAlignment(SwingConstants.RIGHT);
             Border border = _lblGameMode[0].getBorder();
             Border margin = new EmptyBorder(10,0,0,10);
             _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
 
             _lblGameMode[1] = new JLabel();
-            _lblGameMode[1].setText("Middle Kingdom: +" + _window._controller.getMiddleKingdom(entry.getKey()));
+            _lblGameMode[1].setText("Middle Kingdom: +" + _controller.getMiddleKingdom(entry.getKey()));
 
             _lblGameMode[1].setForeground(Color.WHITE);
-            _lblGameMode[1].setFont(_window._fontTimeless.deriveFont(Font.PLAIN, 11));
+            _lblGameMode[1].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
             _lblGameMode[1].setHorizontalAlignment(SwingConstants.RIGHT);
             border = _lblGameMode[1].getBorder();
             margin = new EmptyBorder(0,0,0,10);
@@ -1392,7 +1414,7 @@ public class KingDominoGame implements Observer {
             _panelScore.setPreferredSize(new Dimension(121,49));
             JLabel _lblScore = new JLabel(Integer.toString(_totalScore));
             _lblScore.setForeground(Color.WHITE);
-            _lblScore.setFont(_window._fontTimeless.deriveFont(Font.BOLD, 44));
+            _lblScore.setFont(_fontTimeless.deriveFont(Font.BOLD, 44));
             _lblScore.setPreferredSize(new Dimension(121,49));
             _lblScore.setHorizontalAlignment(SwingConstants.CENTER);
             _lblScore.setVerticalAlignment(SwingConstants.CENTER);
@@ -1418,9 +1440,9 @@ public class KingDominoGame implements Observer {
     public Map<Integer, Integer> createRanking()
     {
         Map<Integer, Integer> _arrayRankingnotsorted = new LinkedHashMap<>();
-        for(int i=0; i< _window.numberPlayer; i++)
+        for(int i=0; i< _numberPlayer; i++)
         {
-            _arrayRankingnotsorted.put(i, _window._controller.getTotalScorePlayer(i));
+            _arrayRankingnotsorted.put(i, _controller.getTotalScorePlayer(i));
         }
 
         Map<Integer, Integer> _arrayRanking = new LinkedHashMap<>();

@@ -10,15 +10,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Window extends JFrame implements Observer {
-    protected Game _game;
-    protected Controller _controller;
-    protected JFrame frame;
-    protected static Window instance;
-    protected ImageIcon img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("ico.png")).readAllBytes());
-    protected Font _fontGermania;
-    protected Font _fontTimeless;
-    protected Font _fontAugusta;
-    protected int numberPlayer = 0;
+    private final Game _game;
+    private final Controller _controller;
+    private JFrame frame;
+    public static Window instance;
+    private Font _fontGermania;
+    private Font _fontTimeless;
+    private Font _fontAugusta;
+    private int numberPlayer = 0;
 
     private Window(Game game, Controller controller) throws IOException {
         _game = game;
@@ -26,11 +25,12 @@ public class Window extends JFrame implements Observer {
         this.setWindow();
     }
 
-    protected void setWindow(){
+    protected void setWindow() throws IOException {
         frame = new JFrame("Kingdomino");
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // put window in the center of the screen
+        ImageIcon img = new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("ico.png")).readAllBytes());
         frame.setIconImage(img.getImage()); // icon of the application
         frame.setResizable(false); // make impossible to resize the window to avoid error or whatever
         _fontGermania = FontUtilities.setFont("Germania.otf"); // We use this for the user to access to our custom font
@@ -57,5 +57,45 @@ public class Window extends JFrame implements Observer {
     @Override
     public void dominoGraph(Game game) {
 
+    }
+
+    public Game get_game() {
+        return _game;
+    }
+
+    public Controller get_controller() {
+        return _controller;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public static Window getInstance() {
+        return instance;
+    }
+
+    public Font get_fontGermania() {
+        return _fontGermania;
+    }
+
+    public Font get_fontTimeless() {
+        return _fontTimeless;
+    }
+
+    public Font get_fontAugusta() {
+        return _fontAugusta;
+    }
+
+    public int getNumberPlayer() {
+        return numberPlayer;
+    }
+
+    public void setNumberPlayer(int numberPlayer) {
+        this.numberPlayer = numberPlayer;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 }
