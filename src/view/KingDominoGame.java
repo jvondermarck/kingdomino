@@ -81,12 +81,12 @@ public class KingDominoGame implements Observer {
 
     public void getInstancesWindow()
     {
-        _game = _window.get_game();
-        _controller = _window.get_controller();
+        _game = _window.getGame();
+        _controller = _window.getController();
         _frame = _window.getFrame();
-        _fontGermania = _window.get_fontGermania();
-        _fontTimeless = _window.get_fontTimeless();
-        _fontAugusta = _window.get_fontAugusta();
+        _fontGermania = _window.getFontGermania();
+        _fontTimeless = _window.getFontTimeless();
+        _fontAugusta = _window.getFontAugusta();
         _numberPlayer = _window.getNumberPlayer();
     }
 
