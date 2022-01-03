@@ -29,8 +29,7 @@ public class Player {
     private int lightGreenTilesScore = 0;
 
 
-    private final List<GameMode> _bonus = new ArrayList<>();
-
+    private int _bonus = 0;
     public Player()
     {
         this._king = new King();
@@ -45,11 +44,10 @@ public class Player {
         totalTilesScoreList.add(lightGreenTilesScoreList);
     }
 
-    // Le player est sensé faire ça ou ça serai de l'over engineering de passer par une classe intermédiaire ?
     private void initialiseGraph(){
         this._graph = new Graph();
     }
-    // Le player est sensé faire ça ou ça serai de l'over engineering de passer par une classe intermédiaire ?
+
     private void initialiseCastle(){
         this._castle = new Castle(this._king.color());
     }
@@ -82,9 +80,12 @@ public class Player {
 
         this.totalScore = this.yellowTilesScore + this.darkGreenTilesScore + this.blueTilesScore + this.blackTilesScore + this.brownTilesScore + this.lightGreenTilesScore;
 
+        /*
         for(GameMode g : _bonus){
             totalScore += g.numberBonus();
         }
+         */
+        this.totalScore += _bonus;
 
     }
 
@@ -144,30 +145,8 @@ public class Player {
         return lightGreenTilesScore;
     }
 
-    public void addBonus(GameMode gameMode){
-        this._bonus.add(gameMode);
-    }
-
-    public int getHarmonyBonus()
-    {
-        int bonus = 0;
-        for (GameMode gameMode : _bonus) {
-            if (gameMode instanceof Harmony) {
-                bonus = gameMode.numberBonus();
-            }
-        }
-        return bonus;
-    }
-
-    public int getMiddleKingdom()
-    {
-        int bonus = 0;
-        for (GameMode gameMode : _bonus) {
-            if (gameMode instanceof MiddleKingdom) {
-                bonus = gameMode.numberBonus();
-            }
-        }
-        return bonus;
+    public void addBonus(int b){
+        _bonus += b;
     }
 
 }

@@ -222,12 +222,16 @@ public class Game {
 
             for(GameMode g : _listGameMode){
                 if(g.executeGameMode(p)){
-                    p.addBonus(g);
+                    p.addBonus(g.numberBonus());
                 }
             }
 
             p.calculateTotalScore();
         }
+    }
+
+    public List<GameMode> getListGameMode(){
+        return this._listGameMode;
     }
 
     public List<String> get_listGameModeString() {

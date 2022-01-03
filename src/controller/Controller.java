@@ -53,9 +53,10 @@ public class Controller {
     public int getLightGreenTilesScore(int index) { return _game.getPlayer(index).getLightGreenTilesScore(); }
 
     public List<String> getGameMode() { return _game.get_listGameModeString(); }
-    public int getHarmonyBonus(int index) { return _game.getPlayer(index).getHarmonyBonus(); }
-    public int getMiddleKingdom(int index) { return _game.getPlayer(index).getMiddleKingdom(); }
+    //public int getHarmonyBonus(int index) { return _game.getPlayer(index).getHarmonyBonus(); }
+    //public int getMiddleKingdom(int index) { return _game.getPlayer(index).getMiddleKingdom(); }
 
     public Player getPlayer(int index) { return _game.getPlayer(index); }
+
 }
 

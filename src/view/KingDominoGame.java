@@ -1387,7 +1387,7 @@ public class KingDominoGame implements Observer {
             _panelGameMode.setPreferredSize(new Dimension(121,48));
             JLabel[] _lblGameMode = new JLabel[2];
             _lblGameMode[0] = new JLabel();
-            _lblGameMode[0].setText("Harmony: +" + _controller.getHarmonyBonus(entry.getKey()));
+            //_lblGameMode[0].setText("Harmony: +" + _controller.getHarmonyBonus(entry.getKey()));
 
             _lblGameMode[0].setForeground(Color.WHITE);
             _lblGameMode[0].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));
@@ -1397,7 +1397,7 @@ public class KingDominoGame implements Observer {
             _lblGameMode[0].setBorder(new CompoundBorder(border, margin));
 
             _lblGameMode[1] = new JLabel();
-            _lblGameMode[1].setText("Middle Kingdom: +" + _controller.getMiddleKingdom(entry.getKey()));
+            //_lblGameMode[1].setText("Middle Kingdom: +" + _controller.getMiddleKingdom(entry.getKey()));
 
             _lblGameMode[1].setForeground(Color.WHITE);
             _lblGameMode[1].setFont(_fontTimeless.deriveFont(Font.PLAIN, 11));

@@ -11,7 +11,7 @@ skinparam nodesep 100
 skinparam ranksep 200
 
 class LauncherKingdomino{
-    +{static} main( args:String[] )
+    +{static}main(args:String[])
 }
 
 package Utilities {
@@ -30,12 +30,13 @@ package Utilities {
 package Model #salmon;line:red{
 
     class Game {
-        {static}-instance:Game
+        '{static}-instance:Game'
         -_intPlayer: Integer
-        -_listGameModeString: Collection<String>
+        -_listGameModeString: String[]
         -_dominoesLeft: Boolean
-        -Game()
-        {static}+getInstance()
+        '-Game()'
+        +Game()
+        '{static}+getInstance()'
         +addGameMode(gameMode: GameMode)
         +factorHarmonyMode()
         +factorMiddleKingdom()
@@ -65,7 +66,7 @@ package Model #salmon;line:red{
         +notifyObserverDominoGraph()
         +is_dominoesLeft(): Boolean
         +calculateScores()
-        +get_listGameModeString(): Collection<String>
+        +get_listGameModeString(): String[]
     }
 
     interface Observer<<interface>>{
@@ -74,7 +75,7 @@ package Model #salmon;line:red{
     }
 
     package Entities #indianred{
-        Graph "0..*\n-_arrayTiles" *-> Tile : <<composed of>> >
+        Graph *-> "0..*\n-_arrayTiles" Tile  : <<composed of>> >
 
         class Graph {
             -_errorMessage: String
@@ -90,7 +91,7 @@ package Model #salmon;line:red{
             +isCastleOnMiddle(): Boolean
             -countCells(matrix: Integer[], i:Integer, j:Integer)
             -countCrowns(matrix: Integer[], graph: Tile[][], i:Integer, j:Integer, v:Integer)
-            +getSizeOfADomain(type: String): Collection<Collection<Integer>>
+            +getSizeOfADomain(type: String): Integer[][]
         }
 
         class King{
@@ -104,7 +105,7 @@ package Model #salmon;line:red{
         }
 
 
-        Deck "-_listDominoes\n1..*" *-> Domino : <<composed of>> >
+        Deck *-> Domino : "-_listDominoes\n1..*" <<has>> >
 
 
         class Deck{
@@ -116,10 +117,10 @@ package Model #salmon;line:red{
             +sizeOfDeck(): Integer
             +shuffle()
             +giveADomino(): Domino
-            +get_listdominoes(): Collection<Domino>
+            +get_listdominoes(): Domino[]
         }
 
-        Domino "-_arrayTiles\n0..2" *-l-> Tile : <<has>> >
+        Domino *-l-> "-_arrayTiles\n0..2"  Tile : <<has>> >
         class Domino {
            -id:Integer
            -rightSide: Boolean
@@ -155,18 +156,17 @@ package Model #salmon;line:red{
            +getColor(): String
         }
 
-        Player "1\n-_graph" *--> Graph : > <<has>>
-        Player "1\n-_king"*-> King : > <<has>>
-        Player "1\n-_castle" *-l-> Castle : > <<has>>
-        Player "1\n-_bonus" o--> GameMode : > <<has>>
+        Player *--> "1\n-_graph" Graph : > <<has>>
+        Player *-> "1\n-_king" King : > <<has>>
+        Player *-l-> "1\n-_castle" Castle : > <<has>>
         class Player {
-            -yellowTilesScoreList: Collection<Collection<Integer>>
-            -darkGreenTilesScoreList: Collection<Collection<Integer>>
-            -blueTilesScoreList: Collection<Collection<Integer>>
-            -blackTilesScoreList: Collection<Collection<Integer>>
-            -brownTilesScoreList: Collection<Collection<Integer>>
-            -lightGreenTilesScoreList: Collection<Collection<Integer>>
-            -totalTilesScoreList: Collection<Collection<Collection<Integer>>>
+            -yellowTilesScoreList: Integer[][]
+            -darkGreenTilesScoreList: Integer[][]
+            -blueTilesScoreList: Integer[][]
+            -blackTilesScoreList: Integer[][]
+            -brownTilesScoreList: Integer[][]
+            -lightGreenTilesScoreList: Integer[][]
+            -totalTilesScoreList: Integer[][][]
             -totalScore: Integer
             -yellowTilesScore: Integer
             -darkGreenTilesScore: Integer
@@ -182,7 +182,7 @@ package Model #salmon;line:red{
             +getKing():King
             +getTotalScore(): Integer
             +calculateTotalScore()
-            +calculateTotalScoreDomain(list: Collection<Collection<Integer>>): Integer
+            +calculateTotalScoreDomain(list: Integer[][]): Integer
             +addBonus(gameMode: GameMode)
             +getHarmonyBonus(): Integer
             +getMiddleKingdom(): Integer
@@ -198,9 +198,7 @@ package Model #salmon;line:red{
             +GREEN
             +BLUE
         }
-        Player "1\n{static}_colorUsed" *--> KINGCOLOR: > <<has>>
-
-
+        Player *--> "1\n{static}_colorUsed" KINGCOLOR: > <<has>>
     }
 
 
@@ -392,19 +390,18 @@ Window .> Game : "1\n #_game" <<use>> >
 Window  .> "1\n #_fontGermania"FontUtilities : <<use>>
 Window  .> "1\n #_fontTimeless"FontUtilities : <<use>>
 
-KingDominoStart "1\n-_window"*--> Window
-KingDominoGame "1\n-_window"*-> Window
-KingDominoEnd "1\n-_window"*-> Window
+KingDominoStart *--> Window : "1\n-_window"
+KingDominoGame *-> Window : "1\n-_window"
 
 LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
-Game "1\n{static}instance" --> Game
+Game --> "1\n{static}instance" Game
 Game  *--> "1\n-_listGameMode"GameMode : <<has>> >
 Game  *--> "1\n-_numberplayer"NumberPlayer : <<has>> >
 Game  *-> "1\n-_deck"Deck : <<has>> >
-Game "2..4\n-_listPlayers" *--> Player : <<has>> >
+Game  *--> Player : "2..4\n-_listPlayers" <<has>> >
 Game o..> NumberPlayerStrategy : <<set>> >
 Game *-l-> Observer : "0..*\n-_observer"<<notify>> >
 Game *--> "1..2\n_factoryGameMode"GameModeFactory : <<has>> >
