@@ -12,36 +12,36 @@ public class Player {
     private final King _king;
     private Graph _graph;
     private Castle _castle;
-    private Integer totalScore;
-    private List<List<Integer>> yellowTilesScoreList = new ArrayList<>();
-    private List<List<Integer>> darkGreenTilesScoreList = new ArrayList<>();
-    private List<List<Integer>> blueTilesScoreList = new ArrayList<>();
-    private List<List<Integer>> blackTilesScoreList = new ArrayList<>();
-    private List<List<Integer>> brownTilesScoreList = new ArrayList<>();
-    private List<List<Integer>> lightGreenTilesScoreList = new ArrayList<>();
-    private final List<List<List<Integer>>> totalTilesScoreList = new ArrayList<>();
+    private Integer _totalScore;
+    private List<List<Integer>> _yellowTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> _darkGreenTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> _blueTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> _blackTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> _brownTilesScoreList = new ArrayList<>();
+    private List<List<Integer>> _lightGreenTilesScoreList = new ArrayList<>();
+    private final List<List<List<Integer>>> _totalTilesScoreList = new ArrayList<>();
 
-    private int yellowTilesScore = 0;
-    private int darkGreenTilesScore = 0;
-    private int blueTilesScore = 0;
-    private int blackTilesScore = 0;
-    private int brownTilesScore = 0;
-    private int lightGreenTilesScore = 0;
-
+    private int _yellowTilesScore = 0;
+    private int _darkGreenTilesScore = 0;
+    private int _blueTilesScore = 0;
+    private int _blackTilesScore = 0;
+    private int _brownTilesScore = 0;
+    private int _lightGreenTilesScore = 0;
 
     private int _bonus = 0;
+
     public Player()
     {
         this._king = new King();
         initialiseCastle();
         initialiseGraph();
-        totalScore = 0;
-        totalTilesScoreList.add(yellowTilesScoreList);
-        totalTilesScoreList.add(darkGreenTilesScoreList);
-        totalTilesScoreList.add(blueTilesScoreList);
-        totalTilesScoreList.add(blackTilesScoreList);
-        totalTilesScoreList.add(brownTilesScoreList);
-        totalTilesScoreList.add(lightGreenTilesScoreList);
+        _totalScore = 0;
+        _totalTilesScoreList.add(_yellowTilesScoreList);
+        _totalTilesScoreList.add(_darkGreenTilesScoreList);
+        _totalTilesScoreList.add(_blueTilesScoreList);
+        _totalTilesScoreList.add(_blackTilesScoreList);
+        _totalTilesScoreList.add(_brownTilesScoreList);
+        _totalTilesScoreList.add(_lightGreenTilesScoreList);
     }
 
     private void initialiseGraph(){
@@ -65,27 +65,27 @@ public class Player {
     }
 
     public Integer getTotalScore(){
-        return this.totalScore;
+        return this._totalScore;
     }
 
     public void calculateTotalScore(){
-        this.totalScore = 0;
+        this._totalScore = 0;
 
-        this.yellowTilesScore = calculateTotalScoreDomain(this.yellowTilesScoreList);
-        this.darkGreenTilesScore = calculateTotalScoreDomain(this.darkGreenTilesScoreList);
-        this.blueTilesScore = calculateTotalScoreDomain(this.blueTilesScoreList);
-        this.blackTilesScore = calculateTotalScoreDomain(this.blackTilesScoreList);
-        this.brownTilesScore = calculateTotalScoreDomain(this.brownTilesScoreList);
-        this.lightGreenTilesScore = calculateTotalScoreDomain(this.lightGreenTilesScoreList);
+        this._yellowTilesScore = calculateTotalScoreDomain(this._yellowTilesScoreList);
+        this._darkGreenTilesScore = calculateTotalScoreDomain(this._darkGreenTilesScoreList);
+        this._blueTilesScore = calculateTotalScoreDomain(this._blueTilesScoreList);
+        this._blackTilesScore = calculateTotalScoreDomain(this._blackTilesScoreList);
+        this._brownTilesScore = calculateTotalScoreDomain(this._brownTilesScoreList);
+        this._lightGreenTilesScore = calculateTotalScoreDomain(this._lightGreenTilesScoreList);
 
-        this.totalScore = this.yellowTilesScore + this.darkGreenTilesScore + this.blueTilesScore + this.blackTilesScore + this.brownTilesScore + this.lightGreenTilesScore;
+        this._totalScore = this._yellowTilesScore + this._darkGreenTilesScore + this._blueTilesScore + this._blackTilesScore + this._brownTilesScore + this._lightGreenTilesScore;
 
         /*
         for(GameMode g : _bonus){
-            totalScore += g.numberBonus();
+            _totalScore += g.numberBonus();
         }
          */
-        this.totalScore += _bonus;
+        this._totalScore += _bonus;
 
     }
 
@@ -97,52 +97,52 @@ public class Player {
         return score;
     }
 
-    public void setYellowTilesScoreList(List<List<Integer>> yellowTilesScoreList){
-        this.yellowTilesScoreList = yellowTilesScoreList;
+    public void setYellowTilesScoreList(List<List<Integer>> _yellowTilesScoreList){
+        this._yellowTilesScoreList = _yellowTilesScoreList;
     }
 
-    public void setDarkGreenTilesScoreList(List<List<Integer>> darkGreenTilesScoreList){
-        this.darkGreenTilesScoreList = darkGreenTilesScoreList;
+    public void setDarkGreenTilesScoreList(List<List<Integer>> _darkGreenTilesScoreList){
+        this._darkGreenTilesScoreList = _darkGreenTilesScoreList;
     }
 
-    public void setBlueTilesScoreList(List<List<Integer>> blueTilesScoreList){
-        this.blueTilesScoreList = blueTilesScoreList;
+    public void setBlueTilesScoreList(List<List<Integer>> _blueTilesScoreList){
+        this._blueTilesScoreList = _blueTilesScoreList;
     }
 
-    public void setBlackTilesScoreList(List<List<Integer>> blackTilesScoreList){
-        this.blackTilesScoreList = blackTilesScoreList;
+    public void setBlackTilesScoreList(List<List<Integer>> _blackTilesScoreList){
+        this._blackTilesScoreList = _blackTilesScoreList;
     }
 
-    public void setBrownTilesScoreList(List<List<Integer>> brownTilesScoreList){
-        this.brownTilesScoreList = brownTilesScoreList;
+    public void setBrownTilesScoreList(List<List<Integer>> _brownTilesScoreList){
+        this._brownTilesScoreList = _brownTilesScoreList;
     }
 
-    public void setLightGreenTilesScoreList(List<List<Integer>> lightGreenTilesScoreList){
-        this.lightGreenTilesScoreList = lightGreenTilesScoreList;
+    public void setLightGreenTilesScoreList(List<List<Integer>> _lightGreenTilesScoreList){
+        this._lightGreenTilesScoreList = _lightGreenTilesScoreList;
     }
 
     public int getYellowTilesScore() {
-        return yellowTilesScore;
+        return _yellowTilesScore;
     }
 
     public int getDarkGreenTilesScore() {
-        return darkGreenTilesScore;
+        return _darkGreenTilesScore;
     }
 
     public int getBlueTilesScore() {
-        return blueTilesScore;
+        return _blueTilesScore;
     }
 
     public int getBlackTilesScore() {
-        return blackTilesScore;
+        return _blackTilesScore;
     }
 
     public int getBrownTilesScore() {
-        return brownTilesScore;
+        return _brownTilesScore;
     }
 
     public int getLightGreenTilesScore() {
-        return lightGreenTilesScore;
+        return _lightGreenTilesScore;
     }
 
     public void addBonus(int b){
