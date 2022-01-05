@@ -184,6 +184,19 @@ package Model #salmon;line:red{
             +calculateTotalScore()
             +calculateTotalScoreDomain(list: Integer[]): Integer
             +addBonus(gameMode: GameMode)
+            +setYellowTilesScoreList(_yellowTilesScoreList : Integer[])
+            +setDarkGreenTilesScoreList(_darkGreenTilesScoreList : Integer[])
+            +setBlueTilesScoreList(_blueTilesScoreList : Integer[])
+            +setBlackTilesScoreList(_blackTilesScoreList : Integer[])
+            +setBrownTilesScoreList(_brownTilesScoreList : Integer[])
+            +setLightGreenTilesScoreList(_lightGreenTilesScoreList : Integer[])
+            +getYellowTilesScore(): Integer
+            +getDarkGreenTilesScore(): Integer
+            +getBlueTilesScore(): Integer
+            +getBlackTilesScore(): Integer
+            +getBrownTilesScore(): Integer
+            +getLightGreenTilesScore(): Integer
+            +addBonus(b: Integer)
         }
 
         class Castle extends Tile{
@@ -212,7 +225,7 @@ package Model #salmon;line:red{
             +getQuatroPlayers(): Quatro
          }
 
-        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > choose
+        NumberPlayer o--> NumberPlayerStrategy : "1\n-_strategy" > choose
 
         package Number{
             class Duo implements NumberPlayerStrategy
@@ -393,9 +406,9 @@ Game  o--> "0..*\n-_listGameMode"GameMode : has >
 Game  *--> NumberPlayer : "1\n-_numberPlayer{readOnly}" has >
 Game  *-> "1\n-_deck" Deck : has >
 Game  *--> "2..4\n-_listPlayers" Player : has >
-Game o--> NumberPlayerStrategy : <<set>> >
+Game o--> NumberPlayerStrategy : set >
 Game o-l-> Observer : "0..*\n-_listObserver{readOnly}" notify >
-Game *--> "-_factoryGameMode{readOnly}"GameModeFactory : has >
+Game *--> "1\n-_factoryGameMode{readOnly}"GameModeFactory : has >
 Game o--> "3..4\n-_listActualDominoes" Domino : has >
 
 NumberPlayer ..> Duo : <<use>> >
@@ -404,7 +417,7 @@ NumberPlayer ..> Quatro : <<use>> >
 
 
 Controller o--> "1\n-_game"Game : <<use>> >
-Controller o--> Observer : add >
+Controller o--> "1\n"Observer : add >
 Controller ..> KingDominoGame : <<create>> >
 
 King *-r-> "1\n-_kingColor" KINGCOLOR : has >
