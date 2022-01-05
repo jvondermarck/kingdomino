@@ -42,7 +42,7 @@
     ![image](https://imgur.com/5SSojbq.png)
 
 ### Écran en partie
-2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.\
+2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.
    ![image](https://imgur.com/uy7Tjw6.png)
 
 - Tout d'abord, chacun des joueurs doit placer leur château sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.
@@ -64,4 +64,4 @@ Voici une vidéo ou une partie est jouer.
 (vidéo youtube)
 ## 5. Annexe
 - Si en voulant tester le Swing sur un ordinateur Linux, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 33 et enlever la ligne `frame.setLocationRelativeTo(null);` (cela permet d'avoir la fenêtre d'affiché au mileu de l'écran de l'ordinateur)
-- Si il y a un problème lors du lancement du JAR, veuillez installer sur le site [Azul](https://www.azul.com/downloads/?package=jdk) une version supérieur à Java 16. Il faudra aussi avoir d'installé [Java](https://www.java.com/fr/download/manual.jsp).
+- S'il y a un problème lors du lancement du JAR, veuillez installer sur le site [Azul](https://www.azul.com/downloads/?package=jdk) une version supérieur à Java 16. Il faudra aussi avoir d'installé [Java](https://www.java.com/fr/download/manual.jsp).
