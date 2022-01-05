@@ -118,7 +118,7 @@ package Model #salmon;line:red{
             +giveADomino(): Domino
             +getListdominoes(): Domino[]
         }
-    'Ask ak'
+
         Domino *-l-> "-_arrayTiles{readOnly}\n0..2"  Tile : has >
         class Domino {
            -id:Integer{readOnly}
@@ -417,7 +417,7 @@ NumberPlayer ..> Quatro : <<use>> >
 
 
 Controller o--> "1\n-_game"Game : <<use>> >
-Controller o--> "1\n"Observer : add >
+Controller o--> Observer : add >
 Controller ..> KingDominoGame : <<create>> >
 
 King *-r-> "1\n-_kingColor" KINGCOLOR : has >
