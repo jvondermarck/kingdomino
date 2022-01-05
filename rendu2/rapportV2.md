@@ -13,7 +13,7 @@
 ## 1.  Introduction
 
 - Dans le premier rapport, nous avons expliqué nos choix de conceptions et donner un aperçu de la première version de l'application.
-  - Si vous n'avez pas lu le ![premier rapport](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu1/rapportV1.md), nous vous invitons vivement à le lire.
+  - Si vous n'avez pas lu le [premier rapport](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu1/rapportV1.md), nous vous invitons vivement à le lire.
 - Ce rapport est là pour évoquer les ajustements et les améliorations possibles qui aurait pu être réalisé, et pour finir nous montrons un aperçu de l'application terminé.
 
 
