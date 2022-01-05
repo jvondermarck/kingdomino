@@ -15,7 +15,7 @@ public class King{
         _kingColor = randomChose();
     }
 
-    public KINGCOLOR randomChose()
+    private KINGCOLOR randomChose()
     {
         int index = 0;
         if(_size>1)
@@ -33,9 +33,7 @@ public class King{
         return _kingColor;
     }
 
-    // A SUPPRIMER
-    // N4EST PAS PRESENT DDANS LUML CAR NE SERA PAS PRESENT DANS LE RENDU FINAL !!!
-    public String color()
+    public String colorToString()
     {
         return this._kingColor.toString();
     }

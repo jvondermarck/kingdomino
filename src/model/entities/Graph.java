@@ -310,7 +310,7 @@ public class Graph {
         return _arrayTiles[Math.min(Math.max(x, 0), _arrayTiles.length - 1)][Math.min(Math.max(y, 0), _arrayTiles.length - 1)] instanceof Castle;
     }
 
-    public String get_errorMessage() {
+    public String getErrorMessage() {
         return _errorMessage;
     }
 

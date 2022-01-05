@@ -28,8 +28,9 @@ public class Player {
     public Player()
     {
         this._king = new King();
-        initialiseCastle();
-        initialiseGraph();
+        this._graph = new Graph();
+        this._castle = new Castle(this._king.colorToString());
+
         _totalScore = 0;
         _totalTilesScoreList.add(_yellowTilesScoreList);
         _totalTilesScoreList.add(_darkGreenTilesScoreList);
@@ -37,14 +38,6 @@ public class Player {
         _totalTilesScoreList.add(_blackTilesScoreList);
         _totalTilesScoreList.add(_brownTilesScoreList);
         _totalTilesScoreList.add(_lightGreenTilesScoreList);
-    }
-
-    private void initialiseGraph(){
-        this._graph = new Graph();
-    }
-
-    private void initialiseCastle(){
-        this._castle = new Castle(this._king.color());
     }
 
     public void setCastle(int x, int y){

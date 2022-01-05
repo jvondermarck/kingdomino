@@ -90,7 +90,7 @@ public class Game {
             numberDominoes = 3;
         }
 
-        if((_deck.get_listdominoes().size() < 3 && numberDominoes == 3) || (_deck.get_listdominoes().size() < 4))
+        if((_deck.getListDominoes().size() < 3 && numberDominoes == 3) || (_deck.getListDominoes().size() < 4))
         {
             this._dominoesLeft = true; // there are not enoigh dominoes to play
         } else {
@@ -154,7 +154,7 @@ public class Game {
 
     public String getErrorMessageSetDomino(int indexPlayer)
     {
-        return _listPlayers.get(indexPlayer).getGraph().get_errorMessage();
+        return _listPlayers.get(indexPlayer).getGraph().getErrorMessage();
     }
 
 
