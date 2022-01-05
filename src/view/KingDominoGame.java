@@ -453,11 +453,11 @@ public class KingDominoGame implements Observer {
         {
             for(int i = 0; i < 5; i++){
                 for(int j = 0; j<5; j++){
-                    if(!game.getPlayer(_indexGraphClicked).getGraph().isPlaceAvailable(i,j) && !game.getPlayer(_indexGraphClicked).getGraph().isCastleHere(i,j)){
-                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexGraphClicked).getGraph().getTiles()[i][j].getColor()));
+                    if(!game.getPlayer(_indexGraphClicked).getKingdom().isPlaceAvailable(i,j) && !game.getPlayer(_indexGraphClicked).getKingdom().isCastleHere(i,j)){
+                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexGraphClicked).getKingdom().getTiles()[i][j].getColor()));
 
                         _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText("");
-                        int numberCrown = game.getPlayer(_indexGraphClicked).getGraph().getTiles()[i][j].getCrowns();
+                        int numberCrown = game.getPlayer(_indexGraphClicked).getKingdom().getTiles()[i][j].getCrowns();
                         for(int k=0; k<numberCrown; k++)
                         {
                             _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText(_mapGraphPlayer.get(_indexGraphClicked)[i][j].getText() + _unicodeCrown);
@@ -810,7 +810,7 @@ public class KingDominoGame implements Observer {
 
                     _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(areDominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL))
+                            if(areDominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL))
                             {
                                 float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
@@ -824,11 +824,11 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(horizontalColorTile0.getRed(), horizontalColorTile0.getGreen(), horizontalColorTile0.getBlue(), null);
                                     horizontalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
                                         _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
-                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK,finalL+1)) {
+                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
                                         _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
@@ -844,11 +844,11 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(verticalColorTile0.getRed(), verticalColorTile0.getGreen(), verticalColorTile0.getBlue(), null);
                                     verticalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK-1,finalL)){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK-1,finalL)){
                                         //up
                                         _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
-                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getGraph().isPlaceAvailable(finalK+1,finalL)){
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK+1,finalL)){
                                         //down
                                         _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
                                         _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
@@ -870,11 +870,11 @@ public class KingDominoGame implements Observer {
                             if(areDominoesAreChoosen()){
                                 for(int i = 0; i < 5; i++){
                                     for(int j = 0; j<5; j++){
-                                        if(!_game.getPlayer(finalI).getGraph().isPlaceAvailable(i,j) && !_game.getPlayer(finalI).getGraph().isCastleHere(i,j)){
-                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_game.getPlayer(finalI).getGraph().getTiles()[i][j].getColor()));
+                                        if(!_game.getPlayer(finalI).getKingdom().isPlaceAvailable(i,j) && !_game.getPlayer(finalI).getKingdom().isCastleHere(i,j)){
+                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_game.getPlayer(finalI).getKingdom().getTiles()[i][j].getColor()));
 
                                             _mapGraphPlayer.get(finalI)[i][j].setText("");
-                                            int numberCrown = _game.getPlayer(finalI).getGraph().getTiles()[i][j].getCrowns();
+                                            int numberCrown = _game.getPlayer(finalI).getKingdom().getTiles()[i][j].getCrowns();
                                             for(int k=0; k<numberCrown; k++)
                                             {
                                                 _mapGraphPlayer.get(finalI)[i][j].setText(_mapGraphPlayer.get(finalI)[i][j].getText() + _unicodeCrown);

@@ -74,11 +74,11 @@ package Model #salmon;line:red{
     }
 
     package Entities #indianred{
-        Graph *-> "0..*\n-_arrayTiles{readOnly}" Tile  : has >
+        Kingdom *-> "0..*\n-_arrayTiles{readOnly}" Tile  : has >
 
-        class Graph {
+        class Kingdom {
             -_errorMessage: String
-            +Graph()
+            +Kindom()
             +setDomino(domino:Domino, x:Integer, y:Integer)
             +isSameTile(tile1:Tile , tile2:Tile):Boolean
             +isPlaceAvailable(x:Integer, y:Integer):Boolean
@@ -155,7 +155,7 @@ package Model #salmon;line:red{
            +getColor(): String
         }
 
-        Player *--> "1\n-_graph" Graph : > has
+        Player *--> "1\n-_graph" Kingdom : > has
         Player *-> "1\n-_king{readOnly}" King : > has
         Player *-l-> "1\n-_castle" Castle : > has
         Player ..> KINGCOLOR : > <<use>>
@@ -178,7 +178,7 @@ package Model #salmon;line:red{
             -_bonus: Integer
             +Player()
             +setCastle(x:Integer, y:Integer)
-            +getGraph():Graph
+            +getKingdom():Kingdom
             +getKing():KINGCOLOR
             +getTotalScore(): Integer
             +calculateTotalScore()

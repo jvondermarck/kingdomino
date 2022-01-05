@@ -3,11 +3,11 @@ package model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Graph {
+public class Kingdom {
     private final Tile[][] _arrayTiles;
     private String _errorMessage;
 
-    public Graph(){
+    public Kingdom(){
         _arrayTiles = new Tile[5][5];
     }
 

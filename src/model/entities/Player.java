@@ -5,7 +5,7 @@ import java.util.List;
 public class Player {
 
     private final King _king;
-    private Graph _graph;
+    private Kingdom _kingdom;
     private Castle _castle;
     private Integer _totalScore;
     private List<List<Integer>> _yellowTilesScoreList = new ArrayList<>();
@@ -28,7 +28,7 @@ public class Player {
     public Player()
     {
         this._king = new King();
-        this._graph = new Graph();
+        this._kingdom = new Kingdom();
         this._castle = new Castle(this._king.colorToString());
 
         _totalScore = 0;
@@ -41,11 +41,11 @@ public class Player {
     }
 
     public void setCastle(int x, int y){
-        this._graph.setCastle(x, y, this._castle);
+        this._kingdom.setCastle(x, y, this._castle);
     }
 
-    public Graph getGraph(){
-        return this._graph;
+    public Kingdom getKingdom(){
+        return this._kingdom;
     }
 
     public KINGCOLOR getKing() {

@@ -5,7 +5,7 @@ import model.set.GameMode;
 public class MiddleKingdom extends GameMode {
     @Override
     public boolean executeGameMode(Player player) {
-        return player.getGraph().isCastleOnMiddle();
+        return player.getKingdom().isCastleOnMiddle();
     }
 
     @Override

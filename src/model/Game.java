@@ -148,13 +148,13 @@ public class Game {
     public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y)
     {
         Domino domino = _listActualDominoes.get(indexDomino);
-        _listPlayers.get(indexPlayer).getGraph().setDomino(domino, x, y);
+        _listPlayers.get(indexPlayer).getKingdom().setDomino(domino, x, y);
         notifyObserverDominoGraph();
     }
 
     public String getErrorMessageSetDomino(int indexPlayer)
     {
-        return _listPlayers.get(indexPlayer).getGraph().getErrorMessage();
+        return _listPlayers.get(indexPlayer).getKingdom().getErrorMessage();
     }
 
 
@@ -204,12 +204,12 @@ public class Game {
 
     public void calculateScores(){
         for(Player p : _listPlayers){
-            p.setYellowTilesScoreList(p.getGraph().getSizeOfADomain("#FDCA40")); // YELLOW TILE
-            p.setDarkGreenTilesScoreList(p.getGraph().getSizeOfADomain("#0A9396")); // DARK GREEN TILE
-            p.setBlueTilesScoreList(p.getGraph().getSizeOfADomain("#2176FF")); // BLUE TILE
-            p.setBlackTilesScoreList(p.getGraph().getSizeOfADomain("#31393C")); // BLACK TILE
-            p.setBrownTilesScoreList(p.getGraph().getSizeOfADomain("#7F4F24")); // BROWN TILE
-            p.setLightGreenTilesScoreList(p.getGraph().getSizeOfADomain("#B5E48C")); // LIGHT GREEN TILE
+            p.setYellowTilesScoreList(p.getKingdom().getSizeOfADomain("#FDCA40")); // YELLOW TILE
+            p.setDarkGreenTilesScoreList(p.getKingdom().getSizeOfADomain("#0A9396")); // DARK GREEN TILE
+            p.setBlueTilesScoreList(p.getKingdom().getSizeOfADomain("#2176FF")); // BLUE TILE
+            p.setBlackTilesScoreList(p.getKingdom().getSizeOfADomain("#31393C")); // BLACK TILE
+            p.setBrownTilesScoreList(p.getKingdom().getSizeOfADomain("#7F4F24")); // BROWN TILE
+            p.setLightGreenTilesScoreList(p.getKingdom().getSizeOfADomain("#B5E48C")); // LIGHT GREEN TILE
 
             for(GameMode g : _listGameMode){
                 if(g.executeGameMode(p)){

@@ -7,7 +7,7 @@ public class Harmony extends GameMode {
 
     @Override
     public boolean executeGameMode(Player player) {
-        return player.getGraph().isCompleted();
+        return player.getKingdom().isCompleted();
     }
 
     @Override
