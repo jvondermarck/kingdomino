@@ -1,15 +1,13 @@
 
-# Projet A31 - Rapport Kingdomino
+# Projet A31 - 2e Rapport Kingdomino
 
 # Sommaire
 1. ### Introduction
 2. ### Choix de conception
    #### a. Contraintes
-   #### b.  Structure
-   #### c. Package `Set`
-   #### d. Package `Game`
-   #### e. Package `View`
-   #### f. Autres
+   #### b. Structure
+   #### c. Package `Game`
+   #### d. Package `View`
 3. ### L'exécutable
 4. ### Annexe
 
@@ -65,40 +63,36 @@ L'objectif de ce projet est de concevoir une application permettant de jouer au 
 
 ```
 
-### c. Package `Set`
+### c. Package `Game`
+- Par rapport au premier rendu nous avons enlever le pattern Singleton dans la classe `Game` car il n'y avait aucune utilité.
 
-
-### d. Package `Game`
-- Par rapport au premier rendu nous avons enlever le pattern Singleton car il n'y avait aucune utilité.
-
-### e. Package `View`
-- Pour gérer les différentes vues, nous avons la classe `Window` qui nous permet de gérer les différentes vues.
-- Pour obtenir des infos du modèle, on préfèrera y accéder directement sans passer par le controlleur. 
-
+### d. Package `View`
+- Pour obtenir des informations du modèle, on préfèrera y accéder directement sans passer par la classe `Controller`. 
+- Notre classe `Window` n'implèmente plus notre interface `Observer` car il était inutile qu'elle ai les méthodes de cette interface vu que c'est juste une classe qui permet l'instantiation du JFrame et des propriétés de la fenetre. 
+- Dans une prochaine version nous aurions voulu re-factoriser la classe `KingdominoGame` en plusieurs sous classes mais il était trop comtraignant de le réaliser dû à tous nos attributs de cette classe.
 
 ## 3. L'exécutable
 ### Écran d'accueil
-![image](https://imgur.com/5SSojbq.png)
-1. Premièrement, quand nous lançons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu Kingdomino.
+1. Premièrement, quand nous lançons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu.
+    ![image](https://imgur.com/5SSojbq.png)
+
 ### Écran en partie
-![image](https://imgur.com/uy7Tjw6.png)
-
 2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.\
-- Tout d'abord, chacun des joueurs doit placer leur château sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.\
+   ![image](https://imgur.com/uy7Tjw6.png)
+
+- Tout d'abord, chacun des joueurs doit placer leur château sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.
 ![image](https://imgur.com/uy7Tjw6.png)
 
-- Ensuite, avant de pouvoir choisir leur domino, la personne doit montrer les dominos.\
+- Ensuite, avant de pouvoir choisir leur domino, la personne doit montrer les dominos.
   ![image](https://imgur.com/3K96Woy.png) 
-- Chacun des joueurs doit choisir leur domino, tout en ne prenant pas le même qu'un autre joueur.\
+- Chacun des joueurs doit choisir leur domino, tout en ne prenant pas le même qu'un autre joueur.
   ![image](https://imgur.com/MZV1ybP.png) 
-- Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).\
-
-[![IMAGE_ALT](https://img.youtube.com/vi/8-EZ7INDJqg/0.jpg)](https://www.youtube.com/watch?v=8-EZ7INDJqg)
-(vidéo youtube)
+- Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).
 
 ### Fin de partie
 ![image](https://imgur.com/Y60uKcQ.png)
 
+
 ## 4. Annexe
-- Si en voulant tester le Swing, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 30 et enlever la ligne `frame.setLocationRelativeTo(null);`
-- Si un problème lors du lancement du JAR, veuillez installer sur le site [link](https://www.azul.com/downloads/?package=jdk) en choissant une version supérieur à Java 16. 
+- Si en voulant tester le Swing sur un ordinateur Linux, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 33 et enlever la ligne `frame.setLocationRelativeTo(null);` (cela permet d'avoir la fenêtre d'affiché au mileu de l'écran de l'ordinateur)
+- Si il y a un problème lors du lancement du JAR, veuillez installer sur le site [Azul](https://www.azul.com/downloads/?package=jdk) une version supérieur à Java 16. Il faudra aussi avoir d'installé [Java](https://www.java.com/fr/download/manual.jsp).
