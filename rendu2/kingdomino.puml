@@ -46,14 +46,14 @@ package Model #salmon;line:red{
         +setCastlePlayer(index:Integer, x:Integer, y:Integer)
         +createDeck(numberPlayer: Integer)
         +getPlayer(index:Integer): Player
-        +getActualDominoes(): Collection<Domino>
+        +getActualDominoes(): Domino[]
         +putDominoOnTable()
         +sortDominoTable(n: Integer)
         +rotateDomino(index:Integer)
         +reverseDomino(index:Integer)
         +setDirectionDomino(index:Integer. direction:Integer)
-        +setDominoOnGraph(index:Integer. direction:Integer, x:Integer, y:Integer)
-        +getErrorMessageSetDomino(indexPlayer: Integer)
+        +setDominoOnGraph(indexDomino:Integer. indexPlayer:Integer, x:Integer, y:Integer)
+        +getErrorMessageSetDomino(indexPlayer: Integer): String
         +isXX(index:Integer):Boolean
         +isXY(index:Integer):Boolean
         +getColorTile(index:Integer, x:Integer, y:Integer):String
@@ -63,16 +63,18 @@ package Model #salmon;line:red{
         +notifyObserverDominoGraph()
         +isDominoesLeft(): Boolean
         +calculateScores()
+        +getListGameMode(): GameMode[]
         +getListGameModeString(): String[]
     }
 
     interface Observer<<interface>>{
-       +update(game:Game)
-       +rotationDomino(game:Game)
+       +updateDominoesOnTable(game:Game)
+       +updateDominoPreview(game:Game)
+       +updatePlayerGraph(game:Game)
     }
 
     package Entities #indianred{
-        Graph *-> "0..*\n-_arrayTiles" Tile  : <<composed of>> >
+        Graph *-> "0..*\n-_arrayTiles{readOnly}" Tile  : has >
 
         class Graph {
             -_errorMessage: String
@@ -82,43 +84,44 @@ package Model #salmon;line:red{
             +isPlaceAvailable(x:Integer, y:Integer):Boolean
             +setCastle(x:Integer, y:Integer, castle:Castle)
             +isCastleHere(x:Integer, y:Integer): Boolean
-            +get_errorMessage(): String
-            +getTiles():Tile[][]
+            +getErrorMessage(): String
+            +getTiles():Tile[]
             +isCompleted(): Boolean
             +isCastleOnMiddle(): Boolean
             -countCells(matrix: Integer[], i:Integer, j:Integer)
-            -countCrowns(matrix: Integer[], graph: Tile[][], i:Integer, j:Integer, v:Integer)
-            +getSizeOfADomain(type: String): Integer[][]
+            -countCrowns(matrix: Integer[], graph: Tile[], i:Integer, j:Integer, v:Integer)
+            +getSizeOfADomain(type: String): Integer[]
         }
 
+        King ..> KINGCOLOR : "1\n{static}-_colorUsed{readOnly}" <<use>> >
         class King{
-            {static}-_colorUsed: Collection<KINGCOLOR>
             {static}-_rand: Integer
             {static}-_size: Integer
 
             +King()
-            +randomChose(): KINGCOLOR
+            -randomChose(): KINGCOLOR
             +getKingColor():KINGCOLOR
+            +colorToString(): String
         }
 
 
-        Deck *-> Domino : "-_listDominoes\n1..*" <<has>> >
+        Deck *-> Domino : "-_listDominoes{readOnly}\n1..*" has >
 
 
         class Deck{
             {static}-rand:Integer{readOnly}
             +Deck(numberPlayer: Integer)
             -removeDomino(iteration: Integer)
-            -generateDomino(i:Integer, dataCSV:String[][])
+            -generateDomino(i:Integer, dataCSV:String[])
             +getStack(): Collection<Domino>
             +shuffle()
             +giveADomino(): Domino
-            +get_listdominoes(): Domino[]
+            +getListdominoes(): Domino[]
         }
-
-        Domino *-l-> "-_arrayTiles\n0..2"  Tile : <<has>> >
+    'Ask ak'
+        Domino *-l-> "-_arrayTiles{readOnly}\n0..2"  Tile : has >
         class Domino {
-           -id:Integer
+           -id:Integer{readOnly}
            -rightSide: Boolean
            -leftSide: Boolean
            -upSide: Boolean
@@ -127,7 +130,7 @@ package Model #salmon;line:red{
            -setTile(tile1:Tile, tile2:Tile)
            +isXX():Boolean
            +isXY():Boolean
-           +getTile():Tile[][]
+           +getTile():Tile[]
            +getId(): Integer
            +rotate()
            +reverse()
@@ -136,15 +139,15 @@ package Model #salmon;line:red{
            +setUpSide()
            +setDownSide()
            +isRightSide(): Boolean
-           +isLeftSide: Boolean
-           +isUpSide: Boolean
-           +isDownSide: Boolean
+           +isLeftSide(): Boolean
+           +isUpSide(): Boolean
+           +isDownSide(): Boolean
            +getColor(x:Integer, y:Integer):String
         }
 
         class Tile{
            -_color:String
-           -_crowns:Integer
+           -_crowns{readOnly}:Integer
            +Tile(suitColor, crownsSuit)
            +Tile()
            +setColorTile(color: String)
@@ -152,17 +155,19 @@ package Model #salmon;line:red{
            +getColor(): String
         }
 
-        Player *--> "1\n-_graph" Graph : > <<has>>
-        Player *-> "1\n-_king" King : > <<has>>
-        Player *-l-> "1\n-_castle" Castle : > <<has>>
+        Player *--> "1\n-_graph" Graph : > has
+        Player *-> "1\n-_king{readOnly}" King : > has
+        Player *-l-> "1\n-_castle" Castle : > has
+        Player ..> KINGCOLOR : > <<use>>
+
         class Player {
-            -_yellowTilesScoreList: Integer[][]
-            -_darkGreenTilesScoreList: Integer[][]
-            -_blueTilesScoreList: Integer[][]
-            -_blackTilesScoreList: Integer[][]
-            -_brownTilesScoreList: Integer[][]
-            -_lightGreenTilesScoreList: Integer[][]
-            -_totalTilesScoreList: Integer[][][]
+            -_yellowTilesScoreList: Integer[]
+            -_darkGreenTilesScoreList: Integer[]
+            -_blueTilesScoreList: Integer[]
+            -_blackTilesScoreList: Integer[]
+            -_brownTilesScoreList: Integer[]
+            -_lightGreenTilesScoreList: Integer[]
+            -_totalTilesScoreList{readOnly}: Integer[]
             -_totalScore: Integer
             -_yellowTilesScore: Integer
             -_darkGreenTilesScore: Integer
@@ -170,15 +175,14 @@ package Model #salmon;line:red{
             -_blackTilesScore: Integer
             -_brownTilesScore: Integer
             -_lightGreenTilesScore: Integer
+            -_bonus: Integer
             +Player()
-            -initialiseGraph()
-            -initialiseCastle()
             +setCastle(x:Integer, y:Integer)
             +getGraph():Graph
-            +getKing():King
+            +getKing():KINGCOLOR
             +getTotalScore(): Integer
             +calculateTotalScore()
-            +calculateTotalScoreDomain(list: Integer[][]): Integer
+            +calculateTotalScoreDomain(list: Integer[]): Integer
             +addBonus(gameMode: GameMode)
         }
 
@@ -208,7 +212,7 @@ package Model #salmon;line:red{
             +getQuatroPlayers(): Quatro
          }
 
-        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > <<choose>>
+        NumberPlayer o--> "-_strategy\n1"NumberPlayerStrategy: > choose
 
         package Number{
             class Duo implements NumberPlayerStrategy
@@ -236,12 +240,11 @@ package Model #salmon;line:red{
             +GameModeFactory()
             +createMiddleKingdom(): GameMode
             +createHarmony(): GameMode
-            +createMightyDuel(): GameMode
         }
 
         abstract GameMode<<abstract>>{
             +GameMode()
-            {abstract}+executeGameMode() <<abstract>>: Boolean
+            {abstract}+executeGameMode(player: Player) <<abstract>>: Boolean
             {abstract}+numberBonus() <<abstract>>: Integer
         }
 
@@ -262,29 +265,26 @@ package Model #salmon;line:red{
                 GameModeFactory ..> MiddleKingdom: <<use>> >
                 GameModeFactory ..> Harmony: <<use>> >
 
-                Harmony o--> "1..*\n" Player : execute >
-                MiddleKingdom o--> "1..*\n" Player : execute >
+                GameMode o-r-> Player : <<execute>> >
             }
 
     }
 
     interface NumberPlayerStrategy<<interface>>{
-        +strategyPlayer()
+        +setNumberPlayers(player: NumberPlayer)
     }
 }
 
 package View #lightgreen;line:green{
     Window ..> KingDominoStart : <<use>> >
 
-    class Window implements Observer
+    class Window
     {
         -_numberPlayer: Integer
+        -_instance: Window
         +Window(game:Game, controller:Controller)
         +setWindow()
         {static}+getInstance(game:Game, controller:Game):Window
-        {override}+update(game:Game)
-        {override}+rotationDomino(game:Game)
-        {override}+dominoGraph(game:Game)
         +getGame(): Game
         +getController(): Controller
         +getFrame(): Frame
@@ -301,9 +301,9 @@ package View #lightgreen;line:green{
         -_strategyPlayers: String[]
         +KingDominoStart()
         +getInstancesWindow()
-        {override}+update(game:Game)
-        {override}+rotationDomino(game:Game)
-        {override}+dominoGraph(game:Game)
+        {override}+upadteDominoesOnTable(game:Game)
+        {override}+updateDominoPreview(game:Game)
+        {override}+updatePlayerGraph(game:Game)
     }
 
     class KingDominoGame implements Observer
@@ -327,9 +327,9 @@ package View #lightgreen;line:green{
 
         +KingDominoGame()
         +getInstancesWindow()
-        {override}+update(game:Game)
-        {override}+rotationDomino(game:Game)
-        {override}+dominoGraph(game:Game)
+        {override}+upadteDominoesOnTable(game:Game)
+        {override}+updateDominoPreview(game:Game)
+        {override}+updatePlayerGraph(game:Game)
         +setCrownRotation()
         +labelKingONDominoes()
         changeLabelKing()
@@ -357,7 +357,6 @@ package Controller #gold;line:goldenrod {
     class Controller{
         +Controller(game: Game)
         +instanciateDeck(numberPlayer: Integer)
-        +instanciatePlayer(numberPlayer: Integer)
         +putDominoOnTable()
         +switchToDuo()
         +switchToTrio()
@@ -382,33 +381,33 @@ Window  .> "1\n -_fontGermania"FontUtilities : <<use>>
 Window  .> "1\n -_fontTimeless"FontUtilities : <<use>>
 Window  .> "1\n -_fontAugusta"FontUtilities : <<use>>
 
-KingDominoStart *--> Window : "1\n-_window"
-KingDominoGame *-> Window : "1\n-_window"
+KingDominoStart .> "1\n-_window" Window : <<use>> >
+KingDominoGame .> "1\n-_window" Window : <<use>> >
 
 LauncherKingdomino ..> Window : <<create>> >
 LauncherKingdomino ..> KingDominoStart : <<create>> >
 LauncherKingdomino ..> Controller : <<create>> >
 LauncherKingdomino .> Game : <<create>> >
 
-Game  o--> "1\n-_listGameMode"GameMode : <<has>> >
-Game  *--> "1\n-_numberPlayer"NumberPlayer : <<has>> >
-Game  *-> Deck : "1\n-_deck" <<has>> >
-Game  *--> "2..4\n-_listPlayers" Player : <<has>> >
+Game  o--> "0..*\n-_listGameMode"GameMode : has >
+Game  *--> NumberPlayer : "1\n-_numberPlayer{readOnly}" has >
+Game  *-> "1\n-_deck" Deck : has >
+Game  *--> "2..4\n-_listPlayers" Player : has >
 Game o--> NumberPlayerStrategy : <<set>> >
-Game *-l-> Observer : "0..*\n-_listObserver" <<notify>> >
-Game *--> "1..2\n-_factoryGameMode"GameModeFactory : <<has>> >
-Game *--> "3..4\n-_listActualDominoes" Domino : <<has>> >
+Game o-l-> Observer : "0..*\n-_listObserver{readOnly}" notify >
+Game *--> "-_factoryGameMode{readOnly}"GameModeFactory : has >
+Game o--> "3..4\n-_listActualDominoes" Domino : has >
 
 NumberPlayer ..> Duo : <<use>> >
 NumberPlayer ..> Trio : <<use>> >
 NumberPlayer ..> Quatro : <<use>> >
 
 
-Controller ..> "1\n-_game"Game : <<use>> >
-Controller o..> Observer : <<use>> >
-Controller .> KingDominoGame : <<use>> >
+Controller o--> "1\n-_game"Game : <<use>> >
+Controller o--> Observer : add >
+Controller ..> KingDominoGame : <<create>> >
 
-King *-r-> "1\n-_kingColor" KINGCOLOR : <<has>> >
+King *-r-> "1\n-_kingColor" KINGCOLOR : has >
 
 Deck .d.> CSVReader : <<use>> >
 
