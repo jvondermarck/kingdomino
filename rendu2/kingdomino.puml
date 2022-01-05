@@ -93,7 +93,7 @@ package Model #salmon;line:red{
             +getSizeOfADomain(type: String): Integer[]
         }
 
-        King ..> KINGCOLOR : "1\n{static}-_colorUsed{readOnly}" <<use>> >
+        King ..> KINGCOLOR : "\r1\n{static}-_colorUsed{readOnly}" <<use>> >
         class King{
             {static}-_rand: Integer
             {static}-_size: Integer
@@ -119,7 +119,7 @@ package Model #salmon;line:red{
             +getListdominoes(): Domino[]
         }
 
-        Domino *-l-> "-_arrayTiles{readOnly}\n0..2"  Tile : has >
+        Domino *-l-> "\r-_arrayTiles{readOnly}\n0..2"  Tile : has >
         class Domino {
            -id:Integer{readOnly}
            -rightSide: Boolean
@@ -155,9 +155,9 @@ package Model #salmon;line:red{
            +getColor(): String
         }
 
-        Player *--> "1\n-_kingdom" Kingdom : > has
-        Player *-> "1\n-_king{readOnly}" King : > has
-        Player *-l-> "1\n-_castle" Castle : > has
+        Player *--> Kingdom : "1\n-_kingdom" > has
+        Player *-> King : "\r1\n-_king{readOnly}" > has
+        Player *-l-> Castle : "1\n-_castle" > has
         Player ..> KINGCOLOR : > <<use>>
 
         class Player {
@@ -278,7 +278,7 @@ package Model #salmon;line:red{
                 GameModeFactory ..> MiddleKingdom: <<use>> >
                 GameModeFactory ..> Harmony: <<use>> >
 
-                GameMode o-r-> Player : <<execute>> >
+                GameMode o-r-> Player : execute >
             }
 
     }
@@ -297,7 +297,7 @@ package View #lightgreen;line:green{
         -_instance: Window
         +Window(game:Game, controller:Controller)
         +setWindow()
-        {static}+getInstance(game:Game, controller:Game):Window
+        {static}+getInstance():Window
         +getGame(): Game
         +getController(): Controller
         +getFrame(): Frame
@@ -388,8 +388,8 @@ package Controller #gold;line:goldenrod {
 
 }
 
-Window .> "1\n -_controller\t"Controller : <<use>> >
-Window .> Game : "1\n -_game" <<use>> >
+Window o-> "1\n -_controller{readOnly}"Controller : send request >
+Window o-> "1\n-_game{readOnly}" Game : show >
 Window  .> "1\n -_fontGermania"FontUtilities : <<use>>
 Window  .> "1\n -_fontTimeless"FontUtilities : <<use>>
 Window  .> "1\n -_fontAugusta"FontUtilities : <<use>>
@@ -420,7 +420,7 @@ Controller o--> "1\n-_game"Game : <<use>> >
 Controller o--> Observer : add >
 Controller ..> KingDominoGame : <<create>> >
 
-King *-r-> "1\n-_kingColor" KINGCOLOR : has >
+King *-r-> KINGCOLOR : "1\n-_kingColor" has >
 
 Deck .d.> CSVReader : <<use>> >
 
