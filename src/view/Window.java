@@ -9,7 +9,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Window extends JFrame implements Observer {
+public class Window extends JFrame {
     private final Game _game;
     private final Controller _controller;
     private JFrame _frame;
@@ -37,20 +37,6 @@ public class Window extends JFrame implements Observer {
         _fontGermania = FontUtilities.setFont("Germania.otf"); // We use this for the user to access to our custom font
         _fontTimeless = FontUtilities.setFont("Timeless.ttf");
         _fontAugusta = FontUtilities.setFont("Augusta.ttf");
-    }
-
-    @Override
-    public void update(Game game) {
-
-    }
-    @Override
-    public void rotationDomino(Game game) {
-
-    }
-
-    @Override
-    public void dominoGraph(Game game) {
-
     }
 
     public Game getGame() {

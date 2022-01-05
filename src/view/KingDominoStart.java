@@ -220,17 +220,17 @@ public class KingDominoStart implements Observer{
     }
 
     @Override
-    public void update(Game game) {
+    public void updateDominoesOnTable(Game game) {
 
     }
 
     @Override
-    public void rotationDomino(Game game) {
+    public void updateDominoPreview(Game game) {
 
     }
 
     @Override
-    public void dominoGraph(Game game) {
+    public void updatePlayerGraph(Game game) {
 
     }
 }

@@ -11,16 +11,16 @@ import model.set.NumberPlayerStrategy;
 import java.util.*;
 
 public class Game {
-    private final List<Observer> _listObserver;
 
+    private final List<Observer> _listObserver;
     private Deck _deck;
     private List<Player> _listPlayers;
     private List<Domino> _listActualDominoes;
     private final NumberPlayer _numberPlayer;
-    private int _intPlayer;
-
     private final GameModeFactory _factoryGameMode;
     private final List<GameMode> _listGameMode;
+
+    private int _intPlayer;
     private final List<String> _listGameModeString;
     private boolean _dominoesLeft; // to check if there are enough dominoes on the table to play, if no we stop the game
 
@@ -179,14 +179,14 @@ public class Game {
 
     public void notifyObservers(){
         for(Observer observer : _listObserver){
-            observer.update(this);
+            observer.updateDominoesOnTable(this);
         }
     }
 
     public void notifyObserversRotation()
     {
         for(Observer observer : _listObserver){
-            observer.rotationDomino(this);
+            observer.updateDominoPreview(this);
         }
     }
 
@@ -194,11 +194,11 @@ public class Game {
     {
         for(Observer observer : _listObserver)
         {
-            observer.dominoGraph(this);
+            observer.updatePlayerGraph(this);
         }
     }
 
-    public boolean is_dominoesLeft() {
+    public boolean isDominoesLeft() {
         return _dominoesLeft;
     }
 

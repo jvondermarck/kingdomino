@@ -409,12 +409,12 @@ public class KingDominoGame implements Observer {
     }
 
     @Override
-    public void update(Game game) {
+    public void updateDominoesOnTable(Game game) {
         int numberDominoes = 4;
         if(_numberPlayer == 3)
             numberDominoes = 3;
 
-        if(!game.is_dominoesLeft()) // if there is still enough dominoes
+        if(!game.isDominoesLeft()) // if there is still enough dominoes
         {
             for(int i = 0; i < numberDominoes; i++){
                 _btnHideDominoes[i].setText(game.getActualDominoes().get(i).getId().toString());
@@ -441,12 +441,12 @@ public class KingDominoGame implements Observer {
     }
 
     @Override
-    public void rotationDomino(Game game) {
+    public void updateDominoPreview(Game game) {
         putDominoRotate();
     }
 
     @Override
-    public void dominoGraph(Game game) {
+    public void updatePlayerGraph(Game game) {
         String msgError = game.getErrorMessageSetDomino(_indexGraphClicked);
 
         if(Objects.equals(msgError, ""))
