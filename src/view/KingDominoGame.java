@@ -52,7 +52,7 @@ public class KingDominoGame implements Observer {
     private CardLayout[] _cardLayout; // _cardLayout to show first the hidden dominoes and after the two tiles of each domino when we return them
     private Container[] _container; // We add in the container (our stack) at the first place the hidden dominoes, and at the 2nd place the unhidden dominoes
 
-    private Map<Integer, JButton[][]> _mapGraphPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
+    private Map<Integer, JButton[][]> _mapKingdomPlayer; // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
     private final List<String> _listGameModeString; // We will store in the key the string of the game mode choosen and if the player can get the bonus
     private List<Integer> _orderPlayerPrevious; // for each game we will have a list of the players that have to start the first and the lastest to put his domino
 
@@ -63,7 +63,7 @@ public class KingDominoGame implements Observer {
     private boolean[] _castleIsSet; // an array for each player that need to put their castle on the graph
 
     private int _roundNumber; // to increment the number of round played
-    private int _indexGraphClicked; // integer to know on which graph we clicked, if we clicked on the 1st graph = index 0, so it's the player 1 (player 1 = index 0 too), etc.
+    private int _indexKingdomClicked; // integer to know on which graph we clicked, if we clicked on the 1st graph = index 0, so it's the player 1 (player 1 = index 0 too), etc.
     private int _indexDominoClicked; // the index that we want to store to access to rotate our domino to call it in the controller --> model
     private int[] _orderPlayerActual; // an array which will contain at the index of the array, the number of the player who selected the domino
 
@@ -334,7 +334,7 @@ public class KingDominoGame implements Observer {
 
         _panelMainGraph.setPreferredSize(new Dimension(670, 600));
         _panelMainGraph.setBackground(Color.WHITE);
-        createGraph(); // We're going to create the graph
+        createKingdom(); // We're going to create the graph
         allCastleSet(); // we disable the button if we didn't put the castle
 
         // MAIN PANEL : We put element in the main Panel
@@ -446,21 +446,21 @@ public class KingDominoGame implements Observer {
     }
 
     @Override
-    public void updatePlayerGraph(Game game) {
-        String msgError = game.getErrorMessageSetDomino(_indexGraphClicked);
+    public void updatePlayerKingdom(Game game) {
+        String msgError = game.getErrorMessageSetDomino(_indexKingdomClicked);
 
         if(Objects.equals(msgError, ""))
         {
             for(int i = 0; i < 5; i++){
                 for(int j = 0; j<5; j++){
-                    if(!game.getPlayer(_indexGraphClicked).getKingdom().isPlaceAvailable(i,j) && !game.getPlayer(_indexGraphClicked).getKingdom().isCastleHere(i,j)){
-                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexGraphClicked).getKingdom().getTiles()[i][j].getColor()));
+                    if(!game.getPlayer(_indexKingdomClicked).getKingdom().isPlaceAvailable(i,j) && !game.getPlayer(_indexKingdomClicked).getKingdom().isCastleHere(i,j)){
+                        _mapKingdomPlayer.get(_indexKingdomClicked)[i][j].setBackground(Color.decode(game.getPlayer(_indexKingdomClicked).getKingdom().getTiles()[i][j].getColor()));
 
-                        _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText("");
-                        int numberCrown = game.getPlayer(_indexGraphClicked).getKingdom().getTiles()[i][j].getCrowns();
+                        _mapKingdomPlayer.get(_indexKingdomClicked)[i][j].setText("");
+                        int numberCrown = game.getPlayer(_indexKingdomClicked).getKingdom().getTiles()[i][j].getCrowns();
                         for(int k=0; k<numberCrown; k++)
                         {
-                            _mapGraphPlayer.get(_indexGraphClicked)[i][j].setText(_mapGraphPlayer.get(_indexGraphClicked)[i][j].getText() + _unicodeCrown);
+                            _mapKingdomPlayer.get(_indexKingdomClicked)[i][j].setText(_mapKingdomPlayer.get(_indexKingdomClicked)[i][j].getText() + _unicodeCrown);
                         }
                     }
                 }
@@ -613,7 +613,7 @@ public class KingDominoGame implements Observer {
             int finalI = i;
             _btnTiles[i][0].addActionListener(clickevent -> {
                 _indexDominoClicked = finalI;
-                setBackgroudDominoGraph(0,0,true);
+                setBackgroudDominoKingdom(0,0,true);
                 putDominoRotate();
                 //System.out.println("Tile [" + finalI + "][0]");
                 if(!_dominoesAreChoosen)
@@ -628,7 +628,7 @@ public class KingDominoGame implements Observer {
             // When we click of the right tile :
             _btnTiles[i][1].addActionListener(clickevent -> {
                 _indexDominoClicked = finalI;
-                setBackgroudDominoGraph(0,0,true);
+                setBackgroudDominoKingdom(0,0,true);
                 putDominoRotate();
                 //System.out.println("Tile [" + finalI + "][1]");
                 if(!_dominoesAreChoosen)
@@ -657,7 +657,7 @@ public class KingDominoGame implements Observer {
         }
     }
 
-    public void createGraph()
+    public void createKingdom()
     {
         int numberPlayers = _numberPlayer;
 
@@ -665,7 +665,7 @@ public class KingDominoGame implements Observer {
         _panelGraph = new JPanel[numberPlayers]; // a panel to put 25 buttons in it (will be in the _panelAllGraphText panel)
         _textNamePlayer = new JTextField[numberPlayers]; // We can change the name of the players
         _castleIsSet = new boolean[_numberPlayer]; // ARRAY OF BOOLEAN to check who put his castle
-        _mapGraphPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
+        _mapKingdomPlayer = new HashMap<>(); // The key will be the number of the player, and the value will be the player's graph (array of button [5][5]
 
         // _Constraints
         GridBagConstraints _constraints = new GridBagConstraints();
@@ -677,7 +677,7 @@ public class KingDominoGame implements Observer {
         for(int i=0; i<numberPlayers; i++)
         {
             _btnOnGraph = new JButton[5][5]; // We will have 5*5 lines and columns that we will instantiate for each player
-            _mapGraphPlayer.put(i, _btnOnGraph); // we put in the key the number of the player and his graph of 5*5
+            _mapKingdomPlayer.put(i, _btnOnGraph); // we put in the key the number of the player and his graph of 5*5
 
             JPanel _panelOverlayGraph; // we create a JPanel OverLayout just to put an image of the king on the graph of each player
             _panelOverlayGraph = new JPanel() {
@@ -762,13 +762,13 @@ public class KingDominoGame implements Observer {
 
                     int finalK = k;
                     int finalL = l;
-                    _mapGraphPlayer.get(i)[k][l].addActionListener(actionEvent -> {
-                        _indexGraphClicked = finalI;
+                    _mapKingdomPlayer.get(i)[k][l].addActionListener(actionEvent -> {
+                        _indexKingdomClicked = finalI;
                         //System.out.println(finalI + " " + finalK + " " + finalL);
                         if(!_castleIsSet[finalI]) // we check if we never put a castle on the graph of the player
                         {
                             try {
-                                _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
+                                _mapKingdomPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -800,7 +800,7 @@ public class KingDominoGame implements Observer {
                                 }
                             }
 
-                            _controller.setDominoOnGraph(_indexDominoClicked, finalI, finalK, finalL);
+                            _controller.setDominoOnKingdom(_indexDominoClicked, finalI, finalK, finalL);
                             if(!_waitPlayerPutDomino)
                             {
                                 letPlayerSetDomino();
@@ -808,9 +808,9 @@ public class KingDominoGame implements Observer {
                         }
                     });
 
-                    _mapGraphPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
+                    _mapKingdomPlayer.get(i)[k][l].addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            if(areDominoesAreChoosen() && _mapGraphPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL))
+                            if(areDominoesAreChoosen() && _mapKingdomPlayer.get(finalI)[finalK][finalL].isEnabled() && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL))
                             {
                                 float saturation = 0.35F;
                                 if(Objects.equals(_switchDomino[0].getText(), "L")) // if XX
@@ -824,14 +824,14 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(horizontalColorTile0.getRed(), horizontalColorTile0.getGreen(), horizontalColorTile0.getBlue(), null);
                                     horizontalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalL-1 >= 0 && finalL-1 < _mapKingdomPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL-1)){ // if LEFT activated
                                         //left
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
-                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL+1)) {
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL-1].setBackground(horizontalColorTile1);
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
+                                    } else if(_switchDomino[1].getForeground() == Color.WHITE && finalL+1 < _mapKingdomPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK,finalL+1)) {
                                         //right
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL+1].setBackground(horizontalColorTile1);
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL].setBackground(horizontalColorTile0);
                                     }
                                 }
                                 else if(Objects.equals(_switchDomino[0].getText(), "U")){
@@ -844,14 +844,14 @@ public class KingDominoGame implements Observer {
                                     float[] hsbTile0 = Color.RGBtoHSB(verticalColorTile0.getRed(), verticalColorTile0.getGreen(), verticalColorTile0.getBlue(), null);
                                     verticalColorTile0 = Color.getHSBColor(hsbTile0[0], saturation, hsbTile0[2]);
 
-                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapGraphPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK-1,finalL)){
+                                    if(_switchDomino[0].getForeground() == Color.WHITE && (finalK-1 >= 0 && finalK-1 < _mapKingdomPlayer.get(finalI).length) && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK-1,finalL)){
                                         //up
-                                        _mapGraphPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
-                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapGraphPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK+1,finalL)){
+                                        _mapKingdomPlayer.get(finalI)[finalK-1][finalL].setBackground(verticalColorTile1);
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
+                                    } else if (_switchDomino[1].getForeground() == Color.WHITE && finalK+1 < _mapKingdomPlayer.get(finalI).length && _game.getPlayer(finalI).getKingdom().isPlaceAvailable(finalK+1,finalL)){
                                         //down
-                                        _mapGraphPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
-                                        _mapGraphPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
+                                        _mapKingdomPlayer.get(finalI)[finalK+1][finalL].setBackground(verticalColorTile1);
+                                        _mapKingdomPlayer.get(finalI)[finalK][finalL].setBackground(verticalColorTile0);
                                     }
                                 }
                             }
@@ -859,7 +859,7 @@ public class KingDominoGame implements Observer {
                             if(!_castleIsSet[finalI])
                             {
                                 try {
-                                    _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
+                                    _mapKingdomPlayer.get(finalI)[finalK][finalL].setIcon(new ImageIcon(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("castle1.png")).readAllBytes()));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -871,16 +871,16 @@ public class KingDominoGame implements Observer {
                                 for(int i = 0; i < 5; i++){
                                     for(int j = 0; j<5; j++){
                                         if(!_game.getPlayer(finalI).getKingdom().isPlaceAvailable(i,j) && !_game.getPlayer(finalI).getKingdom().isCastleHere(i,j)){
-                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode(_game.getPlayer(finalI).getKingdom().getTiles()[i][j].getColor()));
+                                            _mapKingdomPlayer.get(finalI)[i][j].setBackground(Color.decode(_game.getPlayer(finalI).getKingdom().getTiles()[i][j].getColor()));
 
-                                            _mapGraphPlayer.get(finalI)[i][j].setText("");
+                                            _mapKingdomPlayer.get(finalI)[i][j].setText("");
                                             int numberCrown = _game.getPlayer(finalI).getKingdom().getTiles()[i][j].getCrowns();
                                             for(int k=0; k<numberCrown; k++)
                                             {
-                                                _mapGraphPlayer.get(finalI)[i][j].setText(_mapGraphPlayer.get(finalI)[i][j].getText() + _unicodeCrown);
+                                                _mapKingdomPlayer.get(finalI)[i][j].setText(_mapKingdomPlayer.get(finalI)[i][j].getText() + _unicodeCrown);
                                             }
                                         } else {
-                                            _mapGraphPlayer.get(finalI)[i][j].setBackground(Color.decode("#CECECE"));
+                                            _mapKingdomPlayer.get(finalI)[i][j].setBackground(Color.decode("#CECECE"));
                                         }
                                     }
                                 }
@@ -888,7 +888,7 @@ public class KingDominoGame implements Observer {
 
                             if(!_castleIsSet[finalI])
                             {
-                                _mapGraphPlayer.get(finalI)[finalK][finalL].setIcon(null);
+                                _mapKingdomPlayer.get(finalI)[finalK][finalL].setIcon(null);
                             }
                         }
                     });
@@ -922,7 +922,7 @@ public class KingDominoGame implements Observer {
     }
 
     // We remove or display a font to put or remove a color in our mini graph at one specifi coordinate
-    public void setBackgroudDominoGraph(int x, int y, boolean condition)
+    public void setBackgroudDominoKingdom(int x, int y, boolean condition)
     {
         _dominoGraphRotation[x][y].setContentAreaFilled(condition);
         _dominoGraphRotation[x][y].setBorderPainted(condition);
@@ -940,8 +940,8 @@ public class KingDominoGame implements Observer {
 
         if(_game.isXXDomino(_indexDominoClicked))
         {
-            setBackgroudDominoGraph(0,1,true);
-            setBackgroudDominoGraph(1,0,false);
+            setBackgroudDominoKingdom(0,1,true);
+            setBackgroudDominoKingdom(1,0,false);
             _dominoGraphRotation[0][1].setBackground(Color.decode(_game.getColorTile(_indexDominoClicked, 0,1)));
             setCrownRotation(0,1);
             _switchDomino[0].setText("L");
@@ -949,8 +949,8 @@ public class KingDominoGame implements Observer {
             _switchDomino[0].setToolTipText("<html>Left.</html>");
             _switchDomino[1].setToolTipText("<html>Right.</html>");
         } else if(_game.isXYDomino(_indexDominoClicked)){
-            setBackgroudDominoGraph(1,0,true);
-            setBackgroudDominoGraph(0,1,false);
+            setBackgroudDominoKingdom(1,0,true);
+            setBackgroudDominoKingdom(0,1,false);
             _dominoGraphRotation[1][0].setBackground(Color.decode(_game.getColorTile(_indexDominoClicked, 1,0)));
             setCrownRotation(1,0);
             _switchDomino[0].setText("U");
@@ -1087,7 +1087,7 @@ public class KingDominoGame implements Observer {
             _btnTiles[i][0].setEnabled(false);
             _btnTiles[i][1].setEnabled(false);
             //_lblKingPicture[i].setOpaque(false);
-            graphEnabled(false, _orderPlayerActual[i]);
+            kingdomEnabled(false, _orderPlayerActual[i]);
         }
         for(int i=0; i<_numberDomino; i++)
         {
@@ -1096,7 +1096,7 @@ public class KingDominoGame implements Observer {
                 _btnTiles[i][0].setEnabled(true);
                 _btnTiles[i][1].setEnabled(true);
                 //_lblKingPicture[i].setOpaque(true);
-                graphEnabled(true, _orderPlayerActual[i]);
+                kingdomEnabled(true, _orderPlayerActual[i]);
                 setTextInformation(_textNamePlayer[_orderPlayerActual[i]], "place your domino !");
                 _indexDominoClicked = i;
                 putDominoRotate();
@@ -1128,7 +1128,7 @@ public class KingDominoGame implements Observer {
             {
                 for(int j=0; j<2; j++)
                 {
-                    setBackgroudDominoGraph(i,j,false);
+                    setBackgroudDominoKingdom(i,j,false);
                 }
             }
 
@@ -1149,13 +1149,13 @@ public class KingDominoGame implements Observer {
     }
 
     // Disable or enabled the 25 buttons on the player's graph depending on if it's the player'a turn to put his domino
-    public void graphEnabled(boolean condition, int index)
+    public void kingdomEnabled(boolean condition, int index)
     {
         for(int i=0; i<5; i++)
         {
             for(int j=0; j<5; j++)
             {
-                _mapGraphPlayer.get(index)[i][j].setEnabled(condition);
+                _mapKingdomPlayer.get(index)[i][j].setEnabled(condition);
             }
         }
     }
@@ -1163,11 +1163,11 @@ public class KingDominoGame implements Observer {
     public void endGame() throws IOException {
         // We remove all action listenner on the buttons in the graphs to avoid any problems
         for(int i=0; i< _numberPlayer; i++) {
-            graphEnabled(true, i);
+            kingdomEnabled(true, i);
             for (int k = 0; k < 5; k++) {
                 for (int l = 0; l < 5; l++) {
-                    for( ActionListener al : _mapGraphPlayer.get(i)[k][l].getActionListeners() ) {
-                        _mapGraphPlayer.get(i)[k][l].removeActionListener(al);
+                    for( ActionListener al : _mapKingdomPlayer.get(i)[k][l].getActionListeners() ) {
+                        _mapKingdomPlayer.get(i)[k][l].removeActionListener(al);
                     }
                 }
             }

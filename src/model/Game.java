@@ -145,11 +145,11 @@ public class Game {
             _listActualDominoes.get(index).setLeftSide();
     }
 
-    public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y)
+    public void setDominoOnKingdom(int indexDomino, int indexPlayer, int x, int y)
     {
         Domino domino = _listActualDominoes.get(indexDomino);
         _listPlayers.get(indexPlayer).getKingdom().setDomino(domino, x, y);
-        notifyObserverDominoGraph();
+        notifyObserverDominoKingdom();
     }
 
     public String getErrorMessageSetDomino(int indexPlayer)
@@ -190,11 +190,11 @@ public class Game {
         }
     }
 
-    public void notifyObserverDominoGraph()
+    public void notifyObserverDominoKingdom()
     {
         for(Observer observer : _listObserver)
         {
-            observer.updatePlayerGraph(this);
+            observer.updatePlayerKingdom(this);
         }
     }
 

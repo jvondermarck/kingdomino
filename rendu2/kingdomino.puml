@@ -52,7 +52,7 @@ package Model #salmon;line:red{
         +rotateDomino(index:Integer)
         +reverseDomino(index:Integer)
         +setDirectionDomino(index:Integer. direction:Integer)
-        +setDominoOnGraph(indexDomino:Integer. indexPlayer:Integer, x:Integer, y:Integer)
+        +setDominoOnKingdom(indexDomino:Integer. indexPlayer:Integer, x:Integer, y:Integer)
         +getErrorMessageSetDomino(indexPlayer: Integer): String
         +isXX(index:Integer):Boolean
         +isXY(index:Integer):Boolean
@@ -60,7 +60,7 @@ package Model #salmon;line:red{
         +addObservers(observer: Observer)
         +notifyObservers()
         +notifyObserversRotation()
-        +notifyObserverDominoGraph()
+        +notifyObserverDominoKingdom()
         +isDominoesLeft(): Boolean
         +calculateScores()
         +getListGameMode(): GameMode[]
@@ -70,7 +70,7 @@ package Model #salmon;line:red{
     interface Observer<<interface>>{
        +updateDominoesOnTable(game:Game)
        +updateDominoPreview(game:Game)
-       +updatePlayerGraph(game:Game)
+       +updatePlayerKingdom(game:Game)
     }
 
     package Entities #indianred{
@@ -89,7 +89,7 @@ package Model #salmon;line:red{
             +isCompleted(): Boolean
             +isCastleOnMiddle(): Boolean
             -countCells(matrix: Integer[], i:Integer, j:Integer)
-            -countCrowns(matrix: Integer[], graph: Tile[], i:Integer, j:Integer, v:Integer)
+            -countCrowns(matrix: Integer[], tile: Tile[], i:Integer, j:Integer, v:Integer)
             +getSizeOfADomain(type: String): Integer[]
         }
 
@@ -155,7 +155,7 @@ package Model #salmon;line:red{
            +getColor(): String
         }
 
-        Player *--> "1\n-_graph" Kingdom : > has
+        Player *--> "1\n-_kingdom" Kingdom : > has
         Player *-> "1\n-_king{readOnly}" King : > has
         Player *-l-> "1\n-_castle" Castle : > has
         Player ..> KINGCOLOR : > <<use>>
@@ -316,7 +316,7 @@ package View #lightgreen;line:green{
         +getInstancesWindow()
         {override}+upadteDominoesOnTable(game:Game)
         {override}+updateDominoPreview(game:Game)
-        {override}+updatePlayerGraph(game:Game)
+        {override}+updatePlayerKingdom(game:Game)
     }
 
     class KingDominoGame implements Observer
@@ -333,7 +333,7 @@ package View #lightgreen;line:green{
         -_allDominoesAreSet: Boolean[]
         -_castleIsSet: Boolean[]
         -_roundNumber: Integer
-        -_indexGraphClicked: Integer
+        -_indexKingdomClicked: Integer
         -_indexDominoClicked: Integer
         -_orderPlayerActual: Integer[]
         -_unicodeCrown: String
@@ -342,13 +342,13 @@ package View #lightgreen;line:green{
         +getInstancesWindow()
         {override}+upadteDominoesOnTable(game:Game)
         {override}+updateDominoPreview(game:Game)
-        {override}+updatePlayerGraph(game:Game)
+        {override}+updatePlayerKingdom(game:Game)
         +setCrownRotation()
         +labelKingONDominoes()
         changeLabelKing()
         +createDominoes()
-        +createGraph()
-        +setBackgroudDominoGraph(x:Integer, y:Integer, condition:Boolean)
+        +createKingdom()
+        +setBackgroudDominoKingdom(x:Integer, y:Integer, condition:Boolean)
         +putDominoRotate()
         +setTextInformation(text: String)
         +allCastleSet()
@@ -357,7 +357,7 @@ package View #lightgreen;line:green{
         +addPlayerPlaceDomino()
         +nextPlayerToChooseDomino()
         +letPlayerSetDomino()
-        +graphEnabled()
+        +kingdomEnabled()
         +endGame()
         +createScorePlayer()
         +createRanking(): Integer[]
@@ -380,7 +380,7 @@ package Controller #gold;line:goldenrod {
         +callReverseDomino(index: Integer)
         +callSetDirectionDomino(index: Integer, direction:Integer)
         +setCastle(index:Integer, x:Integer, y:Integer)
-        +setDominoOnGraph(index:Integer, indexPlayer:Integer, x:Integer, y:Integer)
+        +setDominoOnKingdom(index:Integer, indexPlayer:Integer, x:Integer, y:Integer)
         +addObserver(observer: Observer)
         +instantiateKingdominoGame()
         +calculScorePlayer()

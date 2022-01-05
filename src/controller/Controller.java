@@ -33,7 +33,7 @@ public class Controller {
     public void callSetDirectionDomino(int index, int direction) { _game.setDirectionDomino(index, direction);}
 
     public void setCastle(int index, int x, int y) { _game.setCastlePlayer(index, x, y); }
-    public void setDominoOnGraph(int indexDomino, int indexPlayer, int x, int y) { _game.setDominoOnGraph(indexDomino, indexPlayer, x,y);}
+    public void setDominoOnKingdom(int indexDomino, int indexPlayer, int x, int y) { _game.setDominoOnKingdom(indexDomino, indexPlayer, x,y);}
 
     public void addObserver(Observer observer){
         _game.addObservers(observer);

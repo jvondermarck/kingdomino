@@ -230,7 +230,7 @@ public class KingDominoStart implements Observer{
     }
 
     @Override
-    public void updatePlayerGraph(Game game) {
+    public void updatePlayerKingdom(Game game) {
 
     }
 }
