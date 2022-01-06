@@ -11,6 +11,14 @@
 5. ### L'exécutable
 6. ### Annexe
 
+## 0. Prélude
+Si vous voulez exécuter le code présent dans repertoire ``rendu1``
+veuillez ouvrir directement ce repertoire directement avec IntelJ. Sinon cet erreur peu apparaitre.
+```
+Erreur : impossible de trouver ou de charger la classe principale launcher.LauncherKingdominoRendu1
+Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
+```
+
 ## 1.  Introduction
 
 - Dans le premier rapport, nous avons expliqué nos choix de conceptions et donner un aperçu de la première version de l'application.
