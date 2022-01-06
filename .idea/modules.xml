@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/a31-kingdomino.iml" filepath="$PROJECT_DIR$/a31-kingdomino.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rendu1/rendu1.iml" filepath="$PROJECT_DIR$/rendu1/rendu1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rendu2/rendu2.iml" filepath="$PROJECT_DIR$/rendu2/rendu2.iml" />
     </modules>
   </component>
 </project>
