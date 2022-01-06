@@ -33,7 +33,7 @@
 ## 3. Calcule des scores
 En fin de partie, la classe ``Game`` s'occupe de calculer les scores de chacun joueur.
 
-La classe ``Kingdom`` à une fonction qui permet de calculer la taille d'un domaine en fonction de son type donné en paramètre (la couleur en hex) appelé ``getSieOfADomain`` utilisant les fonctions privées ``countCells`` et ``countCrowns`` (méthode Depth First Traversal utilisé). 
+La classe ``Kingdom`` à une fonction qui permet de calculer la taille d'un domaine en fonction de son type donné en paramètre (la couleur en hex) appelé ``getSizeOfADomain`` utilisant les fonctions privées ``countCells`` et ``countCrowns`` (méthode Depth First Traversal utilisé pour parcourir le tableau contenant nos tuiles). 
 Cette fonction retourne une liste de liste contenant deux entiers représentant : la taille du domaine et le nombre de couronnes.
 
 Cette fonction sera utilisée dans la classe ``Game`` via la méthode ``calculateScores``, qui vas parcourir la liste ayant tous les joueurs. Chaque joueur à une liste
