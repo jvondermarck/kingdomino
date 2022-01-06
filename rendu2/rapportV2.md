@@ -5,7 +5,7 @@
 1. ### Introduction
 2. ### Ajustements
    #### a. Package `Model`
-   #### b. Package `View
+   #### b. Package `View`
 3. ### Calcule des scores
 4. ### Améliorations possibles
 5. ### L'exécutable
