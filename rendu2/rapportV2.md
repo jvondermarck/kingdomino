@@ -1,4 +1,3 @@
-
 # Projet A31 - 2e Rapport Kingdomino
 
 # Sommaire
@@ -12,8 +11,8 @@
 6. ### Annexe
 
 ## 0. Prélude
-Si vous voulez exécuter le code présent dans repertoire ``rendu1``
-veuillez ouvrir directement ce repertoire directement avec IntelJ. Sinon cet erreur peu apparaitre.
+Si vous voulez exécuter le code présent dans le repertoire ``rendu1``
+veuillez ouvrir ce repertoire directement avec IntelJ. Sinon cet erreur peu apparaitre.
 ```
 Erreur : impossible de trouver ou de charger la classe principale launcher.LauncherKingdominoRendu1
 Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
@@ -29,7 +28,7 @@ Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
 
 ### a. Package`Model`
 - Par rapport au premier rendu, nous avons enlevé le pattern Singleton dans la classe `Game` car cela nous restreint au niveau des possibilités d'évolutions par la suite.
-  (Ex : pouvoir jouer plusieurs parties à la fin)
+  (Ex : pouvoir jouer plusieurs parties)
 - Nous avons renommé la classe `Graph`, en `Kingdom`. En effet, le mot ``Graph`` fait confusion, car cela fait allusion instinctivement à la théorie des graphes pour les personnes qui n'ont pas étais impliqué à la conception de l'application.
 
 ### b. Package `View`
