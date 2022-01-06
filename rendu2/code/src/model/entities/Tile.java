@@ -1,8 +1,5 @@
 package model.entities;
 
-//Peut être faire des méthodes abstraite car certaine fonction
-//seront hérité à Castle alors qu'elle serve à rien
-
 public class Tile {
     private final int _crowns;
     private String _color;

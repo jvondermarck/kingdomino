@@ -2,18 +2,21 @@ package model.entities;
 
 import utilities.CSVReader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Deck {
-    private final List<Domino> _listdominoes;
+    private final List<Domino> _listDominoes;
     private static final Random _rand = new Random();
 
     public Deck(int numberPlayer){
-        _listdominoes = new ArrayList<>();
+        _listDominoes = new ArrayList<>();
         List<List<String>> dataCSV = CSVReader.readCSV("kingdomino.csv");
         for(int i = 1; i < dataCSV.size(); i++){
             Domino domino = generateDomino(i, dataCSV);
-            _listdominoes.add(domino);
+            _listDominoes.add(domino);
         }
         this.shuffle();
 
@@ -27,8 +30,8 @@ public class Deck {
 
     private void removeDomino(int iteration){
         for(int i = 0; i < iteration; i++){
-            int random = _rand.nextInt(_listdominoes.size());
-            _listdominoes.remove(random);
+            int random = _rand.nextInt(_listDominoes.size());
+            _listDominoes.remove(random);
         }
     }
 
@@ -47,24 +50,21 @@ public class Deck {
     }
 
     public List<Domino> getStack(){
-        return this._listdominoes;
-    }
-
-    public Integer sizeOfDeck(){
-        return this._listdominoes.size();
+        return this._listDominoes;
     }
 
     public void shuffle(){
-        Collections.shuffle(this._listdominoes, _rand);
+        Collections.shuffle(this._listDominoes, _rand);
     }
 
     public Domino giveADomino(){
-        int random = _rand.nextInt(_listdominoes.size());
-        Domino domino = this._listdominoes.get(random);
-        this._listdominoes.remove(domino);
+        int random = _rand.nextInt(_listDominoes.size());
+        Domino domino = this._listDominoes.get(random);
+        this._listDominoes.remove(domino);
         return domino;
     }
 
-
-
+    public List<Domino> getListDominoes() {
+        return _listDominoes;
+    }
 }

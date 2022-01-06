@@ -1,15 +1,16 @@
 package model.set.mode;
+import model.entities.Player;
 import model.set.GameMode;
 
 public class MiddleKingdom extends GameMode {
     @Override
-    public int numberBonus() {
-        return 10;
+    public boolean executeGameMode(Player player) {
+        return player.getKingdom().isCastleOnMiddle();
     }
 
     @Override
-    public boolean sizeGraph() {
-        return false;
+    public int numberBonus() {
+        return 10;
     }
 
     @Override

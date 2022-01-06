@@ -3,6 +3,10 @@ package model.entities;
 public class Domino {
     private final int id;
     private final Tile[][] _arrayTile;
+    private boolean rightSide = true;
+    private boolean leftSide = false;
+    private boolean upSide = false;
+    private boolean downSide = false;
 
     public Domino(int id, Tile tile1, Tile tile2){
         this.id = id;
@@ -56,6 +60,58 @@ public class Domino {
             _arrayTile[0][0] = _arrayTile[1][0];
             _arrayTile[1][0] = temp;
         }
+    }
+
+    public void setRightSide(){
+        if(isXX()){
+            rightSide = true;
+            leftSide = false;
+            upSide = false;
+            downSide = false;
+        }
+    }
+
+    public void setLeftSide(){
+        if(isXX()){
+            upSide = false;
+            downSide = false;
+            rightSide = false;
+            leftSide = true;
+        }
+    }
+
+    public void setUpSide(){
+        if(isXY()){
+            upSide = true;
+            downSide = false;
+            rightSide = false;
+            leftSide = false;
+        }
+    }
+
+    public void setDownSide(){
+        if(isXY()){
+            upSide = false;
+            downSide = true;
+            rightSide = false;
+            leftSide = false;
+        }
+    }
+
+    public boolean isRightSide(){
+        return this.rightSide;
+    }
+
+    public boolean isLeftSide(){
+        return this.leftSide;
+    }
+
+    public boolean isUpSide(){
+        return this.upSide;
+    }
+
+    public boolean isDownSide(){
+        return this.downSide;
     }
 
     public String getColor(int x, int y)
