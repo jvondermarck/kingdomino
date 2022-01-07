@@ -1,5 +1,5 @@
 # Projet A31 - 2e Rapport Kingdomino
-
+__________
 # Sommaire
 1. ### Introduction
 2. ### Ajustements
@@ -7,22 +7,14 @@
    #### b. Package `View`
 3. ### Calcule des scores
 4. ### Améliorations possibles
-5. ### L'exécutable
-6. ### Annexe
-
-## 0. Prélude
-Si vous voulez exécuter le code présent dans le repertoire ``rendu1``
-veuillez ouvrir ce repertoire directement avec IntelJ. Sinon cet erreur peu apparaitre.
-```
-Erreur : impossible de trouver ou de charger la classe principale launcher.LauncherKingdominoRendu1
-Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
-```
+__________
 
 ## 1.  Introduction
 
 - Dans le premier rapport, nous avons expliqué nos choix de conceptions et donner un aperçu de la première version de l'application.
     - Si vous n'avez pas lu le [premier rapport](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu1/rapportV1.md), nous vous invitons vivement à le lire.
 - Ce rapport est là pour évoquer les ajustements et les améliorations possibles qui aurait pu être réalisé, et pour finir nous montrons un aperçu de l'application terminé.
+- Veuillez trouver notre [mode d'emploi](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu2/README.md)
 
 ## 2. Ajustements
 
@@ -86,34 +78,4 @@ Pour enfin finir sur l'addition de tous les points.
 - Dans une prochaine version nous aurions voulu re-factoriser la classe `KingdominoGame` en plusieurs sous classes, mais il était trop contraignant de le réaliser dû à tous nos attributs de cette classe `KingdominoGame` à devoir accéder pour pouvoir exécuter ces nouvelles sous-classes, et à notre temps restant avant le rendu final.
     - Nous pouvons mettre dans ses sous classes une classe qui permettrait de gérer les royaumes de chacun des joueurs, que se soit de la création de chaque Royaume jusqu'à l'interaction des joueurs lors de clics sur leur royaume.
     - On peut avoir une autre sous-classe permettant de gérer l'interface des scores à la fin de la partie.
-- Nous aurions pu aussi créer des sous-classes pour la classe `Game`. En effet, dans notre projet s'est une classe très importante qui permet d'orchestrer le déroulement d'une partie. Cette classe collabore principalement avec deux sous-packages qui sont `Set` et `Entities`, nous pensons que créer deux sous-classes aurait été intéressant pour éviter que cette classe ne gère trop de méthodes
-
-## 5. L'exécutable
-### Écran d'accueil
-1. Premièrement, quand nous lançons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu.
-   ![image](https://imgur.com/5SSojbq.png)
-
-### Écran en partie
-2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.
-   ![image](https://imgur.com/uy7Tjw6.png)
-
-- Tout d'abord, chacun des joueurs doit placer leur château sur leur graphe. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.
-  ![image](https://imgur.com/uy7Tjw6.png)
-
-- Ensuite, avant de pouvoir choisir leur domino, la personne doit montrer les dominos.
-  ![image](https://imgur.com/3K96Woy.png)
-- Chacun des joueurs doit choisir leur domino, tout en ne prenant pas le même qu'un autre joueur.
-  ![image](https://imgur.com/MZV1ybP.png)
-- Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).
-
-### Fin de partie
-![image](https://imgur.com/Y60uKcQ.png)
-
-### Vidéo
-Voici une vidéo ou une partie est jouer.
-
-[![IMAGE_ALT](https://img.youtube.com/vi/DUabSjffzgM/0.jpg)](https://www.youtube.com/watch?v=DUabSjffzgM)
-(vidéo youtube)
-## 6. Annexe
-- Si en voulant tester le Swing sur un ordinateur Linux, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 33 et enlever la ligne `frame.setLocationRelativeTo(null);` (cela permet d'avoir la fenêtre d'affiché au mileu de l'écran de l'ordinateur)
-- S'il y a un problème lors du lancement du JAR, veuillez installer sur le site [Azul](https://www.azul.com/downloads/?package=jdk) une version supérieur à Java 16. Il faudra aussi avoir d'installé [Java](https://www.java.com/fr/download/manual.jsp).
+- Nous aurions pu aussi créer des sous-classes pour la classe `Game`. En effet, dans notre projet s'est une classe très importante qui permet d'orchestrer le déroulement d'une partie. Cette classe collabore principalement avec deux sous-packages qui sont `Set` et `Entities`, nous pensons que créer deux sous-classes aurait été intéressant pour éviter que cette classe ne gère trop de méthodes.
