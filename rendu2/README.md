@@ -21,13 +21,20 @@ JDK utilisé : [`Azul Zulu OpenJDK 16`](https://www.azul.com/downloads/)).
 -  [Rapport V2](rapportV2.md)
 
 ## 2. Procédure d'installation du projet
-Si vous voulez exécuter le code présent dans le repertoire ``rendu1``
-veuillez ouvrir ce repertoire directement avec IntelJ. Sinon cet erreur peu apparaitre.
+
+- *Clonage du projet en local* : Pour installer notre projet, cloner notre depôt et dans un répertoire ``git clone https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino.git```.
+
+### Possibles problèmes rencontrés 
+
+#### Problème d'éxécution 
+> Si vous voulez exécuter le code présent dans le repertoire ``rendu1`` veuillez ouvrir ce repertoire directement avec IntelJ. Sinon cettte erreur peut apparaitre.
+
 ```
 Erreur : impossible de trouver ou de charger la classe principale launcher.LauncherKingdominoRendu1
 Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
 ```
 
+#### Problème d'affichage de l'interface graphique
 > Si en voulant tester le Swing sur un ordinateur Linux, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 33 et enlever la ligne `frame.setLocationRelativeTo(null);` (cela permet d'avoir la fenêtre d'affiché au mileu de l'écran de l'ordinateur)
 
 ## 3. Procédure d'installation de l'exécutable
@@ -64,6 +71,9 @@ Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
 Voici une vidéo ou une partie est jouer.
 [![IMAGE_ALT](https://img.youtube.com/vi/DUabSjffzgM/0.jpg)](https://www.youtube.com/watch?v=DUabSjffzgM)
 (vidéo youtube)
+
+### Explication de nos boutons de placement du domino
+- TODO
 
 ## 5. Membres de l'équipe
 - Julien Von Der Marck
