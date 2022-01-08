@@ -1,8 +1,10 @@
 # Projet A31 - Mode emploi
 
+![](img/background.jpg)
+
 # Sommaire
 1. ### Introduction
-2. ### Procédure d'installation du projet
+2. ### Procédure d'installation du projet en local
 3. ### Procédure d'installation de l'exécutable
 4. ### L'exécutable
 5. ### Membres de l'équipe
@@ -13,16 +15,16 @@ _____
 ### Projet
 L'objectif de ce projet est de concevoir une application permettant de jouer au jeu de société Kingdomino.
 
-Ce projet à était réalisé à l'aide du langage `Java`.
-JDK utilisé : [`Azul Zulu OpenJDK 16`](https://www.azul.com/downloads/).
+- Ce projet à était réalisé à l'aide du langage [`Java`](https://www.java.com/fr/download/manual.jsp/)
+- JDK utilisé : [`Azul Zulu OpenJDK v16`](https://www.azul.com/downloads/).
 
 ### Nos rapports
--  [Rapport V1](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu1/rapportV1.md)
+-  [Rapport V1](../rendu1/rapportV1.md)
 -  [Rapport V2](rapportV2.md)
 
-## 2. Procédure d'installation du projet
+## 2. Procédure d'installation du projet en local
 
-- **Clonage du projet en local** : Pour installer notre projet, **cloner** notre dépôt et dans un répertoire taper la commande suivante : 
+- **Clonage du projet en local** : Pour installer notre projet, **cloner** notre dépôt, et dans un répertoire vide, taper la commande suivante : 
  
     ```git clone https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino.git```
 
