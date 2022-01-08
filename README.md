@@ -1,105 +1,105 @@
-Kingdomino
-==========
+# Projet A31 - Programmation et conception objet avancées
 
-![](img/kingdomino_elements_small.jpg)
+![](img/background.jpg)
 
+# Sommaire
+1. ### Introduction
+2. ### Procédure d'installation du projet en local
+3. ### Procédure d'installation de l'exécutable
+4. ### L'exécutable
+5. ### Membres de l'équipe
+
+_____
+
+## 1. Introduction 
+### Projet
 L'objectif de ce projet est de concevoir une application permettant de jouer au jeu de société Kingdomino.
 
-Les règles
-----------
+Ce projet à était réalisé à l'aide du langage `Java`.
+JDK utilisé : [`Azul Zulu OpenJDK 16`](https://www.azul.com/downloads/).
 
-### Résumé
+### Nos rapports
+- [Rapport V1](https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu1/rapportV1.md)
+- [Rapport V2](rapportV2.md)
 
-Kingdomino se joue de 2 à 4 joueurs. L'objectif est de construire un royaume composé de Dominos :
+### Règles du jeu et cahier des charges
+-  [Règles & Cahier des charges](Rules.md)
 
-- Un domino est composé 2 tuiles qui ont chacune un type de terrain (champs, herbe, forêt, etc.) et pour certaines une à 3 couronnes.
-- Un royaume est un domaine carré de 5x5 tuiles dont un château
+## 2. Procédure d'installation du projet en local
 
-Chaque joueur ajoute les dominos un par un à son royaume. Un domino doit être posé :
+- **Clonage du projet en local** : Pour installer notre projet, **cloner** notre dépôt, et dans un répertoire taper la commande suivante : 
+ 
+    ```git clone https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino.git```
 
-- en connectant au moins l'une de ses tuiles à une tuile du royaume de même type
-- en restant dans un carré de 5x5
+### Possibles problèmes rencontrés 
 
-Si un joueur ne peut pas placer le domino choisi, celui-ci est défaussé.
+#### Problème d'exécution 
+> Si vous voulez exécuter le code présent dans le répertoire ``rendu1`` veuillez ouvrir ce répertoire directement avec IntelJ. Sinon cette erreur peut apparaitre.
 
-Le gagnant est celui qui construit le royaume rapportant le plus grand nombre de points de prestige, calculé comme la somme des points de chaque domaine. Le nombre de points d'un domaine correspond au produit de son nombre de tuiles avec son nombre de couronnes.
+```
+Erreur : impossible de trouver ou de charger la classe principale launcher.LauncherKingdominoRendu1
+Causé par : java.lang.ClassNotFoundException: launcher.LauncherKingdominoRendu1
+```
 
-### Règles complètes
+#### Problème d'affichage de l'interface graphique
+> Si en voulant tester le Swing sur un ordinateur Linux, l'affichage graphique ne s'affiche pas bien, il suffit d'aller dans la classe `Window` et d'aller à la ligne 33 et enlever la ligne `frame.setLocationRelativeTo(null);` (cela permet d'avoir la fenêtre d'affichée au mileu de l'écran de l'ordinateur)
 
-Vous trouverez les règles au format texte dans le [Livret de Règles](docs/reglesKingdomino.pdf), et en regardant les vidéos d'explications :
+## 3. Procédure d'installation de l'exécutable
 
-- en version courte avec [LudoChrono](https://www.youtube.com/watch?v=jnM9yf65rpo) ou [Touslesprix.com](https://www.youtube.com/watch?v=MBPFPKehV44) : ~ 5 minutes
-- en version plus longue avec [Yahndrev](https://www.youtube.com/watch?v=93VxIXxthFU) : ~ 15 minutes
+| Windows  | Linux & Mac OS |
+|:-:|:-:|
+| Télécharger le jeu <a href="https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu2/a31-kingdomino_V2.jar?inline=false">ici</a>, exécuter, et voilà ! | Télécharger le .jar <a href="https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino/-/blob/master/rendu2/a31-kingdomino_V2.jar?inline=false">ici</a>, ouvrer un terminal et diriger vous vers le dossier ou vous avez sauvegarder l'exécutable, puis taper : <br />  `$ java -jar a31-kingdomino_V2.jar.jar` |
 
-### Matériel
+> Si vous avez un souci lors de l'éxécution du fichier `.jar`, nous vous invitons à suivre les instructions pour mettre à jour Java  [ici.](https://www.java.com/fr/download/)
+> Et de faire en sorte d'avoir installé [`Azul Zulu OpenJDK`(https://www.azul.com/downloads/) (version supérieure à 16).
 
-La liste des dominos est disponible sur [ce dépot Github](https://github.com/RuPaulsDataRace/Kingdomino-For-Queens).
+## 4. L'exécutable
+### Écran d'accueil
+1. Premièrement, quand nous lançons l'exécutable, nous sommes amenés sur une petite fenêtre, permettant de choisir le mode de jeu (qui n'est pas obligatoire) et de sélectionner le nombre de joueurs. Une fois que l'utilisateur clique sur le bouton Start, il sera amené sur une nouvelle fenêtre, qui lui permettra de joueur au jeu. 
+  ![image](https://imgur.com/5SSojbq.png)
 
-Attendus
---------
+### Écran en partie
+2. Après avoir choisi le mode de jeu et le nombre de joueurs (ici 4), cette fenêtre de jeu permet d'assurer la totalité d'une partie.
+   ![image](https://imgur.com/uy7Tjw6.png)
 
-Votre application doit proposer ces fonctionnalités :
+- Tout d'abord, chacun des joueurs doit placer leur château sur leur royaume. Par ailleurs, chacun des joueurs peut modifier leur nom de joueur en cliquant, tout simplement, sur leur nom.
+  ![image](https://imgur.com/uy7Tjw6.png)
 
-- Choix du nombre de joueurs (2 à 4)
-- Sélection **avant le début de la partie** des règles de calcul optionnelles parmi "Dynastie", "Empire du milieu" et "Harmonie"
-- Chaque joueur positionne initialement son château dans son royaume : il ne pourra plus être déplacé
-- À son tour un joueur doit pouvoir placer dans son royaume le domino présélectionné **puis** sélectionner le domino suivant
-- Votre application graphique doit proposer :
-  - une fenêtre de démarrage pour choisir les paramètres : joueurs, mode de calcul des points, etc.
-  - une fenêtre de jeu avec les royaumes de chaque joueur et qui permette à chaque joueur de jouer successivement jusqu'à la fin de la partie
-  - une fenêtre de fin de jeu qui affiche les scores et annonce le vainqueur
+- Ensuite, avant de pouvoir choisir leur domino, la personne doit montrer les dominos.
+  ![image](https://imgur.com/3K96Woy.png)
+- Chacun des joueurs doit choisir leur domino, tout en ne prenant pas le même qu'un autre joueur.
+  ![image](https://imgur.com/MZV1ybP.png)
+- Quand un joueur clique pour sélectionner son domino, un petit carré s'affiche avec la couleur du Roi (Dans une prochaine version, au lieu d'afficher simplement une couleur, nous implémenterons une image avec le Roi du joueur en question dans chacun des petits carrés).
 
-Veillez à avoir une interface ergonomique qui affiche les informations utiles à chaque joueur.
+### Fin de partie
+![image](https://imgur.com/Y60uKcQ.png)
 
-Consignes
----------
+### Vidéo
+Voici une vidéo ou une partie est joué. (vidéo youtube)
 
-### Pour démarrer avec le dépôt Git
+[![IMAGE_ALT](https://img.youtube.com/vi/DUabSjffzgM/0.jpg)](https://www.youtube.com/watch?v=DUabSjffzgM)
 
-- Créez un groupe `nom1-nom2` où nom1 et nom2 sont les noms de famille des deux membres du binôme
-- Forkez le dépôt https://git.unistra.fr/a313/a31-kingdomino dans le groupe créé ci-dessus
-- Ajoutez le responsable du module et votre enseignant de TP comme Reporter de votre dépôt
 
-### Sur toute la durée 
+### Explication de nos boutons de placement du domino
+- Tout d'abord, quand on laisse la souris quelque seconde sur un des 4 boutons il y a un petit texte d'information.
 
-- Ce projet est à réaliser **en binôme**.
-- Vous devez concevoir en UML et implémenter en Java le jeu de société Kingdomino, en respectant une **architecture MVC** et en proposant une **interface graphique en Swing**.
-- Vous devez respecter les **principes de conception** et mettre en œuvre les **patrons de conception** vus en cours, **lorsque cela est pertinent**. Attention, il ne s'agit pas d'essayer d'utiliser tous les patrons de conception vus en cours !
-- Vous rédigerez parallèlement **un (ou des) rapports** pour expliquer vos choix de conception. Il est possible aussi que vous soyez amenés à renoncer à une partie du développement par manque de temps. Dans ce cas, le rapport est l’endroit où signaler ce problème (il aurait fallu faire *ceci* mais je n’avais pas assez de temps devant moi et j’ai préféré me concentrer sur *cela* parce que ...).
-- Votre dépôt devra être **mis à jour au minimum après chaque séance de TP** de façon à ce que nous puissions évaluer votre démarche sur toute la durée du projet.
+#### Les boutons de rotations 
+- ![IMAGE_ALT](https://imgur.com/0MRfkq3.jpg) : ce bouton a pour but de mettre le domino soit dans le sens vertical ou dans le sens horizontal.
+- ![IMAGE_ALT](https://imgur.com/aENnmLV.jpg) : ce bouton a pour d'inverser le domino. La tuile de gauche sera positionnée à droite, et inversement.
 
-Rendus
-------
+#### La mise en place du domino
+- Si le bouton est dans le sens horizontal, il y aura un bouton avec une lettre "L" (Left = gauche) et "R" (droite).
+- Si le bouton est dans le sens vertical, il y aura un bouton avec une lettre "U" (Up = en haut) et "D" (en bas).
 
-### 1er rendu
+> Ces 2 boutons en fonction de l'orientation verticale ou horizontale du domino a pour but de placer le domino dans le sens où souhaite le joueur.
+> En effet, la tuile qui se trouvera tout en haut à gauche (sur l'écran de gauche, au-dessus des 4 boutons), sera la tuile posée là où le joueur va cliquer sur son royaume.
+> En choisissant s'il veut son autre tuile à gauche, à droite, en haut ou en bas, l'entièreté de son domino sera placée dans son royaume.
 
-Date limite : le dimanche **19/12 à 23h59**
+##### Exemple 
+![IMAGE_ALT](https://imgur.com/0xk88X3.jpg) 
+- Le joueur clique sur la flèche violette. On voit que la tuile jaune, qui se trouve tout en haut à gauche de l'écran de prévisualisation se retrouve là où le joueur clique.
+- Le jouer a sélectionné le bouton "L" (gauche), donc l'autre tuile du domino, qui se retrouve à l'horizontale (la tuile verte), va se retrouver à gauche de la tuile jaune.
 
-Documents :
-
-- diagrammes UML
-- code source
-- rapport pour expliquer vos choix de conception
-
-Le rendu est à faire sur votre dépôt Git dans un répertoire `rendu1`.
-
-### 2ème rendu
-
-Date limite : le dimanche **9/01 à 23h59**
-
-Documents :
-
-- diagrammes UML
-- code source
-- un exécutable au format JAR
-- un mode d'emploi pour démarrer l'application
-- rapport pour présenter vos nouveaux choix de conception depuis le 1er rendu et expliquer les raisons des modifications de choix de conception qui avait été annoncé au 1er rendu.
-
-Le rendu est à faire sur votre dépôt Git dans un répertoire `rendu2`.
-
-### Précisions
-
-- Vos diagrammes UML doivent être au format PlantUML et svg,
-- Les rapports et le mode d'emploi doivent être au format Markdown.
-- À la fin du projet, votre dépôt devra contenir au minimum un répertoire `rendu1`, un répertoire `rendu2`, ce seront les seuls évalués. Le reste de votre dépôt pourra contenir votre code de développement et tous les documents qui vous seront utiles.
-- Pensez à vérifier que votre exécutable fonctionne aussi bien sur Linux que Windows (ou Mac).
+## 5. Membres de l'équipe
+- Julien Von Der Marck
+- Alexander Yanovskyy

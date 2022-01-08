@@ -22,7 +22,7 @@ JDK utilisé : [`Azul Zulu OpenJDK 16`](https://www.azul.com/downloads/).
 
 ## 2. Procédure d'installation du projet
 
-- **Clonage du projet en local** : Pour installer notre projet, cloner notre dépôt et dans un répertoire taper la commande suivante : 
+- **Clonage du projet en local** : Pour installer notre projet, **cloner** notre dépôt et dans un répertoire taper la commande suivante : 
  
     ```git clone https://git.unistra.fr/vondermarck-yanovskyy/a31-kingdomino.git```
 
